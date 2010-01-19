@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; Samba Configuration</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+<script type='text/javascript'>
+<!-- hide
+
+<%roGetSambaConf()%>
+
+function frmLoad() {
+    with ( document.forms[0] ) {
+	EnableSamba.checked = ena;
+	WorkName.value = wn;
+	ServerName.value = sn;
+	ServerDesc.value = sd;
+	RootShare.checked = rs;
+    }
+}
+
+function btnApply() {
+   var loc = 'do.cgi?page=samba&action=modify';
+   var enbl = '1';
+   
+   with ( document.forms[0] ) {
+      if ( isValidName(WorkName.value) == false ) {
+         msg = 'Workgroup name "' + WorkName.value + '" is invalid.';
+         alert(msg);
+         return;
+      }
+      if ( isValidName(ServerName.value) == false ) {
+    	 msg = 'Server name "' + ServerName.value + '" is invalid.';
+         alert(msg);
+         return;
+      }
+      if ( isValidNameWSpace(ServerDesc.value) == false ) {
+    	 msg = 'Server description "' + ServerDesc.value + '" is invalid.';
+         alert(msg);
+         return;
+      }
+
+      if (( WorkName.value == '' ) || ( ServerName.value == '' ) || ( ServerDesc.value == '' )) {
+         msg = 'A required field is blank.';
+         alert(msg);
+         return;
+      }
+      
+      loc += '&State=' + EnableSamba.checked + '&WorkName=' + encodeUrl(WorkName.value) + '&ServerName=' + encodeUrl(ServerName.value) + '&ServerDesc=' + encodeUrl(ServerDesc.value) + '&RootShare=' + RootShare.checked;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>Samba Configuration</h3>
+
+<form onSubmit='return false'>
+	<table>
+	<tr><td><label>Enable Samba:</label></td>
+	<td><input type='checkbox' name='EnableSamba' id='EnableSamba' value='0'></td></tr>
+	<tr><td><label>Workgroup name:</label></td>
+	<td><input type='text' name='WorkName' maxlength='64' id='WorkName'></td></tr>
+	<tr><td><label>Server name:</label></td>
+	<td><input type='text' name='ServerName' maxlength='64' id='ServerName'></td></tr>
+	<tr><td><label>Server description:</label></td>
+	<td><input type='text' name='ServerDesc' maxlength='64' id='ServerDesc'></td></tr>
+	<tr><td><label>Share root filesystem:</label></td>
+	<td><input type='checkbox' name='RootShare' id='RootShare' value='0'></td></tr>
+	</table>
+	<p><input type='button' onClick='btnApply()' value='Save'></p>
+</form>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

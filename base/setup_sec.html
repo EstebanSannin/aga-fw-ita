@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   (c) 2004-2006 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Setup</title>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="util.js"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!-- This is similar to the index-wireless.html page -->
+function validatePage()
+{
+	document.idForm.wlKeyBit.value = ((document.idForm.cbWEPkeytype.value == "type128ASCII") || (document.idForm.cbWEPkeytype.value == "type128hex")) ? "0" : "1";
+
+	if (document.idForm.cbSecurity.value == "WPA_WPA2")
+	{
+		if (!minLength("Pass phrase", document.idForm.wlWpaPsk, 8))
+			return false;
+	}
+	else if (document.idForm.cbSecurity.value.substr(0, 3) == "WEP")
+	{
+		if (!isValidKey(document.idForm.idKeyValue1, document.idForm.idKeyValue1.maxLength))
+		{
+			alert("Please enter a valid " + document.idForm.idKeyValue1.maxLength + "-character WEP key.");
+			return false;
+		}
+	}
+	else
+		document.idForm.wlWpaPsk.value = "";
+
+	return true;
+}
+
+function updateFields()
+{
+	setVisibility("idEncryptNo", (document.idForm.cbSecurity.value == "none"));
+
+	setVisibility("idWPA", (document.idForm.cbSecurity.value == "WPA_WPA2"));
+	setVisibility("idEncryptWPA", (document.idForm.cbSecurity.value == "WPA_WPA2"));
+
+	setVisibility("idWEPkeytype", (document.idForm.cbSecurity.value.substr(0, 3) == "WEP"));
+	setVisibility("idKey1", (document.idForm.cbSecurity.value.substr(0, 3) == "WEP"));
+
+	setMaxLength(false, document.idForm.cbWEPkeytype.value, document.idForm.wlKey1);
+}
+</script>
+</head>
+
+<body onload="updateFields();">
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+	writeHeaderSetup(2, 3);
+</script>
+
+
+<form name="idForm" action="setup_login.wl" method="post">
+	<input type="hidden" id="wlKeyBit" name="wlKeyBit">
+
+<!-- This code is similar to the code on the index-wireless.html -->
+<h3>Network Name (SSID)</h3>
+
+<p>This is the name of your wireless network. Wireless devices will need to know the
+network name (also known as an SSID) of your router in order to communicate with it.</p>
+
+<p id="lblSSID"><label for="wlSsid">Network name:</label>
+	<input type="text" size="30" maxlength="30" name="wlSsid" id="wlSsid" class="clsTextfield" value="<%ejGetWlHTML(wlSsid)%>"></p>
+
+<p>U.S.&nbsp;Robotics recommends that you change the <b>network name</b>
+and treat it like a password. Use a combination of more than eight alphanumeric
+characters that is not easy to guess (such as &ldquo;MyHomeOffice&rdquo;
+or &ldquo;Fish81Tree&rdquo;).</p>
+
+
+<!-- This code is similar to the code on the wireless.htm page but MUCH simpler -->
+<h3>Security</h3>
+
+<p>U.S.&nbsp;Robotics recommends securing your router from unauthorized
+wireless devices by using WPA encryption.
+If you have older wireless devices that don&rsquo;t support WPA,
+you can select WEP.
+If you want to use a different method later, you can change it on the
+router&rsquo;s <b>Security</b> page after the setup is complete.
+</p>
+
+<table border="0">
+	<tr>
+		<td id="lblMethod" valign="top"><label>Method:</label></td>
+		<td>
+			<select id="cbSecurity" name="cbSecurity" onchange="updateFields();">
+				<option value="WPA_WPA2" selected>WPA2 and WPA (PSK) (recommended)</option>
+				<option value="WEPopen">WEP open</option>
+				<option value="WEPshared">WEP shared</option>
+				<option value="none">None</option>
+			</select>
+		</td>
+	</tr>
+
+	<!-- WPA -->
+	<tr id="idWPA">
+		<td valign="top"><label for="wlWpaPsk">Pass&nbsp;phrase:</label></td>
+		<!-- either 32 hex digits or ASCII that WPA hashes to a 256-bit key -->
+		<td><input type="text" size="40" maxlength="63" name="wlWpaPsk" id="wlWpaPsk" class="clsTextfield" value="<%ejGetWlHTML(wlWpaPsk)%>"><br/>
+			<span class="clsNote">(The pass phrase must be between eight and sixty-three characters long.)</span>
+			</td>
+	</tr>
+
+	<!-- WEP -->
+	<tr id="idWEPkeytype">
+		<td><label>Key type:</label></td>
+		<td>
+			<!-- No name property so the value's not posted -->
+			<select id="cbWEPkeytype" onchange="setMaxLength(true, this.value, wlKey1);">
+				<option value="type128ASCII" selected>128-bit ASCII</option>
+				<option value="type128hex">128-bit hex</option>
+				<option value="type64ASCII">64-bit ASCII</option>
+				<option value="type64hex">64-bit hex</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr id="idKey1" valign="top">
+		<td><label for="idKeyValue1">Key:</label></td>
+		<td><input type="text" size="40" maxlength="58" name="wlKey1" id="idKeyValue1" class="clsTextfield"><br/>
+			<span class="clsNote">(The key must be <span id="idKeyNumChars"></span>&nbsp;characters long.)</span>
+		</td>
+	</tr>
+</table>
+
+<p id="idEncryptWPA">
+U.S.&nbsp;Robotics recommends that you treat your <b>WPA pass phrase</b> like
+a password and use a combination of alphanumeric characters that is not
+easy to guess (such as &ldquo;5Rock2Fish9Sand&rdquo; or &ldquo;20Dogs933Trot&rdquo;).
+</p>
+<div id="idEncryptNo" style="display: none;" class="clsNotice">
+	<p>Please note that you have disabled encryption on the router and your
+	wireless network will be insecure. Unauthorized wireless devices may be
+	able to connect to your network, use your Internet connection, and access
+	your computers.
+	You can enable encryption later on the router&rsquo;s <b>Security</b> page.</p>
+</div>
+
+
+<p class="clsSave">You will need to enter these values when you configure a wireless client.
+After setup is complete, these values will be displayed on the
+router&rsquo;s <b>Status</b> page,
+and you can write them down or print them.
+</p>
+
+<p>When you&rsquo;re finished and ready to go to the next step, press <b>Next</b>.</p>
+<p><input type="submit" class="clsBtnSave" name="btnSubmit" value="Next -->" onclick="if (!validatePage()) return false;"></p>
+<!-- If all entries are valid, Setup-Login is displayed. An error keeps the user here. -->
+
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

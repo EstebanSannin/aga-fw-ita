@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; DHCP Static Leases</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+<script type='text/javascript'>
+<!-- hide
+
+function btnApply() {
+   var loc = 'do.cgi?page=dhcpstaticleases&action=add';
+   var enbl = '1';
+   
+   with ( document.forms[0] ) {
+      if ( isValidMacAddress(MacAddr.value) == false ) {
+         msg = 'MAC address "' + MacAddr.value + '" is invalid. Please, use the following format: "00:11:22:33:44:55"';
+         alert(msg);
+         return;
+      }
+      if ( isValidIpAddress(IPAddr.value) == false ) {
+         msg = 'IP address "' + IPAddr.value + '" is invalid. Please, use the following format: "192.168.1.2"';
+         alert(msg);
+         return;
+      }
+      
+      loc += '&MacAddr=' + MacAddr.value + '&IPAddr=' + IPAddr.value;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>DHCP Static Leases</h3>
+
+<form onSubmit='return false'>
+	<table>
+	<tr><td><label>MAC address:</label></td>
+	<td><input type='text' name='MacAddr' maxlength='17' id='MacAddr'></td></tr>
+	<tr><td><label>IP address:</label></td>
+	<td><input type='text' name='IPAddr' maxlength='15' id='IPAddr'></td></tr>
+	</table>
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

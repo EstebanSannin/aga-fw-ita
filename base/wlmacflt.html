@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnApply() {
+   var loc = 'wlmacflt.cmd?action=add';
+   var enbl = '<%ejGetWlJS(wlEnbl)%>';
+
+   if ( enbl == '0' ) {
+      alert('Cannot apply the change since wireless is currently disabled.');
+      return;
+   }
+   
+   with ( document.forms[0] ) {
+      if ( isValidMacAddress(wlFltMacAddr.value) == false ) {
+         msg = 'MAC address "' + wlFltMacAddr.value + '" is invalid. Please, use the following format: "00:11:22:33:44:55"';
+         alert(msg);
+         return;
+      }
+
+      loc += '&wlFltMacAddr=' + wlFltMacAddr.value;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Security", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>MAC Filter</h3>
+
+	<p>Enter the MAC address and press <b>Apply</b> to add the MAC address to the wireless 
+	MAC address filters.</p>
+
+<form onSubmit='return false'>
+	<p><label for="">MAC address:</label> <input type='text' name='wlFltMacAddr' maxlength='17' id='wlFltMacAddr'></p>
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

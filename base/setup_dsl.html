@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   (c) 2004-2005 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Setup</title>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<script src="usr_common.js" type="text/javascript"></script>
+	<script src="usr_custom.js" type="text/javascript"></script>
+	<script type="text/javascript">
+function initializePage()
+{
+	document.idForm.ntwkPrtcl.focus();
+	changeProtocol();
+
+	// if no wireless, go straight to Setup Login page
+	if ("<%ejGetWlJS(wlInterface)%>" != "1")
+		document.idForm.action = "setup_login.cgi";
+}
+
+function changeProtocol()
+{
+	// PPPoA and PPPoE only have these options
+	setVisibility("idHalfBridge", (document.idForm.ntwkPrtcl.options.selectedIndex <= 1));
+	setVisibility("idQoS", (document.idForm.ntwkPrtcl.options.selectedIndex <= 3));
+
+
+	// empty encapsulation choices
+	while (document.idForm.encapMode.options.length > 0)
+		document.idForm.encapMode.options[0] = null;
+
+	// rebuild encapsulation choices
+	switch (document.idForm.ntwkPrtcl.options.selectedIndex)
+	{
+		case 0:	// PPPoA
+			document.idForm.encapMode.options[0] = new Option("VC/MUX", 				"0");
+			document.idForm.encapMode.options[1] = new Option("LLC/SNAP", 				"1");
+			break;
+
+		case 1:	// PPPoE
+			document.idForm.encapMode.options[0] = new Option("LLC/SNAP", 				"0");
+			break;
+
+		case 2:	// MER
+		case 4:	// Bridging
+			document.idForm.encapMode.options[0] = new Option("LLC/SNAP-Bridging",	"0");
+			document.idForm.encapMode.options[1] = new Option("VC/MUX", 				"1");
+			break;
+
+		case 3:	// IPoA
+			document.idForm.encapMode.options[0] = new Option("LLC/SNAP-Routing", 	"0");
+			document.idForm.encapMode.options[1] = new Option("VC/MUX",	"1");
+			break;
+
+		default:
+			break;
+	}
+
+	// if there's only one encapsulation choice, hide it
+	setVisibility("idEncapsulation", (document.idForm.encapMode.options.length > 1));
+
+	// only PPPoA and PPPoE require a login
+	setVisibility("idLogin", (document.idForm.ntwkPrtcl.options.selectedIndex == 0) || (document.idForm.ntwkPrtcl.options.selectedIndex == 1));
+
+	// IPoA requires WAN IP info
+	setVisibility("idWanStaticIP", (document.idForm.ntwkPrtcl.options.selectedIndex == 3));
+}
+
+function validatePage()
+{
+	if (!inRange("VPI", document.idForm.atmVpi, 0, 255))
+		return false;
+	if (!inRange("VCI", document.idForm.atmVci, 32, 65535))
+		return false;
+
+	// if PPPoA/E, validate login
+	if ((document.idForm.ntwkPrtcl.options.selectedIndex == 0) || (document.idForm.ntwkPrtcl.options.selectedIndex == 1))
+	{
+		if (!validateUsername(document.idForm.pppUserName))
+			return false;
+	}
+
+	document.idForm.serviceName.value = buildServiceName(document.idForm.ntwkPrtcl.options.selectedIndex, document.idForm.atmVpi.value, document.idForm.atmVci.value);
+//alert("Example of building a service name: " + document.idForm.serviceName.value);
+
+	return true;
+}
+	</script>
+</head>
+
+<body onload="initializePage();">
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+	if ("<%ejGetWlJS(wlInterface)%>" == "1")
+		writeHeaderSetup(1, 3);
+	else
+		writeHeaderSetup(1, 2);
+</script>
+
+<form name="idForm" action="setup_sec.cgi" method="post">
+	<input type="hidden" name="serviceName" id="serviceName" value="">
+
+<h3>Configure Your Internet Connection</h3>
+
+<p>In order for your router to connect to the Internet, you will need to
+enter the information your Internet Service Provider (ISP) gave you for
+your DSL connection.
+You may need to contact your Internet Service Provider for assistance in
+determining the correct settings.</p>
+
+<table>
+	<tr>
+		<td><label for="">Protocol:</label></td>
+		<td>
+			<select name="ntwkPrtcl" id="ntwkPrtcl" onchange="changeProtocol();">
+				<option value="1" selected>PPP over ATM (PPPoA)</option>
+				<option value="0">PPP over Ethernet (PPPoE)</option>
+				<option value="2">MAC Encapsulated Routing (MER)</option>
+				<option value="5">IP over ATM (IPoA)</option>
+				<option value="3">Bridging</option>
+			</select>
+		</td>
+	</tr>
+	<tr id="idEncapsulation">
+		<td><label for="">Encapsulation:</label></td>
+		<td>
+			<select name="encapMode" id="encapMode">
+				<!-- In case browser doesn't support dynamic options -->
+				<option value="0" selected>VC/MUX</option>
+				<option value="0">LLC/Encapsulation</option>
+				<option value="0">LLC/SNAP-Bridging</option>
+				<option value="0">LLC/SNAP-Routing</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
+		<td><label for="atmVpi">VPI:</label></td>
+		<td>
+			<input type="text" size="10" maxlength="3" name="atmVpi" id="atmVpi" class="clsTextfield" value="">
+			<span class="clsNote">(0-255)</span>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="atmVci">VCI:</label></td>
+		<td>
+			<input type="text" size="10" maxlength="5" name="atmVci" id="atmVci" class="clsTextfield" value="">
+			<span class="clsNote">(32-65535)</span>
+		</td>
+	</tr>
+</table>
+
+<p id="idHalfBridge"><input type="checkbox" name="pppIpExtension" id="pppIpExtension"> <label for="pppIpExtension">Half-bridge</label> <span class="clsNote">(also known as &ldquo;IP extension&rdquo;)</span></p>
+<p id="idQoS"><input type="checkbox" name="enblQos" id="enblQos"> <label for="enblQos">Quality of service</label></p>
+
+
+
+<div id="idLogin">
+<h3>DSL Login</h3>
+
+<p>If your Internet Service Provider (ISP) provided a user name and password
+for your Internet connection, please enter them here.
+If you don&rsquo;t know this information, you may need to contact your ISP for assistance.
+In that case, complete the setup, and later use the router&rsquo;s <b>Internet</b>
+page to configure your Internet connection.
+</p>
+
+<table>
+	<tr>
+		<td><label for="pppUserName">User&nbsp;name:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="256" name="pppUserName" id="pppUserName" class="clsTextfield" value="">
+		</td>
+	</tr>
+	<tr>
+		<td><label for="pppPassword">Password:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="32" name="pppPassword" id="pppPassword" class="clsTextfield" value="">
+		</td>
+	</tr>
+	<tr>
+		<td><label for="">Authentication:</label></td>
+		<td>
+			<select name="pppAuthMethod" id="pppAuthMethod">
+				<option value="0" selected>Automatic</option>
+				<option value="1">PAP</option>
+				<option value="2">CHAP</option>
+				<option value="3">MSCHAP</option>
+			</select>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div id="idWanStaticIP">
+<h3>IP Addresses</h3>
+
+<table border="0">
+   <tr>
+      <td><label for="wanIpAddress">WAN IP address:</label></td>
+      <td><input type="text" size="20" name="wanIpAddress" id="wanIpAddress" class="clsTextfield"></td>
+   </tr>
+	<tr>
+		<td><label for="wanSubnetMask">WAN Subnet mask:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="15" name="wanSubnetMask" id="wanSubnetMask" class="clsTextfield" value="255.255.255.0">
+		</td>
+	</tr>
+	<tr>
+		<td><label for="defaultGateway">Default gateway:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="15" name="defaultGateway" id="defaultGateway" class="clsTextfield" value="">
+		</td>
+	</tr>
+
+	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+	<tr>
+		<td><label for="dnsPrimary">DNS servers:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="15" name="dnsPrimary" id="dnsPrimary" class="clsTextfield" value="">
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="text" size="20" maxlength="15" name="dnsSecondary" id="dnsSecondary" class="clsTextfield" value="">
+		</td>
+	</tr>
+</table>
+</div>
+
+<p class="clsSave">When you&rsquo;re finished and are ready to go to the next step, press <b>Next</b>.</p>
+<p><input type="submit" class="clsBtnSave" name="btnSubmit" value="Next -->" onclick="if (!validatePage()) return false;"></p>
+<!-- If all entries are valid, Setup-Security is displayed. An error keeps the user here. -->
+
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

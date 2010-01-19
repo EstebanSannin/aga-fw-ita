@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>LAN &raquo; Bridge Service</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var service = '<%ejGetJS(serviceName)%>';
+var vpi = '<%ejGetJS(atmVpi)%>';
+var vci = '<%ejGetJS(atmVci)%>';
+var qs = '<%ejGetJS(quickSetup)%>';
+
+function btnNext() {
+   var loc = 'ntwksum2.cgi?';
+
+   if ( qs == '1' )
+      loc = 'lancfgbr.cgi?';
+
+   // protocol is bridge
+   loc += 'ntwkPrtcl=3';
+
+   with ( document.forms[0] ) {
+      if ( enblService.checked == true )
+         loc += '&enblService=1';
+      else
+         loc += '&enblService=0';
+      loc += '&serviceName=' + encodeUrl(serviceName.value);
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+
+function btnBack() {
+   var code = 'location = "' + 'ntwkprtcl.cgi' + '"';
+   eval(code);
+}
+
+function frmLoad() {
+   var enableService = '<%ejGetJS(enblService)%>';
+
+   with ( document.forms[0] ) {
+      if ( enableService == '1' )
+         enblService.checked = true;
+      else
+         enblService.checked = false;
+
+      if ( service == '' )
+         service = 'br_' + vpi + '_' + vci;
+      serviceName.value = service;
+   }
+}
+
+// done hiding -->
+</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Bridge Service", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<p><b>Clear the check box below to disable this WAN service</b>.</p>
+
+	<p><input type='checkbox' name='enblService' id='enblService' checked> <label for="enblService">Enable bridge service</label></p>
+	<p><label for="serviceName">Service name:</label> <input type="text" name="serviceName" id="serviceName"></p>
+
+	<p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Device &raquo; Diagnostics</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function displayDiag(diagPrev, diagCurr, diagNext) {
+   var loc = '';
+   // diagCurr should have format "protocol/vpi/vci/conId"
+   var params = diagCurr.split('/');
+
+   switch ( params[0] ) {
+      case 'PPPoE':
+         loc = 'diagpppoe.cgi'; 
+	 break;
+      case 'PPPoA':
+         loc = 'diagpppoa.cgi';
+	 break;
+      case 'MER':
+         loc = 'diagmer.cgi';
+	 break;
+      case 'IPoA':
+         loc = 'diagmer.cgi';
+	 break;
+      case 'Bridge':
+         loc = 'diagbr.cgi';
+	 break;
+      case 'IPoW':
+         loc = 'diagipow.cgi';
+	 break;
+      default:
+         loc = '';
+	 break;
+   }
+   loc += '?diagPrev=' + diagPrev + '&diagCurr=' + diagCurr + '&diagNext=' + diagNext;
+
+   var code = 'location = "' + loc + '"';
+      eval(code);
+}
+
+function frmLoad() {
+   var i = 0;
+   var interfaceInfo = '<%ejGetOther(diagInfo, diag)%>';
+   var interfaces = interfaceInfo.split('|');
+   var diagCurr = '<%ejGetOther(diagInfo, diagCurr)%>';
+   var diagPrev = '';
+   var diagNext = '';
+   
+   if ( interfaceInfo != '' ) {
+      if ( diagCurr == '' ) {
+         // if there is no current WAN info then
+         // display first available WAN connection
+         diagCurr = interfaces[0];
+         // assign next position info
+         if ( interfaces.length > 1 )
+            diagNext = interfaces[1];
+      } else {
+         // diagCurr and interfaces[i] should have format "protocol/vpi/vci/conId"
+         var currParams = diagCurr.split('/');
+         // find the current position
+         for ( i = 0; i < interfaces.length; i++ ) {
+            var params = interfaces[i].split('/');
+            if ( currParams[0] == params[0] &&
+                 currParams[1] == params[1] &&
+                 currParams[2] == params[2] &&
+                 currParams[3] == params[3] )
+               break;
+         }
+         // assign previous position info
+         if ( i > 0 )
+            diagPrev = interfaces[i - 1];
+         // assign current position info
+         diagCurr = interfaces[i];
+         // assign next position info
+         if ( i + 1 < interfaces.length )
+            diagNext = interfaces[i + 1];
+      }
+      // display current position info
+      displayDiag(diagPrev, diagCurr, diagNext);
+   } else
+   // if there is no wan connection then
+   // display lan diagnostics page
+      eval('location = "diaglan.html"');
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Device", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Diagnostics</h3>
+
+<!-- Content -->
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

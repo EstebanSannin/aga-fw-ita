@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Device &raquo; Diagnostics</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+	<script src="portName.js" type="text/javascript"></script>
+
+      <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+</head>
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+	writeHeader("Device", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+
+<h3>Diagnostics</h3>
+
+<p>Your modem is capable of testing your DSL connection. The individual tests are
+listed below. If a test displays a fail status, click <b>Rerun Diagnostic
+Tests</b> at the bottom of this page to make sure the fail status is
+consistent.
+(If the test continues to fail, you can find information about this
+in the user manual on the installation CD-ROM.)
+</p>
+
+<p><b>Test the connection to your local network</b></p>
+
+<TABLE border="1" cellspacing="0" cellpadding="3">
+   <TBODY>
+<script type="text/javascript">
+<!-- hide
+//var brdId = '<%ejGetJS(boardID)%>';
+var dispName = '';
+if ('<%ejGetJS(numEnet)%>' == '1') {
+   document.writeln("<TR><TD class='hd' width='250'>Test your LAN connection:</TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 1)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+} else {
+   dispName = getUNameByLName('<%ejGetJS(boardID)%>' + '|eth0');
+   document.writeln(" <TR><TD class='hd' width='250'>Test your " + dispName + " connection:</TD>");
+   document.writeln(" <TD><B><%ejGetOther(diagnostic, 1)%></B>&nbsp;</TD>");
+   document.writeln(" <TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+   dispName = getUNameByLName('<%ejGetJS(boardID)%>' + '|eth1');
+   document.writeln("<TR><TD class='hd' width='250'>Test your " + dispName + " connection:</TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 18)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+}
+if ('<%ejGetJS(enblWireless)%>' == '1') {
+   document.writeln("<TR><TD class='hd'>Test your wireless connection:</TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 17)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpwlconn.html'>Help</A></TD></TR>");
+}
+// done hiding -->
+</script>
+</TBODY></TABLE>
+
+<p><b>Test the connection to your DSL service provider</b></p>
+
+<TABLE border="1" cellspacing="0" cellpadding="3">
+   <TBODY>
+      <TR>
+         <td width="250">Test ADSL synchronization:</TD>
+         <TD width="50"><B><%ejGetOther(diagnostic, 2)%></B></TD>
+         <TD><A href="hlpadslsync.html">Help</A></TD>
+      </TR>
+   </TBODY></TABLE>
+
+<P><input type='button' onClick='location.href="diag.html"' value='Rerun Diagnostic Tests'></p>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Security &raquo; ALG</title>
+	
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+	
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript">
+<!-- hide
+var enblSiproxd = '<%ejGetJS(enblSiproxd)%>';
+var refresh = '<%ejGetJS(glbRefresh)%>';
+
+if ( refresh == '1' ) {
+   var code = 'location = "algcfg.cgi?glbRefresh=0"';
+   eval(code);
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      if ( enblSiproxd == '1' ) {
+         Siproxd.checked = true;
+      } else {
+         Siproxd.checked = false;
+      }
+   }
+}
+
+function applyClick() {
+   var loc = 'algcfg.cgi?';
+   with ( document.forms[0] ) {
+      if ( Siproxd.checked == true )
+         loc += 'enblSiproxd=1';
+      else
+         loc += 'enblSiproxd=0';
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+  </head>
+  <body onLoad="initMenu(); frmLoad();">
+
+  <script type="text/javascript">
+	writeHeader("Security", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+  </script>
+
+	<h3>ALG</h3>
+        
+        <p>Select the ALG below.</p>
+        <p>
+        <br>
+        
+	<form>
+          <p><input type="checkbox" name="Siproxd"> SIP Enabled</p>
+          <p><input type='button' onClick='applyClick()' value='Save/Apply'></p>
+        </form>
+	
+	<script type="text/javascript">
+	    writeFooter();
+	</script>
+		
+  </body>
+</html>

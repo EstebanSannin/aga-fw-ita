@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+var ipExtension = '<%ejGetJS(pppIpExtension)%>';
+var service = '<%ejGetJS(serviceName)%>';
+var vpi = '<%ejGetJS(atmVpi)%>';
+var vci = '<%ejGetJS(atmVci)%>';
+var qs = '<%ejGetJS(quickSetup)%>';
+var bReaim = '<%ejGetJS(enblReaim)%>';
+
+function btnNext() {
+   var loc = 'ntwksum2.cgi?';
+
+   if ( qs == '1' ) {
+      if ( (ipExtension == '1') &&
+           ((prtcl == 'PPPoE') || (prtcl == 'PPPoA')) )
+         loc = 'lancfgbr.cgi?';
+      else
+         loc = 'lancfg.cgi?';
+   }
+
+   with ( document.forms[0] ) {
+      len = serviceName.value.length;
+      if (len > 32) {
+         alert('The length of service name (' + len + ') is too long [0-32].');
+         return;
+      }
+      if ( enblIgmp.checked == true )
+         loc += 'enblIgmp=1';
+      else
+         loc += 'enblIgmp=0';
+      if ( enblService.checked == true )
+         loc += '&enblService=1';
+      else
+         loc += '&enblService=0';
+      if ( enblReaim.checked == true )
+         loc += '&enblReaim=1';
+      else
+         loc += '&enblReaim=0';
+      loc += '&serviceName=' + encodeUrl(serviceName.value);
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnBack() {
+   var loc;
+
+   if ( prtcl == 'PPPoE' || prtcl == 'PPPoA' )
+      loc = 'pppoe.html';
+   else if ( prtcl == 'IPoA' )
+      loc = 'ipoacfg.html';
+   else if ( prtcl == 'MER' )
+      loc = 'wancfg.html';
+   else
+      loc = 'ntwkprtcl.html';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function frmLoad() {
+   var enableIgmp = '<%ejGetJS(enblIgmp)%>';
+   var enableService = '<%ejGetJS(enblService)%>';
+
+   if ( service == '' ) {
+      switch ( prtcl ) {
+         case 'PPPoE':
+            service = 'pppoe_' + vpi + '_' + vci;
+            break;
+         case 'PPPoA':
+            service = 'pppoa_' + vpi + '_' + vci;
+            break;
+         case 'MER':
+            service = 'mer_' + vpi + '_' + vci;
+            break;
+         case 'IPoA':
+            service = 'ipoa_' + vpi + '_' + vci;
+            break;
+         case 'Bridge':
+            service = 'br_' + vpi + '_' + vci;
+            break;
+         case 'IPoW':
+            service = 'eth_' + vpi;
+            break;
+      }
+   }
+
+   with ( document.forms[0] ) {
+      if ( enableIgmp == '1' )
+         enblIgmp.checked = true;
+      else
+         enblIgmp.checked = false;
+      if ( enableService == '1' )
+         enblService.checked = true;
+      else
+         enblService.checked = false;
+      if ( bReaim == '1' )
+         enblReaim.checked = true;
+      else
+         enblReaim.checked = false;
+      serviceName.value = service;
+   }
+}
+
+// done hiding -->
+</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("IGMP and WAN Services", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<p><input type='checkbox' name='enblIgmp' id='enblIgmp' checked> <label for="enblIgmp">IGMP multicast</label></p>
+	<p><input type='checkbox' name='enblService' id='enblService' checked> <label for="enblService">WAN service</label></p>
+	<p><label for="serviceName">Service name:</label> <input type="text" name="serviceName" id="serviceName"></p>
+
+   <div id='openInPort'>
+		<p><input type='checkbox' name='enblReaim' id='enblReaim' checked> <label for="enblReaim">Allow "Reaim" proxy</label></p>
+      <p>Clear <b>Allow "Reaim" proxy</b> to disable "Reaim" proxy support for AOL and MSN Instant Messenger.</p>
+   </div>
+
+   <p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>
+

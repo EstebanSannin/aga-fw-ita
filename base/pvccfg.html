@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+   <head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta http-equiv="Pragma" content="no-cache">
+
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var upRate = parseInt('<%ejGetOther(lineRate, 0)%>');
+var pcrMax = 1887;   // 1887 * 53 * 8 = 800000
+var serviceCat = '<%ejGetJS(atmServiceCategory)%>';
+var qos = '<%ejGetJS(enblQos)%>';
+var hideQos = false;
+var serviceId = '<%ejGetJS(serviceId)%>';
+var numQueue = parseInt('<%ejGetOther(memInfo, queueNum)%>');
+var numQueueMax = 8;
+
+var enetWan = parseInt('<%ejGetJS(enblEnetWan)%>');
+var vpi = '<%ejGetJS(atmVpi)%>';
+var vci = '<%ejGetJS(atmVci)%>';
+
+if ( isNaN(upRate) == false )
+   pcrMax = Math.ceil((upRate * 1000) / (53 * 8));
+
+var numPvcMax = 8;
+var chipId = <%ejGetOther(sysInfo, chipId)%>;
+
+if ( chipId == 0x6348 )
+   numPvcMax = 16;
+else if ( chipId == 0x6338 )
+   numPvcMax = 8;
+
+var numEnet = parseInt('<%ejGetJS(numEnet)%>');
+var numPvc = parseInt('<%ejGetJS(numPvc)%>');
+   
+function disableQos() {
+   with ( document.forms[0] ) {
+      enblQos.checked = false;
+      enblQos.disabled = 1;
+   }
+}
+
+function enableQos() {
+   with ( document.forms[0] ) {
+      if ( qos == '1' )
+         enblQos.checked = true;
+      else
+         enblQos.checked = false;
+      enblQos.disabled = 0;
+   }
+}
+
+function hideQosInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 ) {
+      status = 'hidden';
+      disableQos();
+   } else
+      enableQos();
+
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('qosInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.qosInfo.style.visibility = status;
+   }
+}
+
+function hideInfo(hide) {
+
+   with (document.forms[0]) {
+      if (hide == 3)    // hide all 3
+      {
+         if (document.getElementById) { // DOM3 = IE5, NS6
+            document.getElementById('first1').style.visibility = 'hidden';
+            document.getElementById('2and3').style.visibility = 'hidden';
+         }
+         else { // add more
+         }
+      }
+      else if (hide == 2)  // hide 2 and 3
+      {
+         if (document.getElementById) { // DOM3 = IE5, NS6
+            document.getElementById('2and3').style.visibility = 'hidden';
+            document.getElementById('first1').style.visibility = 'visible';
+         }
+         else {// add more
+         }
+      }
+      else if (hide == 0) // hide none
+      {
+         if (document.getElementById) { // DOM3 = IE5, NS6
+            document.getElementById('first1').style.visibility = 'visible';
+            document.getElementById('2and3').style.visibility = 'visible';
+         }
+         else { // add more
+         }
+      }
+   }
+}
+
+function shouldQosBeHidden() {
+   var ret = false;
+   
+   // only allow QoS enabled for ubr, ubrwpcr, ntr_vbr
+   if ( serviceCat == 'UBR' ||
+             serviceCat == 'UBRwPCR' ||
+             serviceCat == 'NRT_VBR' ) {
+      // if PVC is not QoS enabled
+      if ( qos == '0' ) {
+         // if add new PVC
+         if ( serviceId == '0' ) {
+            if ( numQueue > 5 )   // 5 = 8 - 3
+               ret = true;
+         } else {   // if edit existed PVC
+            if ( numQueue > 6 )   // 6 = 8 - 3 + 1
+               ret = true;
+         }
+      }
+   } else
+      ret = true;
+      
+   return ret;
+}
+
+function hideVccInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 ) {
+      status = 'hidden';
+      hideInfo(3);
+      hideQosInfo(1);
+   } else {
+      hideQosInfo(0);
+      hideInfo(3);
+   }
+   if (document.getElementById) {  // DOM3 = IE5, NS6
+      document.getElementById('vccInfo').style.visibility = status;
+   } else {
+      if (document.layers) { // Netscape 4
+         with ( document.forms[0] ) {
+            if ( hide == 1 ) {
+               atmVpi.value = '';
+               atmVci.value = '';
+            } else {
+               atmVpi.value = vpi;
+               atmVci.value = vci;
+            }
+         }
+      } else  // IE 4
+         document.all.vccInfo.style.visibility = status;
+   }
+}
+
+function ethWanCfgCbClick(cb) {
+   if ( cb.checked == true )
+      hideVccInfo(1);
+   else
+      hideVccInfo(0);
+}
+
+function frmLoad() {
+
+   hideQos = shouldQosBeHidden();
+
+   if ( enetWan == 1 ) {
+      hideVccInfo(1);
+   } else if ( hideQos == true )
+      hideQosInfo(1);
+   else
+      hideQosInfo(0);
+   
+   with ( document.forms[0] ) {
+      atmVpi.value = '<%ejGetJS(atmVpi)%>';
+      atmVci.value = '<%ejGetJS(atmVci)%>';
+      peakCell.value  = '<%ejGetJS(atmPeakCellRate)%>';
+      sustainableCell.value = '<%ejGetJS(atmSustainedCellRate)%>';
+      maximumBurst.value = '<%ejGetJS(atmMaxBurstSize)%>'
+   }
+   
+   if (serviceCat == 'UBR') {
+      document.forms[0].serviceCategory[0].selected = true;
+      hideInfo(3);
+   }
+   else if (serviceCat == 'UBRwPCR') {
+      document.forms[0].serviceCategory[1].selected = true;
+      hideInfo(2);
+   }
+   else if (serviceCat == 'CBR') {
+     document.forms[0].serviceCategory[2].selected = true;
+      hideInfo(2);
+   }
+   else if (serviceCat == 'NRT_VBR') {
+      document.forms[0].serviceCategory[3].selected = true;
+      hideInfo(0);
+   }
+   else if (serviceCat == 'RT_VBR') {
+      document.forms[0].serviceCategory[4].selected = true;
+      hideInfo(0);
+   }
+
+   // if add new PVC
+   if ( serviceId == '0' ) {
+      // if it is 6348 chip
+      if ( chipId == 0x6348 ) {
+         // if PVC is available but queue is not then
+         // only allow to add UBR PVC
+         if ( numPvc < numPvcMax && numQueue >= numQueueMax ) {
+            for ( i = 4; i > 0; i-- )
+               document.forms[0].serviceCategory.options[i] = null;
+            hideInfo(3);
+         }
+      }
+   }
+}
+
+function btnBack() {
+   var code = 'location = "' + 'wancfg.cmd'+ '"';
+   eval(code);
+}
+
+
+function btnNext() {
+   var loc = 'ntwkprtcl.cgi?';
+
+   with ( document.forms[0] ) {
+      if ( isNaN(parseInt(atmVpi.value)) == true ) {
+         alert('VPI "' + atmVpi.value + '" is invalid.');
+         return;
+      }
+      if ( isNaN(parseInt(atmVci.value)) == true ) {
+         alert('VCI "' + atmVci.value + '" is invalid.');
+         return;
+      }
+      vpi = parseInt(atmVpi.value);
+      if ( vpi < 0 || vpi > 255 ) {
+         alert('VPI "' + atmVpi.value + '" is out of range [0-255].');
+         return;
+      }
+      vci = parseInt(atmVci.value);
+      if ( vci < 32 || vci > 65535 ) {
+         alert('VCI "' + atmVci.value + '" is out of range [32-65535].');
+         return;
+      }
+      loc += 'atmVpi=' + atmVpi.value;
+      loc += '&atmVci=' + atmVci.value;
+      loc += '&atmServiceCategory=' + serviceCategory.value;
+      if (serviceCategory.value != 'UBR') {
+         if ( isNaN(parseInt(peakCell.value)) == true) {
+            alert('Peak Cell Rate "' + peakCell.value + '" is invalid.');
+            return;
+         }
+         peak = parseInt(peakCell.value);
+         if ( peak <= 0 || peak > pcrMax ) {
+            alert('Peak Cell Rate "' + peakCell.value + '" is out of range [1-' + pcrMax + '].');
+            return;
+         }
+         loc += '&atmPeakCellRate=' + peakCell.value;
+      } else
+         loc += '&atmPeakCellRate=0';
+      if (serviceCategory.value == 'NRT_VBR' || serviceCategory.value == 'RT_VBR') {
+         if ( isNaN(parseInt(sustainableCell.value)) == true) {
+            alert('Sustainable Cell Rate "' + sustainableCell.value + '" is invalid.');
+            return;
+         }
+         sustainable = parseInt(sustainableCell.value);
+         if ( sustainable <= 0 || sustainable > pcrMax ) {
+            alert('Sustainable Cell Rate "' + sustainableCell.value + '" is out of range [1-' + pcrMax + '].');
+            return;
+         }
+         if ( sustainable >= peak) {
+            alert('Sustainable Cell Rate "' + sustainableCell.value + '" has to be smaller than Peak Cell Rate');
+            return;
+         }
+         if ( isNaN(parseInt(maximumBurst.value)) == true) {
+            alert('Maximum Burst Size "' + maximumBurst.value + '" is invalid.');
+            return;
+         }
+         maximum = parseInt(maximumBurst.value);
+         if ( maximum <= 0 || maximum > 1000000 ) {
+            alert('Maximum Burst Size "' + maximumBurst.value + '" is out of range [1-1000000].');
+            return;
+         }
+         loc += '&atmSustainedCellRate=' + sustainableCell.value;
+         loc += '&atmMaxBurstSize=' + maximumBurst.value;
+      } else {
+         loc += '&atmSustainedCellRate=0';
+         loc += '&atmMaxBurstSize=0';
+      }
+      if ( enblQos.checked == true )
+         loc += '&enblQos=on';
+      else
+         loc += '&enblQos=0';
+   }
+   loc += '&quickSetup=' + 0;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+
+function cbClick(obj) {
+   var idx = obj.selectedIndex;
+   var val = obj.options[idx].value;
+   if ( val == "UBR" )
+      hideInfo(3);
+   else if (val == "UBRwPCR" || val == "CBR")
+      hideInfo(2);
+   else
+      hideInfo(0);   
+   if (val == 'CBR' || val == 'RT_VBR')
+      hideQosInfo(1);     
+   else {
+      if ( hideQos == false )
+         hideQosInfo(0);    
+   }
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("ATM PVC Configuration", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form ID="Form1">
+   <div id='vccInfo'>
+   <table cellSpacing="4" cellPadding="0" border="0">
+      <tr>
+         <td><label for="atmVpi">VPI:</label></td>
+         <td><input type="text" size="4" name="atmVpi" id="atmVpi"> (0-255)</td>
+      </tr>
+      <tr>
+         <td><label for="atmVci">VCI:</label></td>
+         <td><input type="text" size="4" name="atmVci" id="atmVci"> (32-65535)</td>
+      </tr>
+   </table>
+   <br>
+   <table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+         <td><label for="">Service category:</label></td>
+         <td><select name="serviceCategory" id="serviceCategory" onchange='cbClick(this)'>
+               <option value="UBR" selected>
+               UBR Without PCR
+               <option value="UBRwPCR">
+               UBR With PCR
+               <option value="CBR">
+               CBR
+               <option value="NRT_VBR">
+               Non Realtime VBR
+               <option value="RT_VBR">
+                  Realtime VBR</option>
+            </select></td>
+      </tr>
+   </table>
+
+	<div id='first1'>
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td><label for="peakCell">Peak cell rate:</label></td>
+				<td><input type="text" size="6" name="peakCell" id="peakCell"> (cells/s)</td>
+			</tr>
+		</table>
+	</div>
+		
+	<div id='2and3'>
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td><label for="sustainableCell">Sustainable cell rate:</label></td>
+				<td><input type="text" size="6" name="sustainableCell" id="sustainableCell"> (cells/s)</td>
+			</tr>
+			<tr>
+				<td><label for="maximumBurst">Maximum burst size:</label></td>
+				<td><input type="text" size="6" name="maximumBurst" id="maximumBurst"> (cells)</td>
+			</tr>
+		</table>
+	</div>
+    <div id='qosInfo'>
+       <h3>Quality Of Service</h3>
+       <p>
+       Enabling packet level QoS for a PVC improves performance for selected classes 
+       of applications.&nbsp;&nbsp;QoS cannot be set for&nbsp;CBR and Realtime VBR. 
+       &nbsp;QoS consumes system resources; therefore the number of PVCs 
+       will be reduced. Use <b>LAN/Quality of Service</b> to 
+       assign priorities for the applications.<br>
+       </p>
+		<p><input type='checkbox' name='enblQos' id=enblQos> <label for="enblQos">Quality of service</label></p>
+    </div>
+</div>
+	<p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

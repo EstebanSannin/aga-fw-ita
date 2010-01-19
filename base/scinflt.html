@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+   <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+   <script type="text/javascript" src="util.js"></script>
+   <script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var ifCount = 0;
+
+function btnApply() {
+   var loc = 'scinflt.cmd?action=add';
+   var okChk = 0;
+
+   with ( document.forms[0] ) {
+      if ( txtfltname.value == '' ) {
+         msg = 'Please enter incoming IP filtering name.';
+         alert(msg);
+         return;
+      }
+      
+      if ( isValidName(txtfltname.value) == false ) {
+         msg = 'Please enter valid incoming IP filtering name: No special characters.';
+         alert(msg);
+         return;
+      }      
+
+      if ( srcaddr.value == "" && srcmask.value == "" && srcport.value == "" &&
+           dstaddr.value == "" && dstmask.value == "" && dstport.value == "" &&
+           protocol.selectedIndex < 0 ) {
+         msg = 'At least one condition must be specified.'
+         alert(msg);
+         return;
+      }      
+
+      if ( srcaddr.value != "" && isValidIpAddress(srcaddr.value) == false ) {
+         msg = 'Source address "' + srcaddr.value + '" is invalid IP address.';
+         alert(msg);
+         return;
+      }
+
+      if ( srcmask.value != "" && isValidSubnetMask(srcmask.value) == false ) {
+         msg = 'Source subnet mask "' + srcmask.value + '" is invalid subnet mask.';
+         alert(msg);
+         return;
+      }
+
+      if ( srcaddr.value == "" && srcmask.value != "" ) {
+         msg = 'Cannot have source subnet mask without source IP address.';
+         alert(msg);
+         return;
+      }
+
+      if ( srcport.value != "" && isValidPort(srcport.value) == false ) {
+         msg = 'Source port "' + srcport.value + '" is invalid port number or port range.';
+         alert(msg);
+         return;
+      }
+
+      if ( dstaddr.value != "" && isValidIpAddress(dstaddr.value) == false ) {
+         msg = 'Destination address "' + dstaddr.value + '" is invalid IP address.';
+         alert(msg);
+         return;
+      }
+
+      if ( dstmask.value != "" && isValidSubnetMask(dstmask.value) == false ) {
+         msg = 'Destination subnet mask "' + dstmask.value + '" is invalid subnet mask.';
+         alert(msg);
+         return;
+      }
+
+      if ( dstaddr.value == "" && dstmask.value != "" ) {
+         msg = 'Cannot have destination subnet mask without destination IP address.';
+         alert(msg);
+         return;
+      }
+
+      if ( dstport.value != "" && isValidPort(dstport.value) == false ) {
+         msg = 'Destination port "' + dstport.value + '" is invalid port number or port range.';
+         alert(msg);
+         return;
+      }
+
+      if ( (srcport.value != "" || dstport.value != "") &&
+           (protocol.selectedIndex < 0 || protocol.selectedIndex == 3) ) {
+         msg = 'TCP or UDP Protocol must be selected together with port number';
+	 alert(msg);
+	 return;
+      }       
+
+      // wan interfaces
+      if (ifCount == 1) {
+         if (ifChk.checked)
+            okChk = 1;
+      }
+      else {
+         for (i = 0; i < ifCount; i++) 
+            if (ifChk[i].checked)
+               okChk++;
+      }
+      if (!okChk) {
+         alert('At least one configured Bridge interface must be selected.');
+         return;
+      }    
+      loc += '&wanIf=';
+      if (chkAll.checked)
+         loc += 'ALL';
+      else {
+         var first = true;
+	 if (ifCount == 1)
+	    loc += ifChk.value
+	 else {
+           for (i = 0; i < ifCount; i++)
+            if (ifChk[i].checked) {
+               if (!first)
+                  loc += '|';
+               loc += ifChk[i].value;
+               first = false;
+            }
+	 }   
+      }
+      
+      // incoming IP filter name
+      loc += '&fltName=' + encodeUrl(txtfltname.value);
+
+      // protocol
+      idx = protocol.selectedIndex;
+      val = protocol.options[idx].value;
+      loc += '&protocol=' + val;
+
+      // source address
+      if ( srcaddr.value != "" )
+         loc += '&srcAddr=' + srcaddr.value;
+
+      // source subnet mask
+      if ( srcmask.value != "" )
+         loc += '&srcMask=' + srcmask.value;
+
+      // source port
+      if ( srcport.value != "" )
+         loc += '&srcPort=' + srcport.value;
+
+      // destination address
+      if ( dstaddr.value != "" )
+         loc += '&dstAddr=' + dstaddr.value;
+
+      // destination subnet mask
+      if ( dstaddr.value != "" )
+         loc += '&dstMask=' + dstmask.value;
+
+      // destination port
+      if ( dstport.value != "" )
+         loc += '&dstPort=' + dstport.value;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function toggle(cb) {
+   var chkCount = 0;
+   with ( document.forms[0] ) {
+      if (ifCount == 1)
+         chkAll.checked = cb.checked;
+      else {      
+         for (i = 0; i < ifCount; i++)
+            if (ifChk[i].checked)
+               chkCount++;
+         if (chkCount == ifCount)
+            chkAll.checked = true;
+         else
+            chkAll.checked = false;
+      }
+   }
+}
+
+function toggleIfs(cb) {
+   var chkStatus = false;
+   with ( document.forms[0] ) {
+      if (chkAll.checked)
+         chkStatus = true;
+      if (ifCount == 1)
+         ifChk.checked = chkStatus;
+      else
+         for (i = 0; i < ifCount; i++)
+            ifChk[i].checked = chkStatus;
+   }
+}
+
+// done hiding -->
+      </script>
+   </head>
+   <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Add IP Filter", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<h3>Incoming</h3>
+
+	<p>Create a filter to identify the incoming IP traffic by specifying at least one
+	condition below. If multiple conditions are specified, all of them take effect.
+	Press <b>Apply</b> to save and activate the filter.</p>
+
+            <table border="0" cellpadding="0" cellspacing="0">
+               <tr>
+                  <td><label for="txtfltname">Filter name:</label></td>
+                  <td><input type='text' maxlength="15" size="22" name="txtfltname" id="txtfltname"></td>
+               </tr>
+               <tr>
+                  <td><label for="">Protocol:</label></td>
+                  <td><select name='protocol' id='protocol'>
+                        <option value="0">TCP/UDP</option>
+                        <option value="1">TCP</option>
+                        <option value="2">UDP</option>
+								<option value="3">ICMP</option>
+                     </select></td>
+               </tr>
+               <tr>
+                  <td><label for="srcaddr">Source IP address:</label></td>
+                  <td><input type='text' size="22" name="srcaddr" id="srcaddr"></td>
+               </tr>
+               <tr>
+                  <td><label for="srcmask">Source subnet mask:</label></td>
+                  <td><input type='text' size="22" name="srcmask" id="srcmask"></td>
+               </tr>
+               <tr>
+                  <td><label for="srcport">Source port:</label></td>
+                  <td><input type='text' size="22" name="srcport" id="srcport"> (port or port:port)</td>
+               </tr>
+               <tr>
+                  <td><label for="dstaddr">Destination IP address:</label></td>
+                  <td><input type='text' size="22" name="dstaddr" id="dstaddr"></td>
+               </tr>
+               <tr>
+                  <td><label for="dstmask">Destination subnet mask:</label></td>
+                  <td><input type='text' size="22" name="dstmask" id="dstmask"></td>
+               </tr>
+               <tr>
+                  <td><label for="dstport">Destination port:</label></td>
+                  <td><input type='text' size="22" name="dstport" id="dstport"> (port or port:port)</td>
+               </tr>
+            </table>
+
+            <p><b>WAN Interfaces:</b> (Configured in Routing mode and Firewall enabled only)</p>
+				<p><input type='checkbox' name='chkAll' id='chkAll' checked onclick='toggleIfs(this)'> <label for="chkAll">Select all</label></p>
+
+            <table>
+               <tr>
+                  <script type="text/javascript">
+<!-- hide
+{
+   var i = 0;
+   var interfaceInfo = '<%ejGetOther(wanInterfaceInfo, firewall)%>';
+   var interfaces = interfaceInfo.split('|');
+
+   for ( i = 0; i < interfaces.length; i++ ) {
+      var names = interfaces[i].split('/');
+      document.writeln("<tr> <input type='checkbox' name='ifChk' checked value=" + 
+                        names[1] + '>' + '&nbsp;&nbsp;' + interfaces[i] + "</tr>");
+      ifCount++;
+   }
+}
+// done hiding -->
+</script>
+      </tr>
+   </table>
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

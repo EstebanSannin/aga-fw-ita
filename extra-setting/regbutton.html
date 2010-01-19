@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; REG Button</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+
+        <script type="text/javascript">
+
+<!-- hide
+
+<%roGetREGButtonScript()%>
+
+function frmLoad() {
+    with ( document.forms[0] ) {
+	Action.value = act;
+        Script.value = unescape(sc);
+    }
+}
+
+function saveClick() {
+    var loc = 'regbutton.cgi?action=save';
+
+    with ( document.forms[0] ) {
+	if ( Script.value.length > 2048 ) {
+    	    msg = 'This script is too long, max 2048 chars.';
+	    alert(msg);
+	    return;
+	}
+	
+	var script0A = Script.value;
+	loc += '&regaction=' + Action.value + '&script=' + escape(script0A.replace(/\r\n/g, "\n"));
+    }
+    var code = 'location = "' + loc + '"';
+    eval(code);
+}
+// done hiding -->
+
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>REG Button</h3>
+
+<p>This page allows you to customize REG button action.</p>
+<p>Select below the action you want to execute when you press the button.
+<br>
+If the action completes successfully the green led will blink once,
+otherwise, if the action fails the voip red led will blink once. </p>
+
+<form>
+<p>
+<label>Action:</label>
+<select name='Action'>
+<option value='none'>None</option>
+<option value='wradio'>Switch wireless radio on/off</option>
+<option value='reboot'>Reboot the system</option>
+<option value='resync'>Resync ADSL</option>
+<option value='umount'>Unmount USB storage (safely)</option>
+<option value='stealth'>Stealth mode (switch off radio and leds)</option>
+<option value='script'>Custom script</option>
+</select>
+</p>
+<br>
+If you select "Custom script" action, enter the script below:
+<p><textarea name='Script' rows='20' cols='80'></textarea></p>
+<p><input type='button' onClick='saveClick()' value='Save'></p>
+</form>
+
+<p>Note: if you press and hold the button 5 seconds, the system will reboot and
+restore to factory default settings (you can't customize this action).</p>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

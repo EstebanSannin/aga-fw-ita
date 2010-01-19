@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+   <head>
+      <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+      <link rel="stylesheet" href='stylemain.css' type='text/css'>
+          <script language="javascript" src="portName.js"></script>
+         <link rel="stylesheet" href='colors.css' type='text/css'>
+   </head>
+   <body>
+      <blockquote>
+         <form>
+            <b><%ejGetOther(diagInfo, serviceName)%> Diagnostics</b><br>
+            <P>Your modem is capable of testing your DSL connection. The individual tests are 
+               listed below. If a test displays a fail status, click &quot;Rerun Diagnostic 
+               Tests&quot; at the bottom of this page to make sure the fail status is 
+               consistent. If the test continues to fail, click &quot;Help&quot; and follow 
+               the troubleshooting procedures.
+            </P>
+            <P><B>Test the connection to your local network</B>
+               <TABLE border="1" cellspacing="0" cellpadding="3">
+                  <TBODY>
+                     <script language="javascript">
+<!-- hide
+//var brdId = '<%ejGetJS(boardID)%>';
+var dispName = '';
+if ('<%ejGetJS(numEnet)%>' == '1') {
+   document.writeln("<TR><TD class='hd' width='250'>Test your Ethernet Connection: </TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 1)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+} else {
+   dispName = getUNameByLName('<%ejGetJS(boardID)%>' + '|eth0');
+   document.writeln(" <TR><TD class='hd' width='250'>Test your " + dispName + " Connection: </TD>");
+   document.writeln(" <TD><B><%ejGetOther(diagnostic, 1)%></B>&nbsp;</TD>");
+   document.writeln(" <TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+   dispName = getUNameByLName('<%ejGetJS(boardID)%>' + '|eth1');
+   document.writeln("<TR><TD class='hd' width='250'>Test your " + dispName + " Connection: </TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 18)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpethconn.html'>Help</A></TD> </TR>");
+}
+if ('<%ejGetJS(enblUsb)%>' == '1') {
+   document.writeln("<TR><TD class='hd'>Test your USB Connection: </TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 13)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpusbconn.html'>Help</A></TD> </TR>");
+}
+if ('<%ejGetJS(enblWireless)%>' == '1') {
+   document.writeln("<TR><TD class='hd'>Test your Wireless Connection: </TD>");
+   document.writeln("<TD><B><%ejGetOther(diagnostic, 17)%></B>&nbsp;</TD>");
+   document.writeln("<TD><A href='hlpwlconn.html'>Help</A></TD></TR>");
+}
+// done hiding -->
+</script>
+               </TBODY></TABLE>
+            <P><B>Test the connection to your Internet service provider</B>
+               <TABLE border="1" cellspacing="0" cellpadding="3">
+                  <TBODY>
+                     <TR>
+                        <TD class='hd' width="250">Ping default gateway:
+                        </TD>
+                        <TD width="50"><B><%ejGetOther(diagnostic, 9)%></B>&nbsp;</TD>
+                        <TD><A href="hlppnggw.html">Help</A></TD>
+                     </TR>
+                     <TR>
+                        <TD class='hd'>Ping primary Domain Name System Server:
+                        </TD>
+                        <TD><B><%ejGetOther(diagnostic, 10)%></B>&nbsp;</TD>
+                        <TD><A href="hlppngdns.html">Help</A></TD>
+                     </TR>
+                  </TBODY></TABLE>
+            <CENTER>
+            <br><br>
+<script language="javascript">
+<!-- hide
+var diagPrev = '<%ejGetOther(diagInfo, diagPrev)%>';
+var diagNext = '<%ejGetOther(diagInfo, diagNext)%>';
+var GO_PREV = 0;
+var GO_NEXT = 1;
+
+function btnGo(where) {
+   var loc = 'diag.cgi?diagCurr=';
+    
+   if ( where == GO_PREV )
+      loc += diagPrev;
+   else
+      loc += diagNext;
+      
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+if ( diagPrev != '' )
+   document.writeln("                  <input type='button' onClick='btnGo(GO_PREV)' value='Previous Connection'>");
+if ( diagNext != '' )
+   document.writeln("                  <input type='button' onClick='btnGo(GO_NEXT)' value='Next Connection'>");
+// done hiding -->
+</script>
+            <br>
+                  <input type='button' onClick='location.href="diag.cgi?diagType=f5"' value='Test'>
+                  <input type='button' onClick='location.href="diag.cgi?diagType=f4"' value='Test With OAM F4'>
+            </CENTER>
+         </form>
+      </blockquote>
+   </body>
+</html>

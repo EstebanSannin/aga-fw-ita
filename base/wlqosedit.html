@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<meta http-equiv="Pragma" content="no-cache">
+
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="usr_menus_build.js" type="text/javascript"></script>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<script src="usr_common.js" type="text/javascript"></script>
+
+   <script type="text/javascript" src="util.js"></script>
+   <script type="text/javascript" src="portName.js"></script>
+   <script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnApply() {
+   var loc = 'wlqos.cmd?action=editsubmit';
+
+   with ( document.forms[0] ) {
+      if ( txtclsname.value == '' ) {
+         alert('Please enter the QoS class name.');
+         return;
+      }
+
+      if ( isValidName(txtclsname.value) == false ) {
+         alert("The QoS class name cannot use special characters.");
+         return;
+      }
+
+      if ( srcaddr.value == "" && srcmask.value == "" && srcport.value == "" &&
+           dstaddr.value == "" && dstmask.value == "" && dstport.value == "" &&
+           protocol.selectedIndex < 0 ) {
+         alert("At least one condition must be specified.");
+         return;
+      }
+
+      if ( srcaddr.value != "" && isValidIpAddress(srcaddr.value) == false ) {
+         alert('Source address "' + srcaddr.value + '" is an invalid IP address.');
+         return;
+      }
+
+      if ( srcmask.value != "" && isValidSubnetMask(srcmask.value) == false ) {
+         alert('Source subnet mask "' + srcmask.value + '" is an invalid subnet mask.');
+         return;
+      }
+
+      if ( srcaddr.value == "" && srcmask.value != "" ) {
+         alert('A source subnet mask requires a source IP address.');
+         return;
+      }
+
+      if ( srcport.value != "" && isValidPort(srcport.value) == false ) {
+         alert('Source port "' + srcport.value + '" is an invalid port number or port range.');
+         return;
+      }
+
+      if ( dstaddr.value != "" && isValidIpAddress(dstaddr.value) == false ) {
+         alert('Destination address "' + dstaddr.value + '" is an invalid IP address.');
+         return;
+      }
+
+      if ( dstmask.value != "" && isValidSubnetMask(dstmask.value) == false ) {
+         alert('Destination subnet mask "' + dstmask.value + '" is an invalid subnet mask.');
+         return;
+      }
+
+      if ( dstaddr.value == "" && dstmask.value != "" ) {
+         alert('A destination subnet mask requires a destination IP address.');
+         return;
+      }
+
+      if ( dstport.value != "" && isValidPort(dstport.value) == false ) {
+         alert('Destination port "' + dstport.value + '" is an invalid port number or port range.');
+         return;
+      }
+
+      if ( (srcport.value != "" || dstport.value != "") &&
+           (protocol.selectedIndex > 2) ) {
+         alert('TCP or UDP Protocol must be selected together with port number.');
+	      return;
+      }
+
+      // class name
+      loc += '&clsName=' + encodeUrl(txtclsname.value);
+
+      // priority
+      var idx = priority.selectedIndex;
+      var val = priority.options[idx].value;
+      loc += '&priority=' + val;
+
+      // protocol
+      idx = protocol.selectedIndex;
+      val = protocol.options[idx].value;
+      loc += '&protocol=' + val;
+
+      // source address
+      if ( srcaddr.value != "" )
+         loc += '&srcAddr=' + srcaddr.value;
+
+      // source subnet mask
+      if ( srcmask.value != "" )
+         loc += '&srcMask=' + srcmask.value;
+
+      // source port
+      if ( srcport.value != "" )
+         loc += '&srcPort=' + srcport.value;
+
+      // destination address
+      if ( dstaddr.value != "" )
+         loc += '&dstAddr=' + dstaddr.value;
+
+      // destination subnet mask
+      if ( dstaddr.value != "" )
+         loc += '&dstMask=' + dstmask.value;
+
+      // destination port
+      if ( dstport.value != "" )
+         loc += '&dstPort=' + dstport.value;
+   }
+   eval('location = "' + loc + '"');
+}
+
+// done hiding -->
+   </script>
+</head>
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeaderInfo("Add Wireless QoS Rule");
+</script>
+
+<form>
+	<p>A wireless QoS rule consists of a class name and at least one of the conditions below.
+	All of the specified conditions in this classification rule must be satisfied for the
+	rule to take effect.
+	Press the <b>Save</b> button to save and activate the rule.</p>
+
+	<table border="0">
+		<tr>
+			<td><label for="txtclsname">Traffic class name:</label></td>
+			<td><input type="text" size="22" maxlength="22" name="txtclsname" id="txtclsname"></td>
+		</tr>
+		<tr>
+			<td><label>Transmit priority:</label></td>
+			<td><select name="priority">
+					<option value="0" selected>0 - WMM Best Effort (default)</option>
+					<option value="1">1 - WMM Background</option>
+					<option value="2">2 - WMM Background</option>
+					<option value="3">3 - WMM Best Effort</option>
+					<option value="4">4 - WMM Video Priority</option>
+					<option value="5">5 - WMM Video Priority</option>
+					<option value="6">6 - WMM Voice Priority</option>
+					<option value="7">7 - WMM Voice Priority</option>
+				</select></td>
+		</tr>
+		<tr>
+			<td>Protocol:</td>
+			<td><select size="1" name="protocol">
+					<option value="0">TCP/UDP</option>
+					<option value="1">TCP</option>
+					<option value="2">UDP</option>
+					<option value="3">ICMP</option>
+				</select></td>
+		</tr>
+		<tr>
+			<td><label for="srcaddr">Source IP address:</td>
+			<td><input type="text" size="22" maxlength="22" name="srcaddr" id="srcaddr"></td>
+		</tr>
+		<tr>
+			<td><label for="srcmask">Source subnet mask:</td>
+			<td><input type="text" size="22" maxlength="22" name="srcmask" id="srcmask"></td>
+		</tr>
+		<tr>
+			<td><label for="srcport">UDP/TCP source port:</td>
+			<td><input type="text" size="22" maxlength="22" name="srcport" id="srcport"> <span class="clsNote">(port or port:port)</span></td>
+		</tr>
+		<tr>
+			<td><label for="dstaddr">Destination IP address:</td>
+			<td><input type="text" size="22" maxlength="22" name="dstaddr" id="dstaddr"></td>
+		</tr>
+		<tr>
+			<td><label for="dstmask">Destination subnet mask:</td>
+			<td><input type="text" size="22" maxlength="22" name="dstmask" id="dstmask"></td>
+		</tr>
+		<tr>
+			<td><label for="dstport">UDP/TCP destination port:</td>
+			<td><input type="text" size="22" maxlength="22" name="dstport" id="dstport"> <span class="clsNote">(port or port:port)</span></td>
+		</tr>
+	</table>
+
+	<p><input type='button' onClick='btnApply()' value="Save"></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

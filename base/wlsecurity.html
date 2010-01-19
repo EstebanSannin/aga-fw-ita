@@ -1,0 +1,639 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Security &raquo; Wireless</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var ssidIdx = '<%ejGetWlJS(wlSsidIdx)%>';
+var enblWireless = '<%ejGetWlJS(wlEnbl)%>';
+var radiusServerIP = '<%ejGetWlJS(wlRadiusServerIP)%>';
+var mode = '<%ejGetWlJS(wlAuthMode)%>';
+var bit = '<%ejGetWlJS(wlKeyBit)%>';
+var keyIdx = '<%ejGetWlJS(wlKeyIndex)%>';
+var keys = new Array( "<%ejGetWlJS(wlKey1)%>", "<%ejGetWlJS(wlKey2)%>",
+                      "<%ejGetWlJS(wlKey3)%>", "<%ejGetWlJS(wlKey4)%>" );
+var wpaPskKey = '<%ejGetWlJS(wlWpaPsk)%>';
+var wpaGTKRekey = '<%ejGetWlJS(wlWpaGTKRekey)%>';
+var radiusPort = '<%ejGetWlJS(wlRadiusPort)%>';
+var radiusKey = '<%ejGetWlJS(wlRadiusKey)%>';
+var wep = '<%ejGetWlJS(wlWep)%>';
+var wpa = '<%ejGetWlJS(wlWpa)%>';
+var auth = '<%ejGetWlJS(wlAuth)%>';
+var wlCorerev = '<%ejGetWlJS(wlCoreRev)%>';
+
+var wlRefresh = '<%ejGetWlJS(wlRefresh)%>';
+var varPreauth = '<%ejGetWlJS(wlPreauth)%>';
+var varNetReauth = <%ejGetWlJS(wlNetReauth)%> / 60;
+
+var bWDS = ("<%ejGetWlJS(wlLazyWds)%>" != "1");
+
+if ( wlRefresh == '1' )
+   window.location = "wlsecrefresh.wl?wlRefresh=0";
+
+function getCipherIndex(cipher) {
+   var ret;
+
+   if ( cipher == "tkip" )
+      ret = 0;
+   else if ( cipher == "aes" )
+      ret = 1;
+   else if( cipher == "tkip+aes" )
+      ret = 2;
+   else
+      ret = 0;
+
+   return ret;
+}
+
+function isValidWPAPskKey(val) {
+   var ret = false;
+   var len = val.length;
+   var maxSize = 64;
+   var minSize = 8;
+
+   if ( len >= minSize && len < maxSize )
+      ret = true;
+   else if ( len == maxSize ) {
+      for ( i = 0; i < maxSize; i++ )
+         if ( isHexaDigit(val.charAt(i)) == false )
+            break;
+      if ( i == maxSize )
+         ret = true;
+   } else
+      ret = false;
+
+   return ret;
+}
+
+function setVisibilityWEPkeys(bShow)
+{
+	setVisibility("idKeyType", bShow);
+	setVisibility("idKeyIx", bShow);
+	setVisibility("idKey1", bShow);
+	setVisibility("idKey2", bShow);
+	setVisibility("idKey3", bShow);
+	setVisibility("idKey4", bShow);
+}
+
+function hideAllElements()
+{
+   setVisibility("wlWpaD", false);
+   setVisibility("wpaPreShareKey", false);
+   setVisibility("wpaGTKRekey", false);
+
+   setVisibility("idRADIUSserver", false);
+   setVisibility("idRADIUSport", false);
+   setVisibility("idRADIUSkey", false);
+
+   setVisibility("Preauth", false);
+   setVisibility("NetReauth", false);
+
+	// Don't let 802.1x users disable WEP encryption
+   setVisibility("wlWepD", false);
+
+	setVisibilityWEPkeys(false);
+
+   //setVisibility("keyInfo", false);
+}
+
+function encrypChange()
+{
+   with ( document.forms[0] )
+   {
+      var cwep = wlWep[wlWep.selectedIndex].value;
+      var authMode = wlAuthMode[wlAuthMode.selectedIndex].value;
+
+		var keyValue = wlKeyIndex.value;
+
+      if (cwep == "enabled")
+      {
+         setVisibilityWEPkeys(true);
+         if ((authMode == "open") || (authMode == "shared"))
+         {
+				// enable key fields
+            wlKeys[0].disabled = 0;
+            wlKeys[1].disabled = 0;
+            wlKeys[2].disabled = 0;
+            wlKeys[3].disabled = 0;
+
+            wlKeyIndex.length = 0;
+            wlKeyIndex[0] = new Option("1", "1");
+            wlKeyIndex[1] = new Option("2", "2");
+            wlKeyIndex[2] = new Option("3", "3");
+            wlKeyIndex[3] = new Option("4", "4");
+         }
+         else // authMode == "radius"
+         {
+         	// disable appropriate key fields
+            wlKeys[0].disabled = 1;
+            wlKeys[1].disabled = 0;
+            wlKeys[2].disabled = 0;
+            wlKeys[3].disabled = 1;
+
+            wlKeyIndex.length = 0;
+            wlKeyIndex[0] = new Option("2", "2");
+            wlKeyIndex[1] = new Option("3", "3");
+
+				if ((keyValue == "1") || (keyValue == "4"))
+					keyValue = "2";
+         }
+      }
+      else
+      {
+         setVisibilityWEPkeys(false);
+      }
+
+		wlKeyIndex.value = keyValue;
+   }
+}
+
+
+function authModeChange(bPageLoad)
+{
+	with ( document.forms[0] )
+	{
+		var authMode = wlAuthMode[wlAuthMode.selectedIndex].value;
+		var i, algos;
+
+		//alert('authModeChange:authMode= "' + authMode+ '" (EOM).');
+
+		hideAllElements();
+
+		//show adequate forms for each mode
+		switch ( authMode )
+		{
+			case "none":
+				wlWep[wlWep.selectedIndex].value = "disabled";
+				break;
+
+			case 'open':
+			case 'shared':
+//UNNECESSARY?			wlWep.selectedIndex = 1;
+				setVisibilityWEPkeys(true);
+				break;
+
+			case 'radius':
+				setVisibility("idRADIUSserver", true);
+				setVisibility("idRADIUSport", true);
+				setVisibility("idRADIUSkey", true);
+//never			   setVisibility("wlWepD", true);
+				break;
+
+			case 'wpa2':
+			case 'wpa2mix':
+				setVisibility("Preauth", true);
+				setVisibility("NetReauth", true);
+			case 'wpa':
+				setVisibility("wlWpaD", true);
+
+				setVisibility("idRADIUSserver", true);
+				setVisibility("idRADIUSport", true);
+				setVisibility("idRADIUSkey", true);
+
+				setVisibility("wpaGTKRekey", true);
+				break;
+
+			case 'psk2':
+			case 'psk2mix':
+			case 'psk':
+				setVisibility("wlWpaD", true);
+				setVisibility("wpaGTKRekey", true);
+				setVisibility("wpaPreShareKey", true);
+				break;
+		}
+
+		if (bPageLoad)
+		{
+			wlWpa[0] = new Option("TKIP", "tkip");
+
+			if (wlCorerev >= 3)
+			{
+				wlWpa[1] = new Option("AES", "aes");
+				wlWpa[2] = new Option("TKIP and AES", "tkip+aes");
+			}
+
+			// select current value
+			wlWpa.value = wpa;
+		}
+		//advice default cipher selection, remove if not desired
+		else
+		{
+			if (authMode == "wpa" || authMode == "psk")
+				wlWpa.selectedIndex = 0;
+			else if (authMode == "wpa2" || authMode == "psk2")
+				wlWpa.selectedIndex = 1;
+			else if (authMode == "wpa2mix" || authMode == "psk2mix")
+				wlWpa.selectedIndex = 2;
+
+			wpa = wlWpa[wlWpa.selectedIndex].value;
+		}
+
+		// wep options
+		wlWep.length = 0;
+		if (authMode == "none")
+		{
+			wlWep[0] = new Option("Disabled", "disabled");
+			wlWep[0].selected = true;
+		}
+		// Is anyone really going to use WEP open and NOT set a key?? -skst
+		// open, shared, and radius must have wep on
+		else if (authMode == "shared" || (authMode == "open") || authMode == "radius")
+		{
+			wlWep[0] = new Option("Enabled", "enabled");
+			wlWep[0].selected = true;
+		}
+		else
+		{
+			wlWep[0] = new Option("Disabled", "disabled");
+			wlWep[1] = new Option("Enabled", "enabled");
+
+			// set wep off if switch to wpa modes
+			if ((authMode.indexOf("wpa")!= -1 || authMode.indexOf("psk")!= -1) && (mode == "open" || mode == "shared" || mode == "radius"))
+				wlWep[0].selected = true;
+			else if (wep == "enabled")
+				wlWep[1].selected = true;
+			else
+				wlWep[0].selected = true;
+		}
+	}
+
+	encrypChange();
+}
+
+function frmLoad()
+{
+	// if WDS is on, post notice
+	setVisibility("idWDSon", bWDS);
+
+   with ( document.forms[0] ) {
+      wlAuthMode.selectedIndex = getAuthModeIndex(mode);
+      wlWpaPsk.value = wpaPskKey;
+      wlWpaGtkRekey.value = wpaGTKRekey;
+      wlRadiusIPAddr.value = radiusServerIP;
+      wlRadiusPort.value = radiusPort;
+      wlRadiusKey.value = radiusKey;
+      wlKeyBit.value = bit;
+      wlPreauth.selectedIndex = parseInt(varPreauth);
+      wlNetReauth.value = varNetReauth;
+      for ( i = 0; i < 4; i++ )
+         wlKeys[i].value = keys[i];
+
+	   authModeChange(true);
+		wlKeyIndex.value = keyIdx;
+
+		/*
+			set the key type based on the selected strength and the size of the current key
+		*/
+		if (wlKeys[wlKeyIndex.value - 1].value.length == 0)
+			cbWEPkeytype.value = "type128ASCII";
+		else if (wlKeyBit.value == "0")
+			cbWEPkeytype.value = (wlKeys[wlKeyIndex.value - 1].value.length == "13") ? "type128ASCII" : "type128hex";
+		else
+			cbWEPkeytype.value = (wlKeys[wlKeyIndex.value - 1].value.length == "5") ? "type64ASCII" : "type64hex";
+		setMaxLength(false, cbWEPkeytype.value, wlKeys);
+   }
+}
+
+
+function btnApply(place)
+{
+   document.forms[0].wlKeyBit.value = (document.forms[0].cbWEPkeytype.value.substr(0, 7) == "type128") ? "0" : "1";
+
+   if ( enblWireless == '0' ) {
+      if ( place == 'wlsecurity.wl' )
+         alert('Unable to apply the changes because wireless is currently disabled.');
+      else
+         alert('Unable to set encryption keys because wireless is currently disabled.');
+      return;
+   }
+
+	/*
+		Validate options that conflict with WDS.
+
+		Not allowed:
+			WPA2
+			RADIUS
+			TKIP and AES
+	*/
+	if (bWDS)
+	{
+		if ((document.forms[0].wlAuthMode.value == "psk2mix") ||
+			 (document.forms[0].wlAuthMode.value == "psk2") ||
+			 (document.forms[0].wlAuthMode.value == "wpa2mix") ||
+			 (document.forms[0].wlAuthMode.value == "wpa2") ||
+			 (document.forms[0].wlAuthMode.value == "wpa") ||
+			 (document.forms[0].wlAuthMode.value == "radius") ||
+			 ((document.forms[0].wlAuthMode.value == "psk") &&
+			  (document.forms[0].wlWpa.value == "tkip+aes")))
+		{
+			alert("Bridge restrict (WDS) is enabled, which means that WPA2, RADIUS, and both TKIP and AES are not allowed.");
+			return;
+		}
+	}
+
+	var swep = document.forms[0].wlWep[document.forms[0].wlWep.selectedIndex].value;
+
+   if ( place == 'wlsecurity.wl' ) {
+      with ( document.forms[0] ) {
+         var authMode = wlAuthMode[wlAuthMode.selectedIndex].value;
+         if (authMode != 'radius' && swep == 'enabled')
+         {
+            var idx = wlKeyIndex.selectedIndex;
+            var iNumBits = ((wlKeyBit.value == "0") ? 128 : 64);
+            for (i = 0; i < 4; i++)
+            {
+               if (idx == i)
+               {
+                  if ((wlKeys[i].value == "") || !isValidKey(wlKeys[i], idKeyValue1.maxLength))
+                  {
+                     alert("Key " + (i + 1) + " is invalid. Please enter a valid " + iNumBits + "-bit WEP encryption key.");
+                     return;
+                  }
+               }
+               else if ((wlKeys[i].value != "") && !isValidKey(wlKeys[i], idKeyValue1.maxLength))
+               {
+                  alert("Key " + (i + 1) + " is invalid. Please delete the key or enter a valid " + iNumBits + "-bit WEP encryption key.");
+                  return;
+               }
+            }
+         }
+      }
+   }
+
+   var loc = place + '?';
+
+   with ( document.forms[0] ) {
+      var authMode = wlAuthMode[wlAuthMode.selectedIndex].value;
+      var value;
+
+      loc += 'wlAuthMode=';
+      loc += authMode;
+      if (authMode == 'shared') {
+         loc += '&wlAuth=1';
+      }
+      else {
+         loc += '&wlAuth=0';
+      }
+
+      if (authMode.indexOf("psk")!= -1) {
+         value = wlWpaPsk.value;
+         if ( isValidWPAPskKey(value) == false ) {
+            alert('WPA pass phrase should be between 8 and 63 characters long.');
+            return;
+         }
+         loc += '&wlWpaPsk=' + encodeUrl(wlWpaPsk.value);
+      }
+
+      if (authMode.indexOf("wpa")!= -1 || authMode.indexOf("psk")!= -1){
+         //check GTK interval
+         value = parseInt(wlWpaGtkRekey.value);
+         if (  isNaN(value) == true || value < 0 || value > 999999999 ) {
+            alert('Rotation interval "' + wlWpaGtkRekey.value + '" should be between 0 and 999,999,999.');
+            return;
+         }
+         loc += '&wlWpaGtkRekey=' + wlWpaGtkRekey.value;
+
+         //check Reauth interval
+         value = parseInt(wlNetReauth.value);
+         if (  isNaN(value) || value < 0 || value > 99999 ) {
+            alert('WPA re-authentication interval "' + wlNetReauth.value + '" should be between 0 and 99,999.');
+            return;
+         }
+         loc += '&wlNetReauth=' + wlNetReauth.value * 60;
+      }
+
+      if (authMode.indexOf("wpa")!= -1 || authMode == 'radius') {
+         if ( isValidIpAddress(wlRadiusIPAddr.value) == false ) {
+            alert('The 802.1x (RADIUS) server "' + wlRadiusIPAddr.value + '" is an invalid IP address.');
+            return;
+         }
+         loc += '&wlRadiusServerIP=' + wlRadiusIPAddr.value;
+         loc += '&wlRadiusPort=' + wlRadiusPort.value;
+         loc += '&wlRadiusKey=' + encodeUrl(wlRadiusKey.value);
+      }
+      loc += '&wlWep=' + wlWep[wlWep.selectedIndex].value;
+      loc += '&wlWpa=' + wlWpa[wlWpa.selectedIndex].value;
+
+      loc += '&wlKeyBit=' + wlKeyBit.value;
+
+      loc += '&wlPreauth=' + ((wlPreauth.value == "on") ? "1" : "0");
+
+      if (getSelect(wlWep) == "enabled") {
+		 var i, val;
+         var num = parseInt(getSelect(wlKeyIndex))-1;
+         val = wlKeys[num].value;
+         if ( val == '' && !(swep == 'enabled' && authMode == 'radius'))
+         {
+            alert("The selected WEP encryption key is blank. Please enter a value for the selected key or select a key that has a value.");
+            return;
+         }
+
+         var iNumChars = idKeyValue1.maxLength;
+         for (i = 0; i < 4; i++ )
+         {
+            var msg = "";
+            if ( i != wlKeys.selectedIndex )
+               msg = "delete the key or ";
+            if ( wlKeys[i].value != "" && !isValidKey(wlKeys[i], iNumChars) )
+            {
+            	alert("Key " + (i + 1) + " is invalid. Please " + msg + "enter a valid " + iNumChars + "-bit WEP encryption key. ");
+               return;
+            }
+        }
+
+        loc += submitSelect(wlKeyIndex);
+        loc += '&wlKey1=' + encodeUrl(wlKeys[0].value);
+        loc += '&wlKey2=' + encodeUrl(wlKeys[1].value);
+        loc += '&wlKey3=' + encodeUrl(wlKeys[2].value);
+        loc += '&wlKey4=' + encodeUrl(wlKeys[3].value);
+     }
+
+     // the last one to submit - if changing ssid above variables belong to previous ssid
+     loc += '&wlSsidIdx=' + ssidIdx;
+     window.location = loc;
+   }
+
+}
+
+
+function getAuthModeIndex(mode)
+{
+   var ret = 0;
+   switch(mode)
+   {
+		case 'psk2mix':	ret = 0;	break;
+		case 'psk2':		ret = 1;	break;
+		case 'psk':			ret = 2;	break;
+
+		case 'wpa2mix':	ret = 3;	break;
+		case 'wpa2':		ret = 4;	break;
+		case 'wpa':			ret = 5;	break;
+
+		case 'radius':		ret = 6;	break;
+
+		case 'open':		ret = 7;	break;
+		case 'shared':		ret = 8;	break;
+		default:				ret = 9;	break;	// none
+   }
+   return ret;
+}
+
+// done hiding -->
+   </script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Security", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Wireless</h3>
+
+<p>This page allows you to configure security features for wireless clients.
+You can specify the authentication and encryption used for wireless communcation.</p>
+
+<p id="idWDSon" class="clsNote">Note: When <b>Bridge restrict</b> is enabled, <b>WPA2</b>,
+<b>RADIUS</b>, and both <b>TKIP and AES</b> are not permitted. You can disable <b>Bridge restrict</b>
+on the <a href="wlwds.cmd?action=view">Wireless AP Mode</a> page.</p>
+
+<form>
+<table border="0">
+	<tr>
+		<td><label>Network name:</label></td>
+		<td class="clsStatic"><%ejGetWlHTML(wlSsid)%></td>
+	</tr>
+	<tr>
+		<td><label>Network authentication:</label></td>
+		<td><select name='wlAuthMode' id='wlAuthMode' onChange='authModeChange(false)'>
+				<option value="psk2mix">WPA2 and WPA (PSK) (recommended)</option>
+				<option value="psk2">WPA2 (PSK)</option>
+				<option value="psk">WPA (PSK)</option>
+				<option value="wpa2mix">WPA2 and WPA with 802.1x (RADIUS)</option>
+				<option value="wpa2">WPA2 with 802.1x (RADIUS)</option>
+				<option value="wpa">WPA with 802.1x (RADIUS)</option>
+				<option value="radius">802.1x (RADIUS)</option>
+				<option value="open">WEP open</option>
+				<option value="shared">WEP shared</option>
+				<option value="none">None</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr id="wlWpaD">
+		<td>WPA encryption:</td>
+		<td><select name="wlWpa" id="wlWpa" onChange='encrypChange()'></select></td>
+	</tr>
+
+	<tr id="wpaPreShareKey">
+		<td><label for="wlWpaPsk">WPA pre-shared key:</label></td>
+		<td><input type='text' name='wlWpaPsk' id='wlWpaPsk' size='20' maxlength='64'></td>
+	</tr>
+
+	<tr id="Preauth">
+	 	<td><label>WPA2 pre-authentication:</label></td>
+	 	<td><select name='wlPreauth' id='wlPreauth'>
+	          <option value="off">Disabled</option>
+	          <option value="on">Enabled</option>
+	 		</select>
+      </td>
+	</tr>
+
+	<tr id="NetReauth">
+   	<td><label for="wlNetReauth">Network re-authentication:</label></td>
+   	<td><input type='text' name='wlNetReauth' size='20' maxlength='5'> <label>minutes (0-99,999)</label></td>
+   </tr>
+
+	<tr id="wpaGTKRekey">
+		<td><label for="wlWpaGtkRekey">Rotation interval:</label></td>
+		<td><input type='text' name='wlWpaGtkRekey' id='wlWpaGtkRekey' size='20' maxlength='10'> seconds<br/>
+		<span class="clsNote">(To disable key rotation, set this value to zero.)</span></td>
+	</tr>
+
+	<tr id="idRADIUSserver">
+		<td><label for="wlRadiusIPAddr">RADIUS server:</label></td>
+		<td><input type='text' name='wlRadiusIPAddr' id='wlRadiusIPAddr' size='20' maxlength='15'></td>
+	</tr>
+	<tr id="idRADIUSport">
+		<td><label for="wlRadiusPort">RADIUS port:</label></td>
+		<td><input type='text' name='wlRadiusPort' id='wlRadiusPort' size='20' maxlength='5'></td>
+	</tr>
+	<tr id="idRADIUSkey">
+		<td><label for="wlRadiusKey">RADIUS key:</label></td>
+		<td><input type='text' name='wlRadiusKey' id='wlRadiusKey' size='20' maxlength='80'></td>
+	</tr>
+
+	<!-- This is always hidden so 802.1x users can't disable WEP encryption -->
+	<tr id="wlWepD">
+		<td><label>WEP encryption:</label></td>
+		<td><select name="wlWep" id="wlWep" onChange='encrypChange()'>
+		    <option value=disabled>Disabled</option>
+		    <option value=enabled>Enabled</option>
+		    </select></td>
+	</tr>
+
+	<tr id="idKeyType">
+		<td><label>Key type:</label></td>
+		<td>
+			<input type="hidden" name="wlKeyBit" id="wlKeyBit"> <!-- actual field (0=128, 1=64) -->
+			<!-- No name property so the value's not posted -->
+			<select id="cbWEPkeytype" onchange="setMaxLength(true, this.value, wlKeys);">
+				<option value="type128ASCII" selected>128-bit ASCII</option>
+				<option value="type128hex">128-bit hex</option>
+				<option value="type64ASCII">64-bit ASCII</option>
+				<option value="type64hex">64-bit hex</option>
+			</select>
+		</td>
+	</tr>
+	<tr id="idKeyIx">
+		<td><label>Current key:</label></td>
+		<td><select name='wlKeyIndex'>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</select></td>
+	</tr>
+	<tr id="idKey1">
+		<td><label for="idKeyValue1">Key 1:</td>
+		<td><input type='text' name='wlKeys' id="idKeyValue1" size='30' maxlength=26></td>
+	</tr>
+	<tr id="idKey2">
+		<td><label for="idKeyValue2">Key 2:</td>
+		<td><input type='text' name='wlKeys' id="idKeyValue2" size='30' maxlength=26></td>
+	 </tr>
+	<tr id="idKey3">
+		<td><label for="idKeyValue3">Key 3:</td>
+		<td><input type='text' name='wlKeys' id="idKeyValue3" size='30' maxlength=26></td>
+	</tr>
+	<tr id="idKey4">
+		<td><label for="idKeyValue4">Key 4:</td>
+		<td><input type='text' name='wlKeys' id="idKeyValue4" size='30' maxlength=26><br/>
+			<span class="clsNote">(A key must be <span id="idKeyNumChars"></span>&nbsp;characters long.)</span></td>
+	</tr>
+</table>
+
+	<p>Press <b>Apply</b> to save your settings.</p>
+	<p><input type='button' onClick='btnApply("wlsecurity.wl")' value='Apply'></p>
+</form>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

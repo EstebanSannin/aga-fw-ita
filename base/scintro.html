@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+</head>
+
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+	writeHeader("DSL Security", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<p>Choose <b>Forwarding</b> to allow access to the computers on your Local
+Area Network (LAN) from the Wide Area Network (WAN).</p>
+
+<p>Choose <b>Filters</b> to prevent computers on your LAN from accessing the WAN.</p>
+
+<p>Choose <b>Access</b> to set up passwords and restrict access to your router for
+configuration.</p>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

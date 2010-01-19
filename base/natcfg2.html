@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+var service = '<%ejGetJS(serviceName)%>';
+var vpi = '<%ejGetJS(atmVpi)%>';
+var vci = '<%ejGetJS(atmVci)%>';
+var qs = '<%ejGetJS(quickSetup)%>';
+var bReaim = '<%ejGetJS(enblReaim)%>';
+
+function frmLoad() {
+   var nat = '<%ejGetJS(enblNat)%>';
+   var firewall = '<%ejGetJS(enblFirewall)%>';
+   var enableService = '<%ejGetJS(enblService)%>';
+   var enableIgmp = '<%ejGetJS(enblIgmp)%>';
+
+   if ( service == '' ) {
+      switch ( prtcl ) {
+         case 'PPPoE':
+            service = 'pppoe_' + vpi + '_' + vci;
+            break;
+         case 'PPPoA':
+            service = 'pppoa_' + vpi + '_' + vci;
+            break;
+         case 'MER':
+            service = 'mer_' + vpi + '_' + vci;
+            break;
+         case 'IPoA':
+            service = 'ipoa_' + vpi + '_' + vci;
+            break;
+         case 'Bridge':
+            service = 'br_' + vpi + '_' + vci;
+            break;
+         case 'IPoW':
+            service = 'eth_' + vpi;
+            break;
+      }
+   }
+
+   with ( document.forms[0] ) {
+      if ( nat == '1' )
+         enblNat.checked = true;
+      else
+         enblNat.checked = false;
+      if ( firewall == '1' ) {
+         enblFirewall.checked = true;
+         enblReaim.disabled = false;
+         if ( bReaim == '1' )
+            enblReaim.checked = true;
+         else
+            enblReaim.checked = false;
+      } else {
+         enblFirewall.checked = false;
+         enblReaim.disabled = true;
+	 enblReaim.checked = false;
+      }
+      if ( enableService == '1' )
+         enblService.checked = true;
+      else
+         enblService.checked = false;
+      if ( enableIgmp == '1' )
+         enblIgmp.checked = true;
+      else
+         enblIgmp.checked = false;
+      serviceName.value = service;
+   }
+}
+
+function btnNext() {
+   var loc = 'ntwksum2.cgi?';
+
+   if ( qs == 1 )
+      loc = 'lancfg.cgi?';
+
+   with ( document.forms[0] ) {
+      if (serviceName.value == '' ) {
+         alert('Please enter service name.');
+         return;
+      }
+      len = serviceName.value.length;
+      if ( len > 32 ) {
+         alert('The length of service name (' + len + ') is too long [0-32].');
+         return;
+      }
+      if ( enblNat.checked == true )
+         loc += 'enblNat=1';
+      else
+         loc += 'enblNat=0';
+      if ( enblFirewall.checked == true )
+         loc += '&enblFirewall=1';
+      else
+         loc += '&enblFirewall=0';
+      if ( enblReaim.checked == true )
+         loc += '&enblReaim=1';
+      else
+         loc += '&enblReaim=0';
+      if ( enblService.checked == true )
+         loc += '&enblService=1';
+      else
+         loc += '&enblService=0';
+      if ( enblIgmp.checked == true )
+         loc += '&enblIgmp=1';
+      else
+         loc += '&enblIgmp=0';
+
+      loc += '&serviceName=' + encodeUrl(serviceName.value);
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnBack() {
+   var loc;
+
+   if ( prtcl == 'IPoA' )
+      loc = 'ipoacfg.html';
+   else
+      loc = 'wancfg.html';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function cbClick(cb) {
+   with ( document.forms[0] ) {
+      if ( cb.checked == true ) {
+         enblReaim.disabled = false;
+         if ( bReaim == '1' )
+            enblReaim.checked = true;
+         else
+            enblReaim.checked = false;
+      } else {
+         enblReaim.disabled = true;
+         enblReaim.checked = false;
+      } 
+   }
+}
+
+// done hiding -->
+</script>
+    </head>
+    <body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Network Address Translation Settings", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+<p>Network Address Translation (NAT) allows you to share one Wide Area Network
+(WAN) IP address for multiple computers on your Local Area Network (LAN).</p>
+
+<p>Clear <b>NAT</b> to enable DHCP relay.
+Clear <b>Allow "Reaim" Proxy</b> to disable "Reaim" proxy support for AOL and MSN Instant Messenger.)</p>
+
+<p><input type='checkbox' name='enblNat' id='enblNat'> <label for="enblNat">NAT</label></p>
+
+<p><input type='checkbox' name='enblFirewall' id='enblFirewall' onClick='cbClick(this)' value='ON'> <label for="enblFirewall">Firewall</label></p>
+
+<p><input type='checkbox' name='enblReaim' id='enblReaim'> <label for="enblReaim">Allow "Reaim" proxy</label></p>
+
+
+<h3>IGMP Multicast and WAN Service</h3>
+
+<p><input type='checkbox' name='enblIgmp' id='enblIgmp' checked> <label for="enblIgmp">IGMP Multicast</label></p>
+
+<p><input type='checkbox' name='enblService' id='enblService' checked> <label for="enblService">WAN service</label></p>
+
+<p><label for="serviceName">Service name:</label> <input type="text" name="serviceName" id="serviceName"></p>
+
+<p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

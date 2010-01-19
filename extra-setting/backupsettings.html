@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; Back Up Extra Settings</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+
+	<meta http-equiv="Pragma" content="no-cache">
+
+
+	<script type="text/javascript">
+<!-- hide
+
+function backupClick() {
+   var loc = 'do.cgi?page=backupsettings&action=backup';
+   
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+// done hiding -->
+</script>
+</head>
+<body onload="initMenu();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>Back Up Extra Settings</h3>
+
+
+<p>
+You can save the router&rsquo;s configuration settings to a file on your computer
+<br>
+Save the file <b>do.cgi</b> and rename it as .conf
+</p>
+<p><input type='button' value="Back Up" onClick="backupClick()"></p>
+
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

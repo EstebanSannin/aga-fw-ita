@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+</head>
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+	writeHeader("Assigned IP Address Test", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+  <form>
+    <table border="1" cellpadding="4">
+      <tr> 
+        <td> 
+          <div align="center"><b>Pass:</b></div>
+        </td>
+        <td>Indicates that the router has received a valid IP (Internet 
+          Protocol) address from the PPP server. </td>
+      </tr>
+      <tr> 
+        <td> 
+          <div align="center"><b>Fail:</b></div>
+        </td>
+        <td>Indicates that the router does not have a valid IP 
+          address from the PPP server. </td>
+      </tr>
+    </table>
+    <P>If the test fails, follow the troubleshooting procedures listed below and 
+      rerun the diagnostics tests by clicking on the <b>Rerun Diagnostic Tests</b> 
+      button at the bottom of this page. If all the tests pass, close and restart 
+      your Web browser to access the Internet.</P>
+    <P><B>Troubleshooting:</B></P>
+    <P>NOTE: If <i>Test authentication to ISP</i> fails, this test result displays 
+      N/A. 
+    <ol>
+      <li> 
+        <p>After turning on your router, wait for at least one minute to establish 
+          a connection. Run the diagnostic tests again by clicking on the <b>Rerun 
+          Diagnostic Tests</b> button at the bottom of this page. </p>
+      </li>
+      <li> 
+        <p>Turn off the power to the router, wait 10 seconds, and turn it back 
+          on. Wait at least one minute for the router to completely restart and 
+          to establish a connection. If the PPP light on the router turns solid 
+          green, close your Web browser and restart it. </p>
+      </li>
+      <li> 
+        <p>With the router on, press the external reset button on the router 
+          for at least five seconds and release it. This resets the router 
+          to its default settings. Wait for the router to completely restart, 
+          then close and restart your Web browser. To reconfigure the router, type 
+          your DSL account user name and password.</p>
+      </li>
+    </ol>
+    <p>
+      <input type='button' onClick='location.href="diag.html"'
+                  value='Rerun Diagnostic Tests' name="button" id="button">
+    </p>
+    <p>Contact your ISP&rsquo;s Technical Support if you have tried all of the above and still 
+      are experiencing a fail condition.<BR>
+    </p>
+  </form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>
+

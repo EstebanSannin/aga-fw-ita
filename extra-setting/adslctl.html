@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; adslctl Configuration</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+<script type='text/javascript'>
+<!-- hide
+
+<%roGetadslctlConf()%>
+
+function frmLoad() {
+    with ( document.forms[0] ) {
+	Enableadslctl.checked = ena;
+	Snr.value = snr;
+	Trellis.checked = trellis;
+    }
+}
+
+function btnApply() {
+   var loc = 'do.cgi?page=adslctl&action=modify';
+   var num = -1;
+   var enbl = '1';
+   
+   with ( document.forms[0] ) {
+      if ( Enableadslctl.checked == true ) {
+         if (isNaN(Snr.value) || Snr.value == "") {
+            alert('SNR value is invalid.');
+            return;
+         }
+         num = parseInt(Snr.value);
+         if ( num < 0 || num > 65535 ) {
+            alert('SNR value is invalid.');
+            return;
+         }
+      }
+              
+      loc += '&state=' + Enableadslctl.checked + '&snr=' + num + '&trellis=' + Trellis.checked;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>adslctl Configuration</h3>
+
+<form onSubmit='return false'>
+	<table>
+	<tr><td><label>Enable adslctl configuration:</label></td>
+	<td><input type='checkbox' name='Enableadslctl' id='Enableadslctl' value='0'></td></tr>
+	<tr><td><label>SNR:</label></td>
+	<td><input type='text' name='Snr' maxlength='5' id='Snr'></td></tr>
+	<tr><td><label>Trellis:</label></td>
+	<td><input type='checkbox' name='Trellis' id='Trellis' value='0'></td></tr>
+	</table>
+	<p><input type='button' onClick='btnApply()' value='Save'></p>
+</form>
+
+<br>
+
+<b>SNR</b>
+<p>
+SNR value determines the percentage of some hard-coded value that
+the router aims for on ADSL synchronisation.
+So if you want a higher sync speed (and a lower stability) use a value less
+than 100, if you want a lower sync speed (and a higher stability) use a value
+higher than 100.
+</p>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

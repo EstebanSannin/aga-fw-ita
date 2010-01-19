@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var ifCount = 0;
+
+function btnApply() {
+    var loc = 'scmacflt.cmd?action=add';
+    var okChk = 0;
+    
+    with ( document.forms[0] ) {
+       loc += '&protocol=' + protocol.value;
+       if (destMac.value != '') {
+          if (isValidMacAddress(destMac.value) == false ) {
+             alert('MAC address "' + destMac.value + '" is invalid. Eg. 11:22:33:AA:BB:CC');
+             return;
+          }
+          loc += '&destMac=' + destMac.value;
+       }
+       if (srcMac.value != '') {
+          if (isValidMacAddress(srcMac.value) == false ) {
+             alert('MAC address "' + srcMac.value + '" is invalid. Eg. 11:22:33:AA:BB:CC');
+             return;
+          }
+          loc += '&srcMac=' + srcMac.value;
+       }
+       if (protocol.value == 0 && destMac.value == '' && srcMac.value == '') {
+          alert('At least one condition must be specified.');
+         return;
+       }
+       if (ifCount == 1) {
+          if (ifChk.checked)
+             okChk = 1;
+       }
+       else {
+          for (i = 0; i < ifCount; i++) 
+             if (ifChk[i].checked)
+                okChk++;
+       }
+       if (!okChk) {
+          alert('At least one configured Bridge interface must be selected.');
+         return;
+      }    
+      loc += '&wanIf=';
+      if (chkAll.checked)
+         loc += 'ALL';
+      else {
+         var first = true;
+	 if (ifCount == 1)
+	    loc += ifChk.value
+	 else {
+           for (i = 0; i < ifCount; i++)
+            if (ifChk[i].checked) {
+               if (!first)
+                  loc += '|';
+               loc += ifChk[i].value;
+               first = false;
+            }
+	 }   
+      }
+      loc += '&direction=' + direction.value;
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function toggle(cb) {
+   var chkCount = 0;
+   with ( document.forms[0] ) {
+      if (ifCount == 1)
+         chkAll.checked = cb.checked;
+      else {      
+         for (i = 0; i < ifCount; i++)
+            if (ifChk[i].checked)
+               chkCount++;
+         if (chkCount == ifCount)
+            chkAll.checked = true;
+         else
+            chkAll.checked = false;
+      }
+   }
+}
+
+function toggleIfs(cb) {
+   var chkStatus = false;
+   with ( document.forms[0] ) {
+      if (chkAll.checked)
+         chkStatus = true;
+      if (ifCount == 1)
+         ifChk.checked = chkStatus;
+      else
+         for (i = 0; i < ifCount; i++)
+            ifChk[i].checked = chkStatus;
+   }
+}
+
+function addIf(pr, ifName, sn)
+{
+   if (pr == 'Bridge' && pr != '&nbsp;') {
+      document.writeln("<tr> <input type='checkbox' name='ifChk' id='ifChk' checked value=" + 
+                        ifName + '>' + '&nbsp;&nbsp;' + sn + '/' + ifName+ "</tr>");
+      ifCount++;
+   }
+}
+
+
+// done hiding -->
+</script>
+    </head>
+    <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Add MAC Filtering Rule Entry", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<p>Select protocol and/or destination MAC addresses and/or source MAC address. 
+	Press <b>Apply</b> to save.</P>
+
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		 <td></td>
+		 <td><b>MAC Filtering Rule</b></td>
+		</tr>
+		<tr>
+		 <td><label for="">Protocol type:</label></td>
+		 <td><select name='protocol' id='protocol'>
+		       <option value="0" selected></option>
+		       <option value="1">PPPoE</option>
+		       <option value="2">IPv4</option>
+		       <option value="3">IPv6</option>
+		       <option value="4">AppleTalk</option>
+		       <option value="5">IPX</option>
+		       <option value="6">NetBEUI</option>
+		       <option value="7">IGMP</option>
+		   </select></td>
+		</tr>
+		<tr>
+		<td><label for="destMac">Destination MAC address:</label></td>
+		<td><input type='text' name="destMac" id="destMac"></td>
+		</tr>
+		<tr>
+		<td><label for="srcMac">Source MAC address:</label></td>
+		<td><input type='text' name="srcMac" id="srcMac"></td>
+		</tr>
+		<tr>
+		<td></td>
+		</tr>
+		<tr>
+		<td><label for="">Frame direction:</label></td>
+		<td><select name='direction' id='direction'>
+		      <option value="2" selected>LAN &lt;=&gt; WAN</option>
+		      <option value="1">LAN &lt;= WAN</option>
+		      <option value="0">LAN =&gt; WAN</option>
+		    </select></td>
+		</tr>
+ </table>
+
+ <table>
+    <tr>
+       <td><b>WAN Interfaces:</b> (Bridges only)</td>
+    </tr>
+    <tr>
+       <td>
+       	<input type='checkbox' name='chkAll' id='chkAll' checked onclick='toggleIfs(this)'> <label for="chkAll">Select all</label>
+       </td>
+    </tr>
+    <tr>
+       <script type="text/javascript">
+<!-- hide 
+{
+   var ifName = '<%ejGetOther(wanInfo, deviceName, 1)%>';
+   var pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 1)%>';
+   var sn = '<%ejGetOther(wanInfo, serviceName, 1)%>';
+
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 2)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 2)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 2)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 3)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 3)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 3)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 4)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 4)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 4)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 5)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 5)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 5)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 6)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 6)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 6)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 7)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 7)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 7)%>';
+   addIf(pr, ifName, sn);
+   ifName = '<%ejGetOther(wanInfo, deviceName, 8)%>';
+   pr =  '<%ejGetOther(wanInfo, ntwkPrtcl, 8)%>';
+   sn = '<%ejGetOther(wanInfo, serviceName, 8)%>';
+   addIf(pr, ifName, sn);
+}
+// done hiding -->
+</script>
+    </tr>
+ </table>
+
+ <p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

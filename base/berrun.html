@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>ADSL BER Test</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+<meta http-equiv="refresh" content="2">
+
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function frmLoad() {
+   var state = '<%ejGetTest(berState)%>';
+   if ( state == '0' ) {
+      var loc = 'berstop.tst';
+
+      var code = 'location = "' + loc + '"';
+      eval(code);
+   }
+}
+
+function btnStop() {
+   var loc = 'berstop.tst?berState=0';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+   window.close();
+}
+
+function btnClose() {
+   var loc = 'berstop.tst?berState=0';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+   window.close();
+}
+
+// done hiding -->
+</script>
+<base target="_self">
+</head>
+
+<body onload="frmLoad();">
+
+<script type="text/javascript">
+	writeHeaderInfo("ADSL BER Test");
+</script>
+
+<h3>Running</h3>
+
+<p>The ADSL BER test is in progress. The connection speed is <%ejGetOther(lineRate,1)%> Kbps.
+The test will run for <%ejGetTest(berTime)%> seconds.</p>
+<p>Click  <b>Stop</b> to terminate the test.</p>
+
+<form>
+<p><input type='button' onClick='btnStop()' value='Stop'><!--<input type='button' onClick='btnClose()' value='Close'>--></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Wireless &raquo; Setup</title>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+   <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+   <script type="text/javascript" src="util.js"></script>
+   <script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var ssid = '<%ejGetWlJS(wlSsid)%>';
+var enbl = '<%ejGetWlJS(wlEnbl)%>';
+var show = (<%ejGetWlJS(wlHide)%> == 0) ? 1 : 0;	// toggle meaning
+var wlRefresh = '<%ejGetWlJS(wlRefresh)%>';
+var band= '<%ejGetWlJS(wlBand)%>';
+
+if ( wlRefresh == '1' ) {
+   var code = 'location = "wlcfgrefresh.wl?wlRefresh=0"';
+   eval(code);   
+}
+
+function hideWlSecInfo(hidden) {
+   var status = 'visible';
+
+   with ( document.forms[0] ) {
+      var i = 0;
+      if ( hidden == 1 ) {
+         status = 'hidden';
+         wlHide.disabled = 1;
+         wlSsid.disabled = 1;
+      } else {
+         wlHide.disabled = 0;
+         wlSsid.disabled = 0;
+      }
+   }
+
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('wlSecInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.wlSecInfo.style.visibility = status;
+   }
+}
+
+function wlSecCbClick(cb) {
+   if ( cb.checked == true )
+      hideWlSecInfo(0);
+   else
+      hideWlSecInfo(1);
+}
+
+function frmLoad()
+{
+   with ( document.forms[0] ) {
+      setCheck(wlEnbl, enbl);
+      if ( enbl == '1' ) {
+         hideWlSecInfo(0);
+      } else {
+         hideWlSecInfo(1);
+      }
+      setCheck(wlHide, show);
+      wlSsid.value = ssid;
+   }
+}
+
+function btnApply() {
+   var loc = 'wlcfg.wl?';
+
+   with ( document.forms[0] ) {
+      if (!wlEnbl.checked)
+      {
+         loc += 'wlEnbl=0';
+         loc += '&wlHide=' + ((show == 0) ? 1 : 0);	// toggle meaning
+         loc += '&wlSsid=' + ssid;
+      } else {
+         if ( wlSsid.value == '' ) {
+            alert('Please enter a name for the first network.');
+            return;
+         }
+
+         loc += 'wlEnbl=1';
+         if ( wlHide.checked )
+            loc += '&wlHide=0';
+         else
+            loc += '&wlHide=1';
+
+         loc += '&wlSsid=' + encodeUrl(wlSsid.value);
+      }
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+   </script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Wireless", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Setup</h3>
+
+<p>This page allows you to configure basic features of the wireless network.
+You can set the network name (also known as SSID) and
+hide the name of your network from wireless clients.
+You can also specify wireless security settings on the
+Security menu's <a href="wlsecurity.html">Wireless</a> page.
+</p>
+
+<form onSubmit='return false'>
+	<p><input type='checkbox' name='wlEnbl' id='wlEnbl' onClick='wlSecCbClick(this)' value="ON"> <label for="wlEnbl">Allow wireless connections</label></p>
+
+   <div id='wlSecInfo'>
+		<p><input type='checkbox' name='wlHide' id='wlHide' value="ON"> <label for="wlHide">Broadcast network name</label></p>
+
+		<table border="0">
+			<tr>
+				<td><label for="wlSsid">Network name:</label></td>
+				<td><input type='text' name='wlSsid' id='wlSsid' maxlength="32" size="20"></td>
+			</tr>
+		</table>
+   </div>
+
+	<p>Press <b>Apply</b> to configure the basic wireless options.</p>
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

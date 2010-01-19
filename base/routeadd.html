@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnClear() {
+   with ( document.forms[0] ) {
+      dstAddr.value = '';
+      dstMask.value = '';
+      dstGtwy.value = '';
+   }
+}
+
+function btnApply() {
+   var loc = 'rtroutecfg.cmd?action=add';
+   with ( document.forms[0] ) {
+      if ( isValidIpAddress(dstAddr.value) == false ) {
+         alert('Destination "' + dstAddr.value + '" has invalid IP address.');
+         return;
+      }
+      if ( isValidIpAddress(dstMask.value) == false &&  dstMask.value != '255.255.255.255') {
+         alert('Subnet mask "' + dstMask.value + '" has invalid IP address.');
+         return;
+      }
+      loc += '&dstAddr=' + dstAddr.value;
+      loc += '&dstMask=' + dstMask.value;
+      if (gwStr.checked == false && ifStr.checked == false) {
+         alert('Need to select <b>Use gateway IP Address</b> and/or <b>Use Interface</b>.');
+         return;
+      }
+      if (gwStr.checked == true) {         
+         if ( isValidIpAddress(dstGtwy.value) == false ) {
+            alert('Default gateway "' + dstGtwy.value + '" has invalid IP address.');
+            return;
+         }
+         loc += '&dstGtwy=' + dstGtwy.value;
+      } else
+         loc += '&dstGtwy=' + '0.0.0.0';
+      if (ifStr.checked == true) {
+         var idx = dstWanIf.selectedIndex;
+         var ifc = dstWanIf.options[idx].value;
+         // if chosen interface is MER but does not specify static IP address then display error
+         if ( ifc.indexOf('nas_') != -1 && gwStr.checked == false ) {
+            alert('Gateway IP address should be specified since MER interface is selected.');
+            return;
+         }
+         loc += '&dstWanIf=' + ifc;
+      }
+      else
+         loc += '&dstWanIf=' + '';
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Routing", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<h3>Add Static Route</h3>
+
+	<p>Enter the destination network address, subnet mask, gateway, or available
+	WAN interface then press <b>Apply</b> to add the entry to the routing table.</p>
+
+	<table border="0" cellpadding="1" cellspacing="0">
+	   <tr>
+	      <td><label for="dstAddr">Destination network address:</label></td>
+	      <td><input type='text' name='dstAddr' id='dstAddr'></td>
+	   </tr>
+	   <tr>
+	      <td><label for="dstMask">Subnet mask:</label></td>
+	      <td><input type='text' name='dstMask' id='dstMask'></td>
+	   </tr>
+	</table>
+	<br>
+	<table>
+	   <tr>
+	      <td><input type="checkbox" name='gwStr' id='gwStr'> <label for="gwStr">Use gateway IP address:</label></td>
+	      <td><input type='text' name='dstGtwy' id='dstGtwy'></td>
+	   </tr>
+	   <tr>
+	      <td><input type="checkbox" name='ifStr' id='ifStr' checked> <label for="ifStr">Use interface:</label></td>
+	      <td><select name='dstWanIf' id='dstWanIf'>
+	            <script type="text/javascript">
+<!-- hide
+{
+   var i = 0;
+   var interfaceInfo = '<%ejGetOther(wanInterfaceInfo, route)%>';
+   var interfaces = interfaceInfo.split('|');
+
+   for ( i = 0; i < interfaces.length; i++ ) {
+      var names = interfaces[i].split('/');
+      document.write("  <option value='" + names[1] + "'>");
+      document.writeln(interfaces[i]);
+   } 
+   document.writeln("  <option value='br0'> LAN/br0");
+}
+// done hiding -->
+</script>
+                     </select></td>
+               </tr>
+            </table>
+
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

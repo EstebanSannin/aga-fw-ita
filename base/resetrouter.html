@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+   <head>
+	<title>Device &raquo; Restart Router</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+   <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+   <script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnReset() {
+   var code = 'location = "rebootinfo.cgi"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Device", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Restart Router</h3>
+
+<p>Press the button below to restart the router. Your custom settings will not be lost.</p>
+
+<p><input type='button' onClick='btnReset()' value='Restart'></p>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

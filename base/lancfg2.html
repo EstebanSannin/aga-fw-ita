@@ -1,0 +1,501 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>LAN &raquo; DHCP Server</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var state = '<%ejGetJS(lanRefresh)%>';
+if ( state == '1' ) {
+   var code = 'location = "lancfg2.cgi?lanRefresh=0"';
+   eval(code);
+}
+
+var dhcpStart = '<%ejGetJS(dhcpEthStart)%>';
+var dhcpEnd = '<%ejGetJS(dhcpEthEnd)%>';
+var dhcpLease = '<%ejGetJS(dhcpLeasedTime)%>';
+var proto = '<%ejGetOther(sysInfo, noBrPrtcl)%>';
+var ipExt = '<%ejGetOther(sysInfo, pppIpExtension)%>';
+var dhcpEnbl = '<%ejGetJS(enblDhcpSrv)%>';
+var natEnbl = '<%ejGetOther(sysInfo, enblNat)%>';
+var enblUpnp = '<%ejGetJS(enblUpnp)%>';
+var enblIgmpSnp = '<%ejGetJS(enblIgmpSnp)%>';
+var buildUpnp = '<%ejGetOther(sysInfo, buildUpnp)%>';
+var enblStp = '<%ejGetJS(enblStp)%>';
+
+function hideStpInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('idStp').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.idStp.style.visibility = status;
+   }
+}
+
+function hideUpnpInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('upnpInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.upnpInfo.style.visibility = status;
+   }
+}
+
+function hideIgmpSnpInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('IGMPSnooping').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.iIGMPSnooping.style.visibility = status;
+   }
+}
+
+function hideDhcpInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('dhcpInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.dhcpInfo.style.visibility = status;
+   }
+}
+
+function disableDhcpSrv() {
+   with ( document.forms[0] ) {
+      dhcpSrvType[1].checked = false;
+      dhcpEthStart.disabled = 1;
+      dhcpEthEnd.disabled = 1;
+      dhcpLeasedTime.value = '';
+      dhcpLeasedTime.disabled = 1;
+   }
+}
+
+function enableDhcpSrv(formLoad) {
+   with ( document.forms[0] ) {
+      dhcpSrvType[1].checked = true;
+      dhcpEthStart.disabled = 0;
+      dhcpEthEnd.disabled = 0;
+      if (formLoad == 0)
+         setDhcpAddresses(ethIpAddress.value);
+      else {
+         dhcpEthStart.value = dhcpStart;
+         dhcpEthEnd.value = dhcpEnd;
+      }
+      dhcpLeasedTime.value = dhcpLease;
+      dhcpLeasedTime.disabled = 0;
+   }
+}
+
+function hideRelayInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('relayInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.relayInfo.style.visibility = status;
+   }
+}
+
+function disableDhcpSrvRelay() {
+   with ( document.forms[0] ) {
+      dhcpSrvType[2].checked = false;
+      dhcpSrvAddr.disabled = 1;
+   }
+}
+
+function enableDhcpSrvRelay() {
+   with ( document.forms[0] ) {
+      dhcpSrvType[2].checked = true;
+      if (dhcpEthStart.value != "")
+         dhcpSrvAddr.value = dhcpEthStart.value;
+      else
+         dhcpSrvAddr.value = dhcpStart;
+      dhcpSrvAddr.disabled = 0;
+   }
+}
+
+function typeClick() {
+   with ( document.forms[0] ) {
+      // if any protocol has NAT enabled then
+      // don't show DHCP relay
+      if ( natEnbl == '1' ) {
+         if ( dhcpSrvType[0].checked == true )
+            disableDhcpSrv();
+         else
+            enableDhcpSrv(0);
+      } else {
+         if ( dhcpSrvType[0].checked == true ) {
+            disableDhcpSrv();
+            disableDhcpSrvRelay();
+         } else if ( dhcpSrvType[1].checked == true ) {
+            enableDhcpSrv(0);
+            disableDhcpSrvRelay();
+         } else {
+            enableDhcpSrvRelay();
+            disableDhcpSrv();
+         }
+      }
+   }
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      ethIpAddress.value = '<%ejGetJS(ethIpAddress)%>';
+      ethSubnetMask.value = '<%ejGetJS(ethSubnetMask)%>';
+
+      if ( natEnbl == '1' && buildUpnp == '1' ) {
+         if ( enblUpnp == '1' )
+            chkUpnp.checked = true;
+         else
+            chkUpnp.checked = false;
+         hideUpnpInfo(0);
+      } else
+         hideUpnpInfo(1);
+
+      if ( enblIgmpSnp == '1' )
+        chkIgmpSnp.checked = true;
+      else
+        chkIgmpSnp.checked = false;
+      hideIgmpSnpInfo(0);
+
+
+      // if protocol is Bridge or PPP IP extension
+      // then don't show DHCP info
+      if (proto == 'Bridge' || ipExt == '1')
+         hideDhcpInfo(1);
+      else {
+         hideDhcpInfo(0);
+         // if any protocol has NAT enabled then
+         // don't show DHCP relay
+         if ( natEnbl == '1' ) {
+            hideRelayInfo(1);
+            if ( dhcpEnbl == '1' )
+               enableDhcpSrv(1);
+            else {
+               dhcpSrvType[0].checked = true;
+               disableDhcpSrv();
+            }
+         } else {
+            hideRelayInfo(0);
+            if ( dhcpEnbl == '1' ) {
+               enableDhcpSrv(1);
+               disableDhcpSrvRelay();
+            } else if ( dhcpEnbl == '2' ) {
+               enableDhcpSrvRelay();
+               disableDhcpSrv();
+            } else {
+               dhcpSrvType[0].checked = true;
+               disableDhcpSrv();
+               disableDhcpSrvRelay();
+            }
+         }
+         lan2IpAddress.value = '<%ejGetJS(lan2IpAddress)%>';
+         lan2SubnetMask.value = '<%ejGetJS(lan2SubnetMask)%>';
+         if ('<%ejGetJS(enblLan2)%>' == '1') {
+            enblLan2.checked = true;
+            hideLan2Info(0);
+         } else {
+            enblLan2.checked = false;
+            hideLan2Info(1);
+         }
+      }
+      if (enblStp == '1')
+         chkStp.checked = true;
+      else 
+         chkStp.checked = false; 
+   }
+}
+
+function hideLan2Info(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('lan2Info').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.lan2Info.style.visibility = status;
+   }
+}
+
+function lan2CbClick(cb) {
+   if ( cb.checked == true )
+      hideLan2Info(0);
+   else
+      hideLan2Info(1);
+}
+
+function isEndGTEStart(EndIp, StartIp)
+{
+   addrEnd = EndIp.split('.');
+   addrStart = StartIp.split('.');
+   E = parseInt(addrEnd[3]) + 1;
+   S = parseInt(addrStart[3]) + 1;
+   if (E < S) 
+      return false;
+   return true;
+}
+
+function btnApply(reboot) {
+   var loc = 'lancfg2.cgi?';
+
+   if (reboot)
+      loc = 'lancfg2Reset.cgi?';
+
+   with ( document.forms[0] ) {
+      if ( isValidIpAddress(ethIpAddress.value) == false ) {
+         alert('Address "' + ethIpAddress.value + '" is invalid IP address.');
+         return;
+      }
+      if ( isValidIpAddress(ethSubnetMask.value) == false ) {
+         alert('Subnet mask "' + ethSubnetMask.value + '" has invalid IP address.');
+         return;
+      }
+      loc += 'ethIpAddress=' + ethIpAddress.value;
+      loc += '&ethSubnetMask=' + ethSubnetMask.value;
+      if ( buildUpnp == '1' ) {
+         if ( chkUpnp.checked == true )
+            loc += '&enblUpnp=1';
+         else
+            loc += '&enblUpnp=0';
+      }
+      if ( chkStp.checked == true )
+         loc += '&enblStp=1';
+      else
+         loc += '&enblStp=0';
+      
+     if ( chkIgmpSnp.checked == true )
+        loc += '&enblIgmpSnp=1';
+     else
+        loc += '&enblIgmpSnp=0';
+      if ( dhcpSrvType[1].checked == true ) {
+         if (isValidIpAddress(dhcpEthStart.value) == false || 
+               !(isSameSubNet(ethIpAddress.value, ethSubnetMask.value, dhcpEthStart.value, ethSubnetMask.value))) {
+            alert('Start IP address "' + dhcpEthStart.value + '" is invalid IP address.');
+            return;
+         }
+         if ( isValidIpAddress(dhcpEthEnd.value) == false ||
+               !(isSameSubNet(ethIpAddress.value, ethSubnetMask.value, dhcpEthEnd.value, ethSubnetMask.value))) {
+            alert('End IP address "' + dhcpEthEnd.value + '" is invalid IP address.');
+            return;
+         }   
+         if (!(isEndGTEStart(dhcpEthEnd.value, dhcpEthStart.value))) {
+            alert("End ip has to be equal or greater than Start Ip address.");
+            return;
+         }
+         if ( isNaN(dhcpLeasedTime.value) == true || dhcpLeasedTime.value <= 0) {
+            alert('Leased time "' + dhcpLeasedTime.value + '" is invalid.');
+            return;
+         }
+         loc += '&dhcpEthStart=' + dhcpEthStart.value;
+         loc += '&dhcpEthEnd=' + dhcpEthEnd.value;
+         loc += '&dhcpLeasedTime=' + dhcpLeasedTime.value;
+         loc += '&enblDhcpSrv=1';
+      } else {
+         if ( natEnbl == '1' )
+            loc += '&enblDhcpSrv=0';
+         else {
+            if ( dhcpSrvType[2].checked == true ) {
+               if ( isValidIpAddress(dhcpSrvAddr.value) == false ) {
+                  alert('DHCP server IP address "' + dhcpSrvAddr.value + '" is invalid IP address.');
+                  return;
+               }
+               loc += '&dhcpEthStart=' + dhcpSrvAddr.value;
+               loc += '&enblDhcpSrv=2';
+            } else
+               loc += '&enblDhcpSrv=0';
+         }
+      }
+      if (enblLan2.checked == true) {
+         if ( isValidIpAddress(lan2IpAddress.value) == false ) {
+            alert('Address "' + lan2IpAddress.value + '" is invalid IP address.');
+            return;
+         }
+         if ( isValidIpAddress(lan2SubnetMask.value) == false ) {
+            alert('Subnet mask "' + lan2SubnetMask.value + '" has invalid IP address.');
+            return;
+         }
+         if (ethIpAddress.value == lan2IpAddress.value) {
+            alert('The IP address "' + ethIpAddress.value + '" for both LAN interfaces should not be the same.');
+            return;
+         }
+         if (isSameSubNet(ethIpAddress.value, ethSubnetMask.value, lan2IpAddress.value, lan2SubnetMask.value)) {
+            alert('The Subnet can not be the same for both LAN interfaces.');
+            return;
+         }
+         loc += '&enblLan2=1';
+         loc += '&lan2IpAddress=' + lan2IpAddress.value;
+         loc += '&lan2SubnetMask=' + lan2SubnetMask.value;
+      }
+      else
+         loc += '&enblLan2=0';
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnReset() {
+     var loc = 'rebootinfo.cgi';
+
+     var code = 'location = "' + loc + '"';
+     eval(code);
+}
+
+function setDhcpAddresses(lanIp) {
+   with ( document.forms[0] ) {
+      if ( isValidIpAddress(lanIp) == false ) {
+         alert('Address "' + lanIp + '" is invalid IP address.');
+         return;
+      }
+      addrParts = lanIp.split('.');
+      if ( addrParts.length != 4 )
+         return false;
+      t1 = parseInt(addrParts[3]) + 1;
+      if (dhcpEthStart.value != '' && t1 >= 255) {
+         alert("Last portion of IP Address has to be less than 254 for Enabled DHCP Server");
+         return false;
+      }
+      dhcpEthStart.value = dhcpEthEnd.value = "";
+      for (i = 0; i < 3; i++) {
+         dhcpEthStart.value = dhcpEthStart.value + addrParts[i] + ".";
+         dhcpEthEnd.value = dhcpEthEnd.value + addrParts[i] + ".";
+      }
+      dhcpEthStart.value = dhcpEthStart.value + t1;
+      dhcpEthEnd.value = dhcpEthEnd.value + 254;
+   }
+}
+
+function manualModDhcp() {
+   with ( document.forms[0] ) {
+      dhcpStart = dhcpEthStart.value;
+      dhcpEnd = dhcpEthEnd.value;
+   }
+}   
+
+// done hiding -->
+</script>
+              <base target="_self">
+     </head>
+
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("LAN", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+<h3>DHCP Server</h3>
+
+<p>Configure the router&rsquo;s IP address and subnet mask for LAN interface.</p>
+
+<table border="0" cellpadding="1" cellspacing="0">
+  <tr>
+     <td><label for="ethIpAddress">IP address:</label></td>
+     <td><input type='text' name='ethIpAddress' id='ethIpAddress'></td>
+  </tr>
+  <tr>
+     <td><label for="ethSubnetMask">Subnet mask:</label></td>
+     <td><input type='text' name='ethSubnetMask' id='ethSubnetMask'></td>
+  </tr>
+</table>
+
+<div id='dhcpInfo'>
+	<p>
+		<input type='radio' name='dhcpSrvType' id='optDHCPoff' onClick='typeClick()'> <label for="optDHCPoff">Disable DHCP server</label><br>
+		<input type='radio' name='dhcpSrvType' id='optDHCPon' onClick='typeClick()'> <label for="optDHCPon">Enable DHCP server</label>
+	</p>
+	<table border="0" cellpadding="1" cellspacing="0" style="margin-left: 2em;">
+		<tr>
+		   <td><label for="dhcpEthStart">Start IP address:</label></td>
+		   <td><input type='text' name='dhcpEthStart' id='dhcpEthStart' onChange='manualModDhcp()'></td>
+		</tr>
+		<tr>
+		   <td><label for="dhcpEthEnd">End IP address:</label></td>
+		   <td><input type='text' name='dhcpEthEnd' id='dhcpEthEnd' onChange='manualModDhcp()'></td>
+		</tr>
+		<tr>
+		   <td><label for="dhcpLeasedTime">Lease time:</label></td>
+		    <td><input type='text' name='dhcpLeasedTime' id='dhcpLeasedTime'> hours</td>
+		  </tr>
+	</table>
+
+	<div id='relayInfo'>
+		<p><input type='radio' name='dhcpSrvType' id='optDHCPrelay' onClick='typeClick()'> <label for="optDHCPrelay">Enable DHCP server relay</label></p>
+		<table border="0" cellpadding="1" cellspacing="0" style="margin-left: 2em;">
+		   <tr>
+		      <td><label for="dhcpSrvAddr">DHCP server IP address:</label></td>
+		      <td><input type='text' name='dhcpSrvAddr' id='dhcpSrvAddr'></td>
+		   </tr>
+		</table>
+	</div>
+
+	<p><input type='checkbox' name='enblLan2' id='enblLan2' onClick='lan2CbClick(this)'> <label for="enblLan2">Configure the second IP address and subnet mask for LAN interface</label></p>
+	<div id='lan2Info'>
+	  <table border="0" cellpadding="1" cellspacing="0" style="margin-left: 2em;">
+	     <tr>
+	       <td><label for="lan2IpAddress">IP address:</label></td>
+	       <td><input type='text' name='lan2IpAddress' id='lan2IpAddress'></td>
+	     </tr>
+	     <tr>
+	        <td><label for="lan2SubnetMask">Subnet mask:</label></td>
+	        <td><input type='text' name='lan2SubnetMask' id='lan2SubnetMask'></td>
+	     </tr>
+	  </table>
+	</div>
+</div>
+
+<div id='IGMPSnooping'>
+<h3>IGMP Snooping</h3>
+<p><input type='checkbox' name='chkIgmpSnp' id='chkIgmpSnp'> <label for="chkIgmpSnp">IGMP Snooping</label></p>
+</div>
+
+<div id='upnpInfo'>
+<h3>Universal Plug-n-Play</h3>
+<p><input type='checkbox' name='chkUpnp' id='chkUpnp'> <label for="chkUpnp">Universal Plug-n-Play (UPnP)</label></p>
+</div>
+
+<div id='idStp'>
+<h3>802.1d</h3>
+<p><input type='checkbox' name='chkStp' id='chkStp'> <label for="chkStp">802.1d spanning tree protocol</label></p>
+</div>
+
+<p><input type='button' onClick='btnApply(0)' value='Apply'> <input type='button' onClick='btnReset()' value='Restart'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

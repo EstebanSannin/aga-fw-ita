@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var waitTime=60;                   // NUMBER OF SECONDS FOR PROGRESSBAR
+var idxNum = 0;
+
+var action = function reboot() {
+
+   var loc = 'index.html';  //USR9106 Refresh whole window.
+   var code = 'top.location = "' + loc + '"';
+   eval(code);
+}
+
+function frmLoad() {
+//   setTimeout("reboot()", 60000);
+   progressBarInit();
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="frmLoad();">
+
+<script type="text/javascript">
+	writeHeaderInfo("Router Restart");
+</script>
+
+<p>The router has been configured and is restarting.</p>
+
+<p>This will take about one minute.
+If the router&rsquo;s IP address has been modified,
+you may need to renew your connection to the router.
+(One way to do this is to restart your computer.)
+</p>
+
+<script type="text/javascript" src="timerbar.js"></script>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+/*	EasyConfigurator depends on the values of
+	this array. It assumes that 0 and 1 are
+	successful and others are failure.
+*/
+var msg = new Array();
+msg[0] = "<p>The router is being updated and will restart when finished. This will take a couple of minutes.</p>\
+<p><b>Please do not turn off the power or disconnect any cables during this process.</b></p>";
+msg[1] = "<p>The router has been reconfigured and is restarting. This will take about one minute.</p>\
+<p>If the router&rsquo;s IP address has been modified, \
+you may need to renew your connection to the router. (One way to do this is to restart your computer.)</p>\
+<p><b>Please do not turn off the power or disconnect any cables during this process.</b></p>";
+msg[2] = "The upload failed because the system is out of memory. The router is restarting.";
+msg[3] = "The upload failed because no file was selected. Use your Web browser&rsquo;s Back button to try again.";
+msg[4] = "The upload failed because the selected file is invalid. Use your Web browser&rsquo;s Back button to try again.";
+msg[5] = "Fatal error while uploading file. Use your Web browser&rsquo;s Back button to try again.";
+
+/*	EasyConfigurator depends on the name of this
+	variable and format of its initialization.
+*/
+var idxNum = parseInt("<%ejGetOther(sysInfo, upldSts)%>");
+var waitTime;
+
+if( idxNum == 0 )
+    waitTime = 60 * 5;		// NUMBER OF SECONDS FOR PROGRESSBAR
+else
+    waitTime = 60;
+
+function getMsgIndex() {
+   idxNum = parseInt("<%ejGetOther(sysInfo, upldSts)%>");
+   if ( isNaN(idxNum) || idxNum < 0 || idxNum > msg.length )
+      idxNum = msg.length;
+
+   return idxNum;
+}
+
+
+var action = function reboot() {
+   
+   //USR9106 Refresh whole window
+   eval('top.location = "index.html"');
+} 
+
+function frmLoad() {
+   if(idxNum==0 || idxNum==1)
+      progressBarInit();
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="frmLoad();">
+
+<script type="text/javascript">
+	writeHeaderInfo("Router Upgrade");
+</script>
+
+<p>
+<script type="text/javascript">
+<!-- hide
+   document.write(msg[getMsgIndex()]);
+// done hiding -->
+</script>
+</p>
+
+<script type="text/javascript" src="timerbar.js"></script>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+        
+	<script src="util.js" type="text/javascript"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnApply(place)
+{
+	var macUsed = document.forms[0].cusMac.value;
+   if (document.forms[0].radioMac[0].checked)
+      macUsed = "<%ejGetOther(memInfo, pcMacAddr)%>";
+
+  var loc = place + '?action=add&';
+  
+  if ( place == "todmngr.tod" ) {
+    with ( document.forms[0] ) {
+      if ( username.value == '' ) {
+        alert( 'Please enter a name for the Internet access rule.' );
+      } else if ( isValidName(username.value) == false ) {
+        alert( 'The rule name is invalid. Only alphanumeric characters (a-z, A-Z, and 0-9) are permitted.' );
+      } else if ( macUsed == '' ) {
+        alert( 'Please enter a MAC address.' );
+      } else if ( isValidMacAddress( macUsed ) == false ) {
+        alert( macUsed + " is an invalid MAC address." );
+      } else {
+        loc += "username="+username.value+"&mac="+macUsed;
+
+        days = 0;
+
+        if( monday.checked )
+          days = 1;
+
+        if( tuesday.checked )
+          days |= 2;
+
+        if( wednesday.checked )
+          days |= 4;
+
+        if( thursday.checked )
+          days |= 8;
+
+        if( friday.checked )
+          days |= 16;
+
+        if( saturday.checked )
+          days |= 32;
+
+        if( sunday.checked )
+          days |= 64;
+
+        if( days == 0 ) {
+          alert("No weekdays were specified.");
+          return;
+        }
+
+        loc += "&days=" + days;
+
+        loc += '&start_time=';
+        if( startTime.value.length ) {
+          vals = startTime.value.split( ':' );
+          if ( vals.length == 2 ) {
+            hour = eval( vals[0] );
+            min = eval( vals[1] );
+            if( hour < 0 || hour > 23 ) {
+              alert( startTime.value + " is an invalid time. Please enter an hour between 0 and 23, inclusive." );
+              return;
+            }
+            if( min < 0 || min > 59 ) {
+              alert( startTime.value + " is an invalid time. The seconds must be between 0 and 59, inclusive." );
+            }
+            st_time = hour * 60 + min;
+          } else {
+            alert( startTime.value + " is an invalid time. Please enter a time between 0:00 and 23:59, inclusive." );
+            return;
+          }
+        } else {
+          st_time = 0; // 00:00
+        }
+        loc += st_time;
+
+        loc += '&end_time=';
+        if(endTime.value.length ) {
+          vals = endTime.value.split( ':' );
+          if ( vals.length == 2 ) {
+            hour = eval( vals[0] );
+            min = eval( vals[1] );
+            if( hour < 0 || hour > 23 ) {
+              alert( endTime.value + " is an invalid time. Please enter an hour between 0 and 23, inclusive." );
+              return;
+            }
+            if( min < 0 || min > 59 ) {
+              alert( endTime.value + " is an invalid time. The seconds must be between 0 and 59, inclusive." );
+              return;
+            }
+            en_time = hour* 60 + min;
+          } else {
+            alert( endTime.value + " is an invalid time. Please enter a time between 0:00 and 23:59, inclusive." );
+            return;
+          }
+        } else {
+          en_time = 1439; // 23:59
+        }
+        loc += en_time;
+
+        if( en_time < st_time ) {
+          alert( "The stop time must be after the start time. The times are in 24-hour format (0:00 to 23:59).");
+          return;
+        }
+        var code = 'location = "' + loc + '"';
+        if("<%ejGetSntp(ntp_enabled)%>" != "1")
+          alert("The control will not work correctly without the device's time being set. Please set it on the Time page.");
+        eval(code);
+      }
+    }
+  }
+}
+	// done hiding -->
+	</script>
+</head>
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Internet Access Control", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<p>Use this page to specify when you do not want certain network devices to be
+	able to access the Internet.
+	You can select the days of the week and the times during those days during which
+	the router will <b>prevent</b> certain network devices from accessing the Internet.</p>
+
+	<p><label for="username">Rule name:</label> <input type="text" name="username" id="username" size="18" maxlength="50"></p>
+
+	<h4>Network Device</h4>
+	<p>Specify which network device this rule will apply to.</p>
+	<p>&ldquo;This client device&rdquo; is the network device being used to access the router.
+	To restrict a different network device, select
+	&ldquo;Other network device&rdquo; and enter the MAC address of the other network device.
+	To find out the MAC address on Windows XP or 2000, open a command prompt and
+	type <b>ipconfig /all</b> (on Windows Me or 9x, type <b>winipcfg /all</b>) and press Enter.</p>
+   <table border="0">
+      <tr>
+         <td colspan="2">
+            <input type="radio" name="radioMac" id="radioMac1" checked> <label for="radioMac1">This client device (<%ejGetOther(memInfo, pcMacAddr)%>)</label>
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <input type="radio" name="radioMac" id="radioMac2"> <label for="radioMac2">Other network device:</label>
+			</td>
+         <td><input type='text' size="20" maxlength="18" name="cusMac" id="cusMac">  (xx:xx:xx:xx:xx:xx)</td>
+      </tr>
+   </table>
+
+	<h4>Weekdays</h4>
+	<p>These are the weekdays when the time range below is effective.</p>
+   <table border="1" cellspacing="0">
+      <thead><tr>
+         <th><label for="monday">Monday</label></th>
+         <th><label for="tuesday">Tuesday</label></th>
+         <th><label for="wednesday">Wednesday</label></th>
+         <th><label for="thursday">Thursday</label></th>
+         <th><label for="friday">Friday</label></th>
+         <th><label for="saturday">Saturday</label></th>
+         <th><label for="sunday">Sunday</label></th>
+      </tr></thead>
+      <tr>
+         <td align="center"><input type="checkbox" name="monday" id="monday"></td>
+         <td align="center"><input type="checkbox" name="tuesday" id="tuesday"></td>
+         <td align="center"><input type="checkbox" name="wednesday" id="wednesday"></td>
+         <td align="center"><input type="checkbox" name="thursday" id="thursday"></td>
+         <td align="center"><input type="checkbox" name="friday" id="friday"></td>
+         <td align="center"><input type="checkbox" name="saturday" id="saturday"></td>
+         <td align="center"><input type="checkbox" name="sunday" id="sunday"></td>
+      </tr>
+   </table>
+
+	<h4>Daily Time Range</h4>
+	<p>This is the time range during which the network device will not be able to access the Internet.
+	Please note that the times are in 24-hour format and must be between 0:00 and 23:59, inclusive.
+	</p>
+   <table border="0">
+      <tr>
+         <td><label for="startTime">Start time:</label></td>
+         <td><input type="text" size="5" name="startTime" id="startTime"> (hh:mm)</td>
+      </tr>
+      <tr>
+         <td><label for="endTime">End time:</label></td>
+         <td><input type="text" size="5" name="endTime" id="endTime"> (hh:mm)</td>
+      </tr>
+   </table>
+
+	<p><input type="button" value="Save" onClick="btnApply('todmngr.tod');"></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

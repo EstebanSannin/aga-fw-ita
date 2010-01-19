@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var ssid = '<%ejGetWlJS(wlSsid)%>';
+var enbl = '<%ejGetWlJS(wlEnbl)%>';
+
+function hideWlSecInfo(hidden) {
+   var status = 'visible';
+
+   with ( document.forms[0] ) {
+      if ( hidden == 1 ) {
+         status = 'hidden';
+         wlSsid.disabled = 1;
+      } else {
+         wlSsid.disabled = 0;
+      }
+   }
+
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('wlSecInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.wlSecInfo.style.visibility = status;
+   }
+}
+
+function wlSecCbClick(cb) {
+   if ( cb.checked == true ) {
+      hideWlSecInfo(0);
+   } else {
+      hideWlSecInfo(1);
+   }
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      if ( enbl == '1' ) {
+         wlEnbl.checked = true;
+         hideWlSecInfo(0);
+      } else {
+         wlEnbl.checked = false;
+         hideWlSecInfo(1);
+      }
+      wlSsid.value = ssid;
+   }
+}
+
+function btnNext() {
+   var loc = 'ntwksum2.wl?';
+
+   with ( document.forms[0] ) {
+      if ( wlEnbl.checked == false ) {
+         loc += 'wlSsid=' + ssid;
+         loc += '&wlEnbl=0';
+      } else {
+         if ( wlSsid.value == '' ) {
+            alert('SSID should not be empty.');
+            return;
+         }
+         var str = new String();
+         str = wlSsid.value;
+         if ( str.length > 32 ) {
+            alert('SSID "' + wlSsid.value + '" should not be longer than 32 characters.');
+            return;
+         }
+
+         loc += 'wlSsid=' + encodeUrl(wlSsid.value);
+
+         if ( wlEnbl.checked == true )
+            loc += '&wlEnbl=1';
+         else
+            loc += '&wlEnbl=0';
+      }
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnBack() {
+   var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+   var ipExtension = '<%ejGetJS(pppIpExtension)%>';
+   var loc = 'lancfg.html';
+
+   if ( prtcl == 'Bridge' )
+      loc = 'lancfgbr.html';
+   else if ( (ipExtension == '1') &&
+             ((prtcl == 'PPPoE') || (prtcl == 'PPPoA')) )
+      loc = 'lancfgbr.html';
+   else
+      loc = 'lancfg.html';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+      </script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Wireless", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Setup</h3>
+
+<form>
+   <p><input type='checkbox' name='wlEnbl' id='wlEnbl' onClick='wlSecCbClick(this)' value="ON">
+   <label for="wlEnbl">Enable wireless connections</label></p>
+
+   <div id='wlSecInfo'>
+	   <p>Enter the name of the wireless network (also known as the SSID).</p>
+		<p><label for="wlSsid">Network name:</label> <input type='text' name='wlSsid' id='wlSsid' maxlength="32" size="20"></p>
+   </div>
+
+   <p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

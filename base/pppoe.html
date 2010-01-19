@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var timeOut = '<%ejGetJS(pppTimeOut)%>';
+var onDemand = '<%ejGetJS(enblOnDemand)%>';
+var ipExtension = '<%ejGetJS(pppIpExtension)%>';
+var authMethod = '<%ejGetJS(pppAuthMethod)%>';
+var qs = '<%ejGetJS(quickSetup)%>';
+var auto = '<%ejGetJS(enblAutoScan)%>';
+var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+var enblIpAddr = '<%ejGetJS(useStaticIpAddress)%>';
+var localIpAddr = '<%ejGetJS(pppLocalIpAddress)%>';
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      if (qs == '1')
+         showPppoe(auto);
+      else
+         showPppoe(0);
+      if ( onDemand == '1' ) {
+         enblOnDemand.checked = true;
+         hideOnDemandInfo(0);
+      } else {
+         enblOnDemand.checked = false;
+         hideOnDemandInfo(1);
+      }
+      if ( enblIpAddr == '1' ) {
+         enblPppIpAddress.checked = true;
+         hidePppIpAddressInfo(0);
+      } else {
+         enblPppIpAddress.checked = false;
+         hidePppIpAddressInfo(1);
+      }
+
+      if ( ipExtension == '1' )
+         pppIpExtension.checked = true;
+      else
+         pppIpExtension.checked = false;
+
+      if ( authMethod == '1' )
+         pppAuthMethod.selectedIndex = 1;
+      else if ( authMethod == '2' )
+         pppAuthMethod.selectedIndex = 2;
+      else if ( authMethod == '3' )
+         pppAuthMethod.selectedIndex = 3;
+      else
+         pppAuthMethod.selectedIndex = 0;
+
+      pppUserName.value = '<%ejGetJS(pppUserName)%>';
+      pppPassword.value = '<%ejGetJS(pppPassword)%>';
+      pppTimeOut.value = timeOut;
+      pppLocalIpAddress.value = localIpAddr;
+      if ( prtcl == 'PPPoE' && !(auto == '1' && qs == '1') )
+         pppServerName.value = '<%ejGetJS(pppServerName)%>';
+      if ( prtcl == 'PPPoA' )
+         pppMTU.value = '<%ejGetJS(pppMTU)%>';
+      else
+         pppMTU.value = '<%ejGetJS(pppoeMTU)%>';
+   }
+}
+
+function btnNext() {
+   with ( document.forms[0] ) {
+      // USR9108
+      if (!validateUsername(pppUserName))
+          return;
+
+      if (!inRange("MTU", pppMTU, 1, (prtcl == 'PPPoE') ? 1492 : 1500))
+          return;
+
+      // validate inactivity timeout
+      if ( enblOnDemand.checked == true ) {
+         if ( isNaN(parseInt(pppTimeOut.value)) )
+         {
+            alert('Inactivity timeout "' + pppTimeOut.value + '" must be a number.');
+            return;
+         }
+         timeOutNum = parseInt(pppTimeOut.value);
+         if ( timeOutNum < 1 || timeOutNum > 4320 )
+         {
+            alert('The inactivity timeout "' + pppTimeOut.value + '" must be between 1 and 4,320, inclusive.');
+            return;
+         }
+      }
+      // validate ppp IP address
+      if ( enblPppIpAddress.checked == true ) {
+         if ( isValidIpAddress(pppLocalIpAddress.value) == false ) {
+            alert('The IP address "' + pppLocalIpAddress.value + '" is invalid.');
+            return;
+         }
+      }
+      // validate authentication method
+      if ( pppAuthMethod.selectedIndex < 0 ) {
+         alert('Please select an authentication method.');
+         return;
+      }
+      // validate server name
+      if ( prtcl == 'PPPoE' && !(auto == '1' && qs == '1') ) {
+         len = pppServerName.value.length;
+         if ( len > 32 ) {
+            msg = 'The length of PPP service (' + len + ') is too long. It must be between zero and thirty-two characters, inclusive.';
+            alert(msg);
+            return;
+         }
+      }
+
+      if ( qs == '1' ) {
+         if ( auto == '1' )
+            loc = 'pppauthinfo.cgi?';
+      } else
+         loc = 'enblservice.cgi?';
+
+      loc += 'pppUserName=' + encodeUrl(pppUserName.value);
+      loc += '&pppPassword=' + encodeUrl(pppPassword.value);
+      loc += '&pppMTU=' + pppMTU.value;
+      if ( enblOnDemand.checked == true ) {
+         loc += '&enblOnDemand=1';
+         loc += '&pppTimeOut=' + timeOutNum;
+      } else {
+         loc += '&enblOnDemand=0';
+         loc += '&pppTimeOut=' + timeOut;
+      }
+      if ( enblPppIpAddress.checked == true ) {
+         loc += '&useStaticIpAddress=1';
+         loc += '&pppLocalIpAddress=' + pppLocalIpAddress.value;
+      } else {
+         loc += '&useStaticIpAddress=0';
+         loc += '&pppLocalIpAddress=' + localIpAddr;
+      }
+      if ( pppIpExtension.checked == true )
+         loc += '&pppIpExtension=on&enblNat=0&enblFirewall=0';
+      else
+         loc += '&pppIpExtension=0&enblFirewall=1&enblNat=1';
+
+      var idx = pppAuthMethod.selectedIndex;
+      loc += '&pppAuthMethod=' + pppAuthMethod.options[idx].value;
+      if ( prtcl == 'PPPoE' && !(auto == '1' && qs == '1') )
+         loc += '&pppServerName=' + encodeUrl(pppServerName.value);
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnBack() {
+   var loc = 'ntwkprtcl.html';
+   if ( qs == '1' && auto == '1' )
+      loc = 'vpivci.html';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+
+function showPppoe(show) {
+   var status = 'visible';
+   if ( show == 0 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('pppoeSN').style.visibility = status;
+   else
+      document.all.pppoeSN.style.visibility = status;
+}
+
+function hideOnDemandInfo(hide) {
+   var status = 'visible';
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('pppInfo').style.visibility = status;
+   else {
+      if (document.layers) { // Netscape 4
+         if ( hide == 1 )
+            document.forms[0].pppTimeOut.value = '';
+         else
+            document.forms[0].pppTimeOut.value = '<%ejGetJS(pppTimeOut)%>';
+      } else  // IE 4
+         document.all.pppInfo.style.visibility = status;
+   }
+}
+
+function dialOnDemandClick(cb) {
+   if ( cb.checked == true )
+      hideOnDemandInfo(0);
+   else
+      hideOnDemandInfo(1);
+}
+
+function hidePppIpAddressInfo(hide) {
+   var status = 'visible';
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('pppIpAddressInfo').style.visibility = status;
+   else {
+      if (document.layers) { // Netscape 4
+         if ( hide == 1 )
+            document.forms[0].pppLocalIpAddress.value = '';
+         else
+            document.forms[0].pppLocalIpAddress.value = '<%ejGetJS(pppLocalIpAddress)%>';
+      } else  // IE 4
+         document.all.pppIpAddressInfo.style.visibility = status;
+   }
+}
+
+function pppIpAddressClick(cb) {
+   if ( cb.checked == true )
+      hidePppIpAddressInfo(0);
+   else
+      hidePppIpAddressInfo(1);
+}
+
+// done hiding -->
+</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("PPP User Name and Password", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<p>PPP usually requires that you have a user name and password to establish your
+Internet connection. Please enter the user name and password your ISP provided.</p>
+
+<form>
+	<p id="pppoeSN"><label>PPPoE service name:</label> <b><%ejGetOther(memInfo, pppoeServiceName)%></b></p>
+   <table border="0">
+      <tr>
+         <td><label for="pppUserName">User name:</label></td>
+         <td><input type='text' name='pppUserName' id='pppUserName' maxlength="256"></td>
+      </tr>
+      <tr>
+         <td><label for="pppPassword">Password:</label></td>
+         <td><input type='text' name='pppPassword' id='pppPassword' maxlength="32"></td>
+      </tr>
+<script type="text/javascript">
+<!-- hide
+if ( prtcl == 'PPPoE' && !(auto == '1' && qs == '1') ) {
+   document.writeln("<tr>");
+   document.writeln("\t<td><label for='pppServerName'>PPPoE service name:</label></td>");
+   document.writeln("\t<td><input type='text' name='pppServerName' id='pppServerName' maxlength=\"32\"></td>");
+   document.writeln("</tr>");
+}
+// done hiding -->
+</script>
+	<tr>
+	<td><label for="">Authentication method:</label></td>
+	<td><select name='pppAuthMethod' id='pppAuthMethod'>
+	      <option value="0">Automatic</option>
+	      <option value="1">PAP</option>
+	      <option value="2">CHAP</option>
+	      <option value="3">MSCHAP</option>
+	   </select></td>
+	</tr>
+</table>
+
+	<p><label for="pppMTU">MTU:</label> <input type='text' name='pppMTU' id='pppMTU' maxlength='4' size='10'> bytes (PPPoE: 1-1492, PPPoA: 1-1500)</p>
+
+	<p>
+		<input type='checkbox' name='enblOnDemand' id='enblOnDemand' onClick='dialOnDemandClick(this)'>
+			<label for="enblOnDemand">Dial on demand (with idle timeout timer)</label>
+
+		<div id='pppInfo'>
+			<label for="pppTimeOut">Inactivity timeout:</label> <input type='text' name='pppTimeOut' id='pppTimeOut'> minutes (1-4320)
+		</div>
+	</p>
+
+	<p><input type='checkbox' name='pppIpExtension' id='pppIpExtension'>
+			<label for="pppIpExtension">PPP IP extension</label></p>
+
+	<p><input type='checkbox' name='enblPppIpAddress' id='enblPppIpAddress' onClick='pppIpAddressClick(this)'>
+			<label for="enblPppIpAddress">Static IP address</label>
+
+		<div id='pppIpAddressInfo'>
+			<label for="pppLocalIpAddress">IP address:</label>
+			<input type='text' name='pppLocalIpAddress' id='pppLocalIpAddress'>
+		</div>
+	</p>
+
+	<p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<html>
+   <head>
+      <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+      <link rel="stylesheet" href='stylemain.css' type='text/css'>
+         <link rel="stylesheet" href='colors.css' type='text/css'>
+            <script language="javascript" src="util.js"></script>
+            <script language="javascript">
+<!-- hide
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      acsURL.value = '<%ejGetJS(tr69cAcsURL)%>';
+      acsUser.value = '<%ejGetJS(tr69cAcsUser)%>';
+      acsPwd.value = '<%ejGetJS(tr69cAcsPwd)%>';
+      connReqURL.value = '<%ejGetJS(tr69cConnReqURL)%>';
+      connReqUser.value = '<%ejGetJS(tr69cConnReqUser)%>';
+      connReqPwd.value = '<%ejGetJS(tr69cConnReqPwd)%>';
+      enblInform = '<%ejGetJS(tr69cInformEnable)%>';
+      if ( enblInform == '1' ) {
+         inform[1].checked = true;
+         informInterval.value = '<%ejGetJS(tr69cInformInterval)%>';
+      } else {
+         inform[0].checked = true;
+         informInterval.value = '';
+      }            
+   }
+}
+
+function btnApply() {
+   var loc = 'tr69cfg.cgi?';
+   with ( document.forms[0] ) {
+      if (acsURL.value == '') {
+         alert('ACS URL is required.');
+         return;
+      }
+      if ( inform[1].checked == true ) {
+         loc += 'tr69cInformEnable=1';
+         loc += '&tr69cInformInterval=' + informInterval.value;
+      } else
+         loc += 'tr69cInformEnable=0';
+      
+      if (acsURL.value.length > 256) {
+         alert('The length of ACS URL (' + acsURL.value.length + ') is too long [1-256].');
+         return;
+      }
+      loc += '&tr69cAcsURL=' + encodeUrl(acsURL.value);
+      
+      if (acsUser.value.length > 256) {
+         alert('The length of ACS user name (' + acsUser.value.length + ') is too long [0-256].');
+         return;
+      }
+      loc += '&tr69cAcsUser=' + encodeUrl(acsUser.value);
+      
+      if (acsPwd.value.length > 256) {
+         alert('The length of sysName (' + acsPwd.value.length + ') is too long [0-256].');
+         return;
+      }
+      loc += '&tr69cAcsPwd=' + encodeUrl(acsPwd.value);
+      
+      if (connReqURL.value.length > 256) {
+         alert('The length of connection request URL (' + connReqURL.value.length + ') is too long [0-256].');
+         return;
+      }
+      loc += '&tr69cConnReqURL=' + encodeUrl(connReqURL.value);
+      
+      if (connReqUser.value.length > 256) {
+         alert('The length of connection request user name (' + connReqUser.value.length + ') is too long [0-256].');
+         return;
+      }
+      loc += '&tr69cConnReqUser=' + encodeUrl(connReqUser.value);
+      
+      if (connReqPwd.value.length > 256) {
+         alert('The length of connection request password (' + connReqPwd.value.length + ') is too long [0-256].');
+         return;
+      }
+      loc += '&connReqPwd=' + encodeUrl(connReqPwd.value);
+   }
+   
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onLoad='frmLoad()'>
+      <blockquote>
+         <form>
+            <b>TR-069 client - Configuration<br>
+            </b>
+            <br>
+            WAN Management Protocol (TR-069) allows a Auto-Configuration Server (ACS) to 
+            perform auto-configuration, provision, collection, and diagnostics to this device.<br>
+            <br>
+            Select the desired values and click "Apply" to configure the TR-069 client options.<br>
+            <br>
+            <table border="0" cellpadding="0" cellspacing="0">
+               <tr>
+                  <td width="80">Inform</td>
+                  <td><input name='inform' type='radio'>Disable</td>
+                  <td><input name='inform' type='radio'>Enable</td>
+               </tr>
+            </table>
+            <br>
+            <table border="0" cellpadding="0" cellspacing="0">
+               <tr>
+                  <td width="200">Inform Interval:</td>
+                  <td><input type='text' name='informInterval' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>ACS URL:</td>
+                  <td><input type='text' name='acsURL' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>ACS User Name:</td>
+                  <td><input type='text' name='acsUser' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>ACS Password:</td>
+                  <td><input type='password' name='acsPwd' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>Connection Request URL:</td>
+                  <td><input type='text' name='connReqURL' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>Connection Request User Name:</td>
+                  <td><input type='text' name='connReqUser' size="20" maxlength="256"></td>
+               </tr>
+               <tr>
+                  <td>Connection Request Password:</td>
+                  <td><input type='password' name='connReqPwd' size="20" maxlength="256"></td>
+               </tr>
+            </table>
+            <p align="center">
+               <input type='button' onClick='btnApply()' value='Save/Reboot'>
+         </form>
+         </P> </blockquote>
+   </body>
+</html>

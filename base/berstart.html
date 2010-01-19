@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Start</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnStart() {
+   var loc = 'berrun.tst?';
+
+   with ( document.forms[0] ) {
+      var idx = berTime.selectedIndex;
+      var val = berTime.options[idx].value;
+      loc += 'berTime=' + val;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnClose() {
+   window.close();
+}
+
+// done hiding -->
+</script>
+<base target="_self">
+</head>
+
+<body>
+
+<script type="text/javascript">
+	writeHeaderInfo("ADSL BER Test");
+</script>
+
+<h3>Start</h3>
+
+<p>The ADSL Bit Error Rate (BER) test determines the quality of the ADSL connection.
+The test is done by transferring idle cells containing a known pattern and
+comparing the received data with this known pattern to check for any errors.</p>
+<p>Select the test duration below and click <b>Start</b>.</p>
+
+<form>
+<p>Tested time: <select name='berTime' id='berTime'>
+      <option value=1>1</option>
+      <option value=5>5</option>
+      <option value=10>10</option>
+      <option value=20 selected>20</option>
+      <option value=60>60</option>
+      <option value=120>120</option>
+      <option value=180>180</option>
+      <option value=240>240</option>
+      <option value=300>300</option>
+      <option value=360>360</option>
+    </select> seconds</p>
+
+<p><input type='button' onClick='btnStart()' value=' Start '><!--<input type='button' onClick='btnClose()' value='Close'>--></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

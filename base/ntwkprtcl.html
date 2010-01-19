@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var qs = '<%ejGetJS(quickSetup)%>';
+var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+var eMode = '<%ejGetJS(encapMode)%>';
+var srvname = '<%ejGetJS(serviceName)%>';
+var vpi = '<%ejGetJS(atmVpi)%>';
+var vci = '<%ejGetJS(atmVci)%>';
+var existedProtocol = '<%ejGetJS(existedProtocol)%>';
+var enblEnetWan = '<%ejGetJS(enblEnetWan)%>';
+var enblVlan = '<%ejGetJS(enblVlan)%>';
+var vlanId = '<%ejGetJS(vlanId)%>';
+
+/*
+	Use this because there can be anywhere from one to five radio buttons.
+*/
+function isChecked(rb)
+{
+	if (rb == null)
+		return false;
+	return rb.checked;
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      if ( enblEnetWan == 1 ) {
+            document.getElementById('enetWan').style.visibility = 'hidden';
+            eMode = 2;
+            if (prtcl == 'PPPoE')
+               ntwkPrtcl[0].checked = true;
+            else
+               ntwkPrtcl[1].checked = true;
+      } else if ( existedProtocol == 'MER' ) {
+         // if MER exists in this PVC and MER is editting then 
+         // allow PPPoE or MER to be added
+         if ( prtcl == 'MER' )
+            ntwkPrtcl[1].checked = true;
+         else
+         // if MER exists and PPPoE is editting then only allow PPPoE to be added
+            ntwkPrtcl.checked = true;	// only one radio btn so no subscript
+      } else if ( existedProtocol == 'PPPoE' ) {
+         // if (PPPoE is existed then only allow PPPoE or MER to be added
+         if ( prtcl == 'MER' )
+            ntwkPrtcl[1].checked = true;
+         else
+            ntwkPrtcl[0].checked = true;
+      } else {
+         // otherwise no restriction
+         if ( prtcl == 'PPPoA' )
+            ntwkPrtcl[0].checked = true;
+         else if ( prtcl == 'PPPoE' )
+            ntwkPrtcl[1].checked = true;
+         else if ( prtcl == 'MER' )
+            ntwkPrtcl[2].checked = true;
+         else if ( prtcl == 'IPoA' )
+            ntwkPrtcl[3].checked = true;
+         else
+            ntwkPrtcl[4].checked = true;
+      }
+      encDisplay(eMode);
+   }
+}
+
+function btnNext() {
+   var loc = '', service = '';
+   var conId = '<%ejGetOther(wanInterfaceInfo, conId)%>';
+
+   with ( document.forms[0] ) {
+      if ( enblEnetWan == 1 ) {
+         if ( isChecked(ntwkPrtcl[0]) ) {
+               loc = 'pppoe.cgi?ntwkPrtcl=0';
+               service = 'pppoe_' + 'eth' + '_' + vpi + '_' + conId;
+         } else {
+               loc = 'wancfg.cgi?ntwkPrtcl=6';
+               service = 'eth_' + vpi;
+         }
+      } else if ( existedProtocol == 'MER' ) {
+         // if MER exists in this PVC and MER is editting then 
+         // allow PPPoE or MER to be added
+         if ( prtcl == 'MER' ) {
+            if ( isChecked(ntwkPrtcl[1]) ) {
+               loc = 'wancfg.cgi?ntwkPrtcl=2';
+               service = 'mer_' + vpi + '_' + vci;
+            } else {
+               loc = 'pppoe.cgi?ntwkPrtcl=0';
+               service = 'pppoe_' + vpi + '_' + vci + '_' + conId;
+            }
+         } else {
+         // if MER is existed in this PVC and PPPoE is editting then 
+         // only allow PPPoE or MER to be added
+            loc = 'pppoe.cgi?ntwkPrtcl=0';
+            service = 'pppoe_' + vpi + '_' + vci + '_' + conId;
+         }
+      } else if ( existedProtocol == 'PPPoE' ) {
+         // if PPPoE is existed then only allow PPPoE or MER to be added
+         if ( isChecked(ntwkPrtcl[0]) ) {
+            loc = 'pppoe.cgi?ntwkPrtcl=0';
+            service = 'pppoe_' + vpi + '_' + vci + '_' + conId;
+         }
+         else if ( isChecked(ntwkPrtcl[1]) ) {
+            loc = 'wancfg.cgi?ntwkPrtcl=2';
+            service = 'mer_' + vpi + '_' + vci;
+         }
+      } else {
+         // otherwise no restriction
+         if ( isChecked(ntwkPrtcl[0]) ) {
+            loc = 'pppoe.cgi?ntwkPrtcl=1';
+            service = 'pppoa_' + vpi + '_' + vci + '_' + conId;
+         }
+         else if ( isChecked(ntwkPrtcl[1]) ) {
+            loc = 'pppoe.cgi?ntwkPrtcl=0';
+            service = 'pppoe_' + vpi + '_' + vci + '_' + conId;
+         }
+         else if ( isChecked(ntwkPrtcl[2]) ) {
+            loc = 'wancfg.cgi?ntwkPrtcl=2';
+            service = 'mer_' + vpi + '_' + vci;
+         }
+         else if ( isChecked(ntwkPrtcl[3]) ) {
+            loc = 'ipoacfg.cgi?ntwkPrtcl=5';
+            service = 'ipoa_' + vpi + '_' + vci;
+         }
+         else {
+            loc = 'enblbridge.cgi?ntwkPrtcl=3';
+            service = 'br_' + vpi + '_' + vci;
+         }
+      }
+      loc += '&encapMode=' + encSel.options[encSel.selectedIndex].value;
+      if (enblVlan == 1) {
+         if (cbVlan.checked) {
+            if (vlanIdText.value >= 0 && vlanIdText.value < 4096 && vlanIdText.value != '')
+               loc += '&vlanId=' + vlanIdText.value;
+            else {
+               alert('Invalid vlan id value ' + vlanIdText.value + '.');
+               return;
+            }
+         }
+         else
+            loc += '&vlanId=-1';
+      }   
+   }
+   if ( srvname == '' || qs == '1' )
+      loc += '&serviceName=' + encodeUrl(service);
+   else
+      loc += '&serviceName=' + encodeUrl(srvname);
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function btnBack() {
+   if (qs == 0)
+      var code = 'location = "' + 'pvccfg.html' + '"';
+   else
+      var code = 'location = "' + 'vpivci.html' + '"';
+
+   eval(code);
+}
+
+function hidevlanEnblInfo(status) {
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('vlanEnblInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.vlanEnblInfo.style.visibility = status;
+   }
+}
+
+function hideVlanIdInfo(status) {
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('vlanIdInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.vlanIdInfo.style.visibility = status;
+   }
+}
+
+
+function encDisplay(mode)
+{
+   with ( document.forms[0] ) {
+      if ( enblEnetWan == 2 || enblEnetWan == 0 ) {   // ethernet WAN feature is disabled
+         encSel.selectedIndex = 0;
+         if (mode == 1)
+            encSel.selectedIndex = 1;
+
+         // if MER or PPPoE is existed in this PVC
+         if ( existedProtocol == 'MER' || existedProtocol == 'PPPoE' ) {
+            encSel.options[0].text = "LLC/SNAP-BRIDGING";
+            encSel.options[1].text = "VC/MUX";
+         }
+         // otherwise no restriction
+         else if ( isChecked(ntwkPrtcl[0]) ) {
+            encSel.options[0].text = "VC/MUX";
+            encSel.options[1].text = "LLC/ENCAPSULATION";
+         }
+         else if ( isChecked(ntwkPrtcl[3]) ) {
+            encSel.options[0].text = "LLC/SNAP-ROUTING";
+            encSel.options[1].text = "VC/MUX";
+         }
+         else {
+            encSel.options[0].text = "LLC/SNAP-BRIDGING";
+            encSel.options[1].text = "VC/MUX";
+         }
+      }
+      if (enblVlan == 1) {
+         // only for PPPoE, MER and BRIDGE
+			if (isChecked(idPPPoE) || isChecked(idMER) || isChecked(idBridging))
+			{
+            if (vlanId >= 0 && vlanId < 4096) {
+               cbVlan.checked = true;
+               vlanIdText.value = vlanId;
+            } else if (vlanId == -1)
+               vlanIdText.value = '';
+            hidevlanEnblInfo('visible');
+            vidClick(); 
+         }
+         else {
+            hidevlanEnblInfo('hidden');      
+            hideVlanIdInfo('hidden');
+         }
+      }                    
+   }
+}
+
+function prtClick() {
+   encDisplay(0);
+}
+
+function vidClick()
+{
+   with (document.forms[0]) {
+      if (cbVlan.checked)
+         hideVlanIdInfo('visible');
+      else
+         hideVlanIdInfo('hidden');
+   }
+}
+
+// done hiding -->
+</script>
+            <base target="_self">
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Connection Type", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<p>Select the type of network protocol and encapsulation mode over the ATM PVC
+               that your ISP has instructed you to use. Note that 802.1q VLAN tagging is only available 
+                for PPPoE, MER, and Bridging.</p>
+
+<form>
+<script type="text/javascript">
+<!-- hide
+if ( enblEnetWan == 1 )
+{
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoE' onClick='prtClick()'> <label for='idPPPoE'>PPP over Ethernet (PPPoE)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idIPcxn' onClick='prtClick()'> <label for='idIPcxn'>IP Connection</label><br/>");
+}
+else if ( existedProtocol == 'MER' )
+{
+   // if MER is existed in this PVC and MER is editing then allow PPPoE or MER to be added
+   if ( prtcl == 'MER' )
+   {
+      document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoE' onClick='prtClick()'> <label for='idPPPoE'>PPP over Ethernet (PPPoE)</label><br/>");
+      document.writeln("<input type='radio' name='ntwkPrtcl' id='idMER' onClick='prtClick()'> <label for='idMER'>MAC Encapsulation Routing (MER)</label><br/>");
+   }
+   else	// if MER exists in this PVC and PPPoE is editting then only allow PPPoE to be added
+      document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoE' onClick='prtClick()'> <label for='idPPPoE'>PPP over Ethernet (PPPoE)</label><br/>");
+}
+else if ( existedProtocol == 'PPPoE' )
+{
+	// if PPPoE is existed in this PVC then only allow PPPoE or MER to be added
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoE' onClick='prtClick()'> <label for='idPPPoE'>PPP over Ethernet (PPPoE)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idMER' onClick='prtClick()'> <label for='idMER'>MAC Encapsulation Routing (MER)</label><br/>");
+}
+else	// otherwise no restriction
+{
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoA' onClick='prtClick()'> <label for='idPPPoA'>PPP over ATM (PPPoA)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idPPPoE' onClick='prtClick()'> <label for='idPPPoE'>PPP over Ethernet (PPPoE)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idMER' onClick='prtClick()'> <label for='idMER'>MAC Encapsulation Routing (MER)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idIPoA' onClick='prtClick()'> <label for='idIPoA'>IP over ATM (IPoA)</label><br/>");
+   document.writeln("<input type='radio' name='ntwkPrtcl' id='idBridging' onClick='prtClick()'> <label for='idBridging'>Bridging</label><br/>");
+}
+// done hiding -->
+</script>
+</table>
+
+<div id='enetWan'>
+	<p><label>Encapsulation mode:</label>
+	<select name='encSel' id='encSel'>
+		<option value="0">LLC/SNAP-Bridging</option>
+		<option value="1">VC/MUX</option>
+	</select></p>
+</div>
+
+<script type="text/javascript">
+<!-- hide
+if (enblVlan == 1) {
+    document.writeln("<div id='vlanEnblInfo'>");
+    document.writeln("<p>");
+    document.writeln("	<input type='checkbox' name='cbVlan' id='cbVlan' onclick='vidClick(this)'> <label for=\"cbVlan\">802.1q</label>");
+    document.writeln("<\/p>");
+    document.writeln("<p id='vlanIdInfo'>");
+    document.writeln("	<label for=\"vlanIdText\">VLAN ID:</label> <input type='text' name='vlanIdText' id='vlanIdText' size='4'> <span=\"clsNote\">(0-4095)<\/span>");
+    document.writeln("<\/p>");
+    document.writeln("<\/div>");
+}    
+// done hiding -->
+</script>
+
+<p><input type='button' onClick='btnBack()' value='Back'> <input type='button' onClick='btnNext()' value='Next'></p>
+</form>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var prtcl = '<%ejGetOther(memInfo, ntwkPrtcl)%>';
+var username = '<%ejGetJS(pppUserName)%>';
+var password = '<%ejGetJS(pppPassword)%>';
+
+function btnBack() {
+   var loc = 'pppoe.html';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("PPP Authentication Error", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<script type="text/javascript">
+<!-- hide
+   var passwd = '';
+   for (var i = 0; i < password.length; i++)
+      passwd += '*';
+
+	var msg = "<p>The router can not set up a ";
+	msg += ((prtcl == 'PPPoA') ? 'PPPoA' : 'PPPoE');
+   msg += ' connection using <b>"' + username + '"</b> as its username, ';
+   msg += 'and <b>"' + passwd + '"</b> as its password.</p>';
+   document.writeln(msg);
+
+   document.writeln('<p>Please check your username and password, and click the <b>Back</b> button to try again.</p>');
+// done hiding -->
+</script>
+
+<p><input type='button' onClick='btnBack()' value='Back'></p>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

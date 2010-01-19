@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Stop</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnClose() {
+   window.close();
+}
+
+// done hiding -->
+</script>
+<base target="_self">
+</head>
+
+<body>
+
+<script type="text/javascript">
+	writeHeaderInfo("ADSL BER Test");
+</script>
+
+<form>
+	<h3>Result</h3>
+	<p>The ADSL BER test completed successfully.</p>
+	<table border="1" cellpadding="3" cellspacing="0">
+	  <tr>
+	    <td width="160">Test time:</td>
+	    <td><%ejGetTest(berTime)%> seconds</td>
+	  </tr>
+	  <tr>
+	    <td>Total transferred bits:</td>
+	    <td><%ejGetTest(berTotalBits)%></td>
+	  </tr>
+	  <tr>
+	    <td>Total error bits:</td>
+	    <td><%ejGetTest(berErrorBits)%></td>
+	  </tr>
+	  <tr>
+	    <td>Error ratio:</td>
+	    <td><%ejGetTest(berErrorRatio)%></td>
+	  </tr>
+	</table>
+	<p><!--<input type='button' onClick='btnClose()' value='Close'>--></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

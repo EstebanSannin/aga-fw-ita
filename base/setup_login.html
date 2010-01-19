@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   (c) 2004-2005 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Setup</title>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<script src="usr_common.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+	setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+	if ("<%ejGetWlJS(wlInterface)%>" == "1")
+		writeHeaderSetup(3, 3);
+	else
+		writeHeaderSetup(2, 2);
+</script>
+
+<form name="idForm" action="setup_finish.cgi" method="post">
+
+<h3>Device Login</h3>
+
+<p>In order to secure the router against unauthorized access, please enter a password
+for the &ldquo;admin&rdquo; user.
+You will need to enter the user name and password in order to access the router in the future,
+so you may want to write them down.</p>
+
+<table>
+	<tr>
+		<td><label for="txtLoginUsername">User&nbsp;name:</label></td>
+		<td>
+			<label class="clsStatic">admin</label>
+<!--			<input type="text" size="20" maxlength="15" name="txtLoginUsername" id="txtLoginUsername" class="clsTextfield" value="">
+-->
+			<input type="hidden" name="txtLoginUsername" id="txtLoginUsername" value="admin">
+		</td>
+	</tr>
+	<tr>
+		<td><label for="sysPassword">Password:</label></td>
+		<td>
+			<input type="text" size="20" maxlength="15" name="sysPassword" id="sysPassword" class="clsTextfield" value="">
+		</td>
+	</tr>
+</table>
+
+<p>U.S.&nbsp;Robotics recommends using a password of eight or more alphanumeric
+characters (such as &ldquo;Canyon79Snow&rdquo; or &ldquo;2Lake6Forest3&rdquo;).
+Please note that the user name and password are case-sensitive.</p>
+
+
+<p class="clsSave">When you&rsquo;re done and are ready to apply all your settings, press <b>Next</b>.</p>
+<p><input type="submit" class="clsBtnSave" name="btnSubmit" value="Next -->"
+	onclick="if (!validateUsername(document.idForm.txtLoginUsername)) return false; if (!validatePassword(document.idForm.sysPassword)) return false;"></p>
+
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

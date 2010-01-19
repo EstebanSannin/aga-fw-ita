@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Quality of Service</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+	<script src="portName.js" type="text/javascript"></script>
+
+   <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+   <script type="text/javascript" src="util.js"></script>
+   <script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnApply() {
+   var loc = 'qoscls.cmd?action=add';
+
+   with ( document.forms[0] ) {
+      if ( txtclsname.value == '' )
+      {
+         alert('Please enter a Quality of Service class name.');
+         return;
+      }
+
+      if (!isValidName(txtclsname.value))
+      {
+         alert('Please enter valid Quality of Service class name. Special characters are not permitted.');
+         return;
+      }
+
+// priority.selected index == 0 is valid value.
+
+// Some conditions are specified by default.
+
+      if (optTraffic[0].checked)
+      {
+		if (srcaddr.value != "" && !isValidIpAddress(srcaddr.value))
+		{
+			alert('Source address "' + srcaddr.value + '" is an invalid IP address.');
+			return;
+		}
+
+		if (srcmask.value != "" && !isValidSubnetMask(srcmask.value))
+		{
+			alert('Source subnet mask "' + srcmask.value + '" is an invalid subnet mask.');
+			return;
+		}
+
+		if ( srcaddr.value == "" && srcmask.value != "" ) {
+			alert('Cannot have source subnet mask without source IP address.');
+			return;
+		}
+
+		if (srcport.value != "" && !isValidPort(srcport.value))
+		{
+			alert('Source port "' + srcport.value + '" is an invalid port number or port range.');
+			return;
+		}
+
+		if (dstaddr.value != "" && !isValidIpAddress(dstaddr.value))
+		{
+			alert('Destination address "' + dstaddr.value + '" is invalid IP address.');
+			return;
+		}
+
+		if (dstmask.value != "" && !isValidSubnetMask(dstmask.value))
+		{
+			alert('Destination subnet mask "' + dstmask.value + '" is an invalid subnet mask.');
+			return;
+		}
+
+		if ( dstaddr.value == "" && dstmask.value != "" ) {
+			alert('Cannot have destination subnet mask without destination IP address.');
+			return;
+			}
+
+		if (dstport.value != "" && !isValidPort(dstport.value))
+		{
+			alert('Destination port "' + dstport.value + '" is invalid port number or port range.');
+			return;
+		}
+
+		if ( (srcport.value != "" || dstport.value != "") &&
+			(protocol.selectedIndex > 2) )
+		{
+			alert("The ports must be entered if the TCP or UDP protocol is selected.");
+			return;
+		}
+      }
+
+      // class name
+      loc += '&clsName=' + encodeUrl(txtclsname.value);
+
+      // priority
+      var idx = priority.selectedIndex;
+      val = priority.options[idx].value;
+      loc += '&priority=' + val;
+
+      // IP precedence bits
+      idx = precedence.selectedIndex;
+      val = precedence.options[idx].value;
+      loc += '&precedence=' + val;
+
+      // IP type of service bits
+      idx = tos.selectedIndex;
+      val = tos.options[idx].value;
+      loc += '&tos=' + val;
+
+      if (optTraffic[0].checked)
+      {
+         // physical lan port ifc name
+         idx = lanIfcName.selectedIndex;
+         val = lanIfcName.options[idx].value;
+         loc += '&lanIfcName=' + val;
+
+         // protocol
+         idx = protocol.selectedIndex;
+         val = protocol.options[idx].value;
+         loc += '&protocol=' + val;
+
+         // VLAN 802.1p priority
+         loc += '&vlan8021p=-1';
+      } 
+      else 
+      {
+         // physical lan port ifc name
+         loc += '&lanIfcName=';
+
+         // protocol
+         loc += '&protocol=-1';
+
+         // VLAN 802.1p priority
+         idx = vlan8021p.selectedIndex;
+         val = vlan8021p.options[idx].value;
+         loc += '&vlan8021p=' + val;
+      }
+
+      // source address
+      if ( srcaddr.value != "" )
+         loc += '&srcAddr=' + srcaddr.value;
+
+      // source subnet mask
+      if ( srcmask.value != "" )
+         loc += '&srcMask=' + srcmask.value;
+
+      // source port
+      if ( srcport.value != "" )
+         loc += '&srcPort=' + srcport.value;
+
+      // destination address
+      if ( dstaddr.value != "" )
+         loc += '&dstAddr=' + dstaddr.value;
+
+      // destination subnet mask
+      if ( dstaddr.value != "" )
+         loc += '&dstMask=' + dstmask.value;
+
+      // destination port
+      if ( dstport.value != "" )
+         loc += '&dstPort=' + dstport.value;
+
+	   // WAN 802.1p priority
+      idx = wanVlan8021p.selectedIndex;
+      val = wanVlan8021p.options[idx].value;
+      loc += '&wanVlan8021p=' + val; 	   
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function manageTrafficOptions()
+{
+	with ( document.forms[0] )
+	{
+		setVisibility("idIPtraffic", optTraffic[0].checked);
+		setVisibility("id8021p", optTraffic[1].checked);
+	   if (optTraffic[1].checked)
+	   {
+	      srcaddr.value = "";
+	      srcmask.value = "";
+	      srcport.value = "";
+	      dstaddr.value = "";
+	      dstmask.value = "";
+	      dstport.value = "";
+              vlan8021p.selectedIndex = 0;
+              lanIfcName.selectedIndex = 0;
+	   }
+	}
+}
+// done hiding -->
+   </script>
+</head>
+<body onload="initMenu(); manageTrafficOptions();">
+
+<script type="text/javascript">
+	writeHeader("Add Network Traffic Class", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<p>This page creates a traffic class rule to classify the upstream traffic,
+		assign queuing priority, and optionally overwrite the IP header TOS byte. A rule
+		consists of a class name and at least one condition below. All of the specified
+		conditions in this classification rule must be satisfied for the rule to take
+		effect. Press <b>Apply</b> to save and activate the rule.</p>
+	<p><label for="txtclsname">Traffic class name:</label>
+		<input type='text' size="20" name="txtclsname" id="txtclsname"></p>
+
+	<h4>Class Priority, IP Precedence, and Type of Service</h4>
+	<p>If a non-zero value is selected for <b>IP Precedence</b> or
+	a value other than "Normal" for <b>IP Type of Service</b>,
+	the corresponding TOS byte in the IP header of the upstream packet will be
+	overwritten by the selected value.</p>
+   <table border="0">
+      <tr>
+         <td><label>ATM transmit priority:</label></td>
+         <td><select name='priority' id='priority'>
+               <option value="0">Low</option>
+               <option value="1">Medium</option>
+               <option value="2">High</option>
+            </select></td>
+      </tr>
+      <tr>
+         <td><label>IP precedence:</label></td>
+         <td><select name='precedence' id='precedence'>
+               <option value="-1" selected>(None)</option>
+               <option value="0">0</option>
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+               <option value="7">7</option>
+            </select></td>
+      </tr>
+      <tr>
+         <td><label>IP type of service:</label></td>
+         <td><select name='tos' id='tos'>
+               <option value="-1" selected>(None)</option>
+               <option value="0">Normal service</option>
+               <option value="2">Minimize cost</option>
+               <option value="4">Maximize reliability</option>
+               <option value="8">Maximize throughput</option>
+               <option value="16">Minimize delay</option>
+            </select></td>
+      </tr>
+      <tr>
+	     <td><label>802.1p (if 802.1q is enabled on WAN):</label></td>
+	     <td><select name="wanVlan8021p" id="wanVlan8021p">
+                           <option value="-1" selected>(None)</option>
+			   <option value="0">0</option>
+			   <option value="1">1</option>
+			   <option value="2">2</option>
+			   <option value="3">3</option>
+			   <option value="4">4</option>
+			   <option value="5">5</option>
+			   <option value="6">6</option>
+			   <option value="7">7</option>
+		    </select></td>
+	</tr>
+	</table>
+
+	<h4>Class Traffic Conditions</h4>
+	<p>Please select a method for controlling the data traffic priority.</p>
+
+	<p>
+		<input type="radio" name="optTraffic" id="optIP" value="trafficIP" onclick="manageTrafficOptions();" checked /> <label for="optIP">IP traffic</label><br/>
+		<input type="radio" name="optTraffic" id="opt8021p" value="traffic8021p" onclick="manageTrafficOptions();" /> <label for="opt8021p">802.1p priority</label>
+	</p>
+
+   <table id="idIPtraffic" border="0">
+      <tr> 
+         <td><label>Physical LAN port:</label></td>
+         <td><select name="lanIfcName" id="lanIfcName">
+             <option value="" selected>(None)</option>
+<script type="text/javascript">
+<!-- hide
+{
+   var i = 0;
+   var interfaceInfo = '';
+   var dispName = '';
+   var brdId = '<%ejGetJS(boardID)%>';
+   
+   interfaceInfo = '<%ejGetOther(bridgeInterfaceInfo, all)%>';
+   var interfaces = interfaceInfo.split('|');
+   interfaces.sort();
+   for ( i = 0; i < interfaces.length; i++ ) {
+      dispName = getUNameByLName(brdId + '|' + interfaces[i]);
+      if (dispName.indexOf('nas_') != -1)
+         continue;      // skip nas_ ifc
+      if (interfaces[i] != '') {
+         document.writeln("  <option value='" + interfaces[i] + "'>" + dispName + "</option>");
+      }
+   }
+}
+// done hiding -->
+</script>
+            </select>
+         </td>
+      </tr>
+      <tr>
+         <td><label>Protocol:</label></td>
+         <td><select name='protocol' id='protocol'>
+               <option value="0">TCP/UDP</option>
+               <option value="1">TCP</option>
+               <option value="2">UDP</option>
+               <option value="3">ICMP</option>
+            </select></td>
+      </tr>
+
+      <tr><th align="left" colspan="2">Source</td></tr>
+      <tr>
+         <td><label for="srcaddr">IP address:</label></td>
+         <td><input type='text' size="20" name="srcaddr" id="srcaddr"></td>
+      </tr>
+      <tr>
+         <td><label for="srcport">UDP/TCP port(s):</label></td>
+         <td><input type='text' size="20" name="srcport" id="srcport"> <label class="clsNote" for="srcport">(port or port:port)</label></td>
+      </tr>
+      <tr>
+         <td><label for="srcmask">Subnet mask:</label></td>
+         <td><input type='text' size="20" name="srcmask" id="srcmask"></td>
+      </tr>
+
+      <tr><th align="left" colspan="2">Destination</th></tr>
+      <tr>
+         <td><label for="dstaddr">IP address:</label></td>
+         <td><input type='text' size="20" name="dstaddr" id="dstaddr"></td>
+      </tr>
+      <tr>
+         <td><label for="dstport">UDP/TCP port(s):</label></td>
+         <td><input type='text' size="20" name="dstport" id="dstport"> <label class="clsNote" for="dstport">(port or port:port)</label></td>
+      </tr>
+      <tr>
+         <td><label for="dstmask">Subnet mask:</label></td>
+         <td><input type='text' size="20" name="dstmask" id="dstmask"></td>
+      </tr>
+   </table>
+
+	<p id="id8021p"><label>802.1p priority:</label>
+		<select name='vlan8021p' id='vlan8021p'>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+		</select>
+	</p>
+
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

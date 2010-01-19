@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Device &raquo; Print Server</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var state = '<%ejGetIppJS(ippRefresh)%>';
+if ( state == '1' ) {
+   var code = 'location = "ippcfg.ipp?ippRefresh=0"';
+   eval(code);
+}
+
+function btnApply() {
+  var loc = 'ippcfg.ipp?ipp_enabled=';
+
+  with( document.forms[0] ) {
+    if( ippEnabled.checked ) {
+
+      loc += '1';
+      if ( (ippMake.value.length == 0)  ||  (ippMake.value.length > 80) ) {
+        alert('The make and model must be between one and 80 characters long, inclusive.');
+        return;
+      }
+      loc += '&ippMake='+encodeUrl(ippMake.value);
+      
+      if ( (ippName.value.length == 0) || (ippName.value.length > 80) ) {
+        alert('The printer name must be between one and 80 characters long, inclusive.');
+        return;
+      }
+      loc += '&ippName='+encodeUrl(ippName.value);
+    }
+    else {
+      loc += '0';
+    }
+  }
+  var code = 'location = "' + loc + '";';
+  eval(code);
+}
+
+function ippEnblChange() {
+  if( document.forms[0].ippEnabled.checked )
+    hideIppConfig(0);
+  else
+    hideIppConfig(1);
+}
+
+function hideIppConfig(hide) {
+  var status = 'visible';
+                                                                                
+  if(hide)
+    status = 'hidden';
+                                                                                
+  if( document.getElementById )
+    document.getElementById('ippConfig').style.visibility = status;
+  else
+    if(!document.layers)
+      document.all.ippConfig.style.visibility = status;
+}
+
+
+function frmLoad() {
+  var i = 0;
+  var ipp_enable = "<%ejGetIppJS(ipp_enabled)%>";
+  var make = "<%ejGetIppJS(ippMake)%>";
+  var p_name = "<%ejGetIppJS(ippName)%>";
+
+  with (document.forms[0]) {
+    if( ipp_enable == "1" ) {
+      ippEnabled.checked = true;
+      ippMake.value = make;
+      ippName.value = p_name;
+    } else {
+      ippEnabled.checked = false;
+    }
+  }
+  ippEnblChange();
+
+  onChangeName();
+}
+
+
+function onChangeName()
+{
+	var elt = document.getElementById("idPrinterIP");
+	if ((elt == null) || !elt.style || (elt.style.display == null))
+		return;
+
+	// The ej() should probably be encoded. -skst
+	elt.innerHTML = "http://<%ejGetJS(ethIpAddress)%>:1631/printers/" + document.forms[0].ippName.value;
+}
+
+// done hiding -->
+	</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Device", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Print Server</h3>
+
+<p>This page allows you to configure support for your printer.</p>
+
+<form id="idForm">
+	<p style="display: none;"><input type="checkbox" name="ippEnabled" id="ippEnabled" onclick="ippEnblChange();"> <label for="ippEnabled">Enable print server</label></p>
+
+	<div id="ippConfig">
+		<table border="0">
+			<tr>
+				<td><label for="ippName">Printer name:</label></td>
+				<td><input type="text" size="50" name="ippName" id="ippName" onchange="onChangeName();"></td>
+			</tr>
+			<tr>
+				<td><label for="ippMake">Comment:</label></td>
+				<td><input type="text" size="50" maxlength="80" name="ippMake" id="ippMake"></td>
+			</tr>
+		</table>
+	</div>
+
+	<p>You will be able to access the printer at <b><span id="idPrinterIP" name="idPrinterIP">http://<%ejGetHTML(ethIpAddress)%>:1631/printers/My_Printer</span></b>.</p>
+        <p>Printer status: <b><%ejGetIppHTML(ippStatus)%></b></p>
+
+	<p><input type="button" value="Save" onClick="btnApply()"></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

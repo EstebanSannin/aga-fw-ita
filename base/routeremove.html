@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+   <script type="text/javascript" src="util.js"></script>
+   <script type="text/javascript">
+<!-- hide
+
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function btnClear() {
+   with ( document.forms[0] ) {
+      dstAddr.value = '';
+      dstMask.value = '';
+   }
+}
+
+function btnApply() {
+   var loc = 'routeremove.cmd?';
+
+   with ( document.forms[0] ) {
+      if ( isValidIpAddress(dstAddr.value) == false ) {
+         msg = 'Destination "' + dstAddr.value + '" has invalid IP address.';
+         alert(msg);
+         return;
+      }
+      if ( isValidIpAddress(dstMask.value) == false ) {
+         msg = 'Subnet mask "' + dstMask.value + '" has invalid IP address.';
+         alert(msg);
+         return;
+      }
+      loc += 'dstAddr=' + dstAddr.value;
+      loc += '&dstMask=' + dstMask.value;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu();">
+
+<script type="text/javascript">
+	writeHeader("Routing", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<form>
+	<h3>Remove Static Route</h3>
+
+	<p>Enter the destination network address, subnet mask and press <b>Apply</b> to remove 
+	the entry from the routing table.</p>
+
+	<table border="0" cellpadding="1" cellspacing="0">
+	   <tr>
+	      <td><label for="dstAddr">Destination network address:</label></td>
+	      <td><input type='text' name='dstAddr' id='dstAddr'></td>
+	   </tr>
+	   <tr>
+	      <td><label for="dstMask">Subnet mask:</label></td>
+	      <td><input type='text' name='dstMask' id='dstMask'></td>
+	   </tr>
+	</table>
+
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

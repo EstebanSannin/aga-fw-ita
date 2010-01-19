@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; Printer Configuration</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="util.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+<script type='text/javascript'>
+<!-- hide
+
+<%roGetP910ndConf()%>
+
+function frmLoad() {
+    with ( document.forms[0] ) {
+	EnableP910nd.checked = ena;
+    }
+}
+
+function btnApply() {
+   var loc = 'do.cgi?page=p910nd&action=modify';
+   var num = -1;
+   var enbl = '1';
+   
+   with ( document.forms[0] ) {
+      loc += '&state=' + EnableP910nd.checked;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>Printer Configuration</h3>
+
+<br>
+p910nd is a small printer daemon that does not spool to disk but passes the job
+directly to the printer.
+The host can connect to the printer using TCP/IP protocol on port 9100.
+<br>
+<br>
+
+<form onSubmit='return false'>
+	<table>
+	<tr><td><label>Enable p910nd:</label></td>
+	<td><input type='checkbox' name='EnableP910nd' id='EnableP910nd' value='0'></td></tr>
+	</table>
+	<p><input type='button' onClick='btnApply()' value='Save'></p>
+</form>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

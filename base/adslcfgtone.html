@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Internet &raquo; ADSL Settings</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function frmLoad() {
+   var tones = '<%ejGetTest(adslTestTones)%>'
+
+   if ( tones.length != 256) {
+      for ( i = 0; i < 256; i++ )
+         document.forms[0].tone[i].checked = true;
+      return;
+   }
+
+   with ( document.forms[0] ) {
+      for ( i = 0; i < 256; i++ ) {
+         if ( tones.charAt(i) == '1' )
+            tone[i].checked = true;
+         else
+            tone[i].checked = false;
+      }
+   }
+}
+
+function applyClick() {
+   var loc = 'adslcfgtone.cmd?adslTestTones=';
+   var toneList = '';
+   with ( document.forms[0] ) {
+      for ( i = 0; i < 256; i++ ) {
+         if ( tone[i].checked == true )
+            toneList += '1';
+         else
+            toneList += '0';
+      }
+      loc += toneList;
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function clearAllClick() {
+   for ( i = 0; i < 256; i++ )
+      document.forms[0].tone[i].checked = false;
+}
+
+function checkAllClick() {
+   for ( i = 0; i < 256; i++ )
+      document.forms[0].tone[i].checked = true;
+}
+
+function closeClick() {
+   window.close();
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="frmLoad();">
+
+<script type="text/javascript">
+	writeHeaderInfo("ADSL Settings");
+</script>
+
+<h3>Tone</h3>
+
+<form>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr><th colspan='16' align="left">Upstream Tones</th></tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone0'><label for='tone0'>0</label></td>
+    <td><input type='checkbox' name='tone' id='tone1'><label for='tone1'>1</label></td>
+    <td><input type='checkbox' name='tone' id='tone2'><label for='tone2'>2</label></td>
+    <td><input type='checkbox' name='tone' id='tone3'><label for='tone3'>3</label></td>
+    <td><input type='checkbox' name='tone' id='tone4'><label for='tone4'>4</label></td>
+    <td><input type='checkbox' name='tone' id='tone5'><label for='tone5'>5</label></td>
+    <td><input type='checkbox' name='tone' id='tone6'><label for='tone6'>6</label></td>
+    <td><input type='checkbox' name='tone' id='tone7'><label for='tone7'>7</label></td>
+    <td><input type='checkbox' name='tone' id='tone8'><label for='tone8'>8</label></td>
+    <td><input type='checkbox' name='tone' id='tone9'><label for='tone9'>9</label></td>
+    <td><input type='checkbox' name='tone' id='tone10'><label for='tone10'>10</label></td>
+    <td><input type='checkbox' name='tone' id='tone11'><label for='tone11'>11</label></td>
+    <td><input type='checkbox' name='tone' id='tone12'><label for='tone12'>12</label></td>
+    <td><input type='checkbox' name='tone' id='tone13'><label for='tone13'>13</label></td>
+    <td><input type='checkbox' name='tone' id='tone14'><label for='tone14'>14</label></td>
+    <td><input type='checkbox' name='tone' id='tone15'><label for='tone15'>15</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone16'><label for='tone16'>16</label></td>
+    <td><input type='checkbox' name='tone' id='tone17'><label for='tone17'>17</label></td>
+    <td><input type='checkbox' name='tone' id='tone18'><label for='tone18'>18</label></td>
+    <td><input type='checkbox' name='tone' id='tone19'><label for='tone19'>19</label></td>
+    <td><input type='checkbox' name='tone' id='tone20'><label for='tone20'>20</label></td>
+    <td><input type='checkbox' name='tone' id='tone21'><label for='tone21'>21</label></td>
+    <td><input type='checkbox' name='tone' id='tone22'><label for='tone22'>22</label></td>
+    <td><input type='checkbox' name='tone' id='tone23'><label for='tone23'>23</label></td>
+    <td><input type='checkbox' name='tone' id='tone24'><label for='tone24'>24</label></td>
+    <td><input type='checkbox' name='tone' id='tone25'><label for='tone25'>25</label></td>
+    <td><input type='checkbox' name='tone' id='tone26'><label for='tone26'>26</label></td>
+    <td><input type='checkbox' name='tone' id='tone27'><label for='tone27'>27</label></td>
+    <td><input type='checkbox' name='tone' id='tone28'><label for='tone28'>28</label></td>
+    <td><input type='checkbox' name='tone' id='tone29'><label for='tone29'>29</label></td>
+    <td><input type='checkbox' name='tone' id='tone30'><label for='tone30'>30</label></td>
+    <td><input type='checkbox' name='tone' id='tone31'><label for='tone31'>31</label></td>
+  </tr>
+
+  <tr><th colspan='16' align="left">Downstream Tones</th></tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone32'><label for='tone32'>32</label></td>
+    <td><input type='checkbox' name='tone' id='tone33'><label for='tone33'>33</label></td>
+    <td><input type='checkbox' name='tone' id='tone34'><label for='tone34'>34</label></td>
+    <td><input type='checkbox' name='tone' id='tone35'><label for='tone35'>35</label></td>
+    <td><input type='checkbox' name='tone' id='tone36'><label for='tone36'>36</label></td>
+    <td><input type='checkbox' name='tone' id='tone37'><label for='tone37'>37</label></td>
+    <td><input type='checkbox' name='tone' id='tone38'><label for='tone38'>38</label></td>
+    <td><input type='checkbox' name='tone' id='tone39'><label for='tone39'>39</label></td>
+    <td><input type='checkbox' name='tone' id='tone40'><label for='tone40'>40</label></td>
+    <td><input type='checkbox' name='tone' id='tone41'><label for='tone41'>41</label></td>
+    <td><input type='checkbox' name='tone' id='tone42'><label for='tone42'>42</label></td>
+    <td><input type='checkbox' name='tone' id='tone43'><label for='tone43'>43</label></td>
+    <td><input type='checkbox' name='tone' id='tone44'><label for='tone44'>44</label></td>
+    <td><input type='checkbox' name='tone' id='tone45'><label for='tone45'>45</label></td>
+    <td><input type='checkbox' name='tone' id='tone46'><label for='tone46'>46</label></td>
+    <td><input type='checkbox' name='tone' id='tone47'><label for='tone47'>47</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone48'><label for='tone48'>48</label></td>
+    <td><input type='checkbox' name='tone' id='tone49'><label for='tone49'>49</label></td>
+    <td><input type='checkbox' name='tone' id='tone50'><label for='tone50'>50</label></td>
+    <td><input type='checkbox' name='tone' id='tone51'><label for='tone51'>51</label></td>
+    <td><input type='checkbox' name='tone' id='tone52'><label for='tone52'>52</label></td>
+    <td><input type='checkbox' name='tone' id='tone53'><label for='tone53'>53</label></td>
+    <td><input type='checkbox' name='tone' id='tone54'><label for='tone54'>54</label></td>
+    <td><input type='checkbox' name='tone' id='tone55'><label for='tone55'>55</label></td>
+    <td><input type='checkbox' name='tone' id='tone56'><label for='tone56'>56</label></td>
+    <td><input type='checkbox' name='tone' id='tone57'><label for='tone57'>57</label></td>
+    <td><input type='checkbox' name='tone' id='tone58'><label for='tone58'>58</label></td>
+    <td><input type='checkbox' name='tone' id='tone59'><label for='tone59'>59</label></td>
+    <td><input type='checkbox' name='tone' id='tone60'><label for='tone60'>60</label></td>
+    <td><input type='checkbox' name='tone' id='tone61'><label for='tone61'>61</label></td>
+    <td><input type='checkbox' name='tone' id='tone62'><label for='tone62'>62</label></td>
+    <td><input type='checkbox' name='tone' id='tone63'><label for='tone63'>63</label></td>
+  </td>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone64'><label for='tone64'>64</label></td>
+    <td><input type='checkbox' name='tone' id='tone65'><label for='tone65'>65</label></td>
+    <td><input type='checkbox' name='tone' id='tone66'><label for='tone66'>66</label></td>
+    <td><input type='checkbox' name='tone' id='tone67'><label for='tone67'>67</label></td>
+    <td><input type='checkbox' name='tone' id='tone68'><label for='tone68'>68</label></td>
+    <td><input type='checkbox' name='tone' id='tone69'><label for='tone69'>69</label></td>
+    <td><input type='checkbox' name='tone' id='tone70'><label for='tone70'>70</label></td>
+    <td><input type='checkbox' name='tone' id='tone71'><label for='tone71'>71</label></td>
+    <td><input type='checkbox' name='tone' id='tone72'><label for='tone72'>72</label></td>
+    <td><input type='checkbox' name='tone' id='tone73'><label for='tone73'>73</label></td>
+    <td><input type='checkbox' name='tone' id='tone74'><label for='tone74'>74</label></td>
+    <td><input type='checkbox' name='tone' id='tone75'><label for='tone75'>75</label></td>
+    <td><input type='checkbox' name='tone' id='tone76'><label for='tone76'>76</label></td>
+    <td><input type='checkbox' name='tone' id='tone77'><label for='tone77'>77</label></td>
+    <td><input type='checkbox' name='tone' id='tone78'><label for='tone78'>78</label></td>
+    <td><input type='checkbox' name='tone' id='tone79'><label for='tone79'>79</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone80'><label for='tone80'>80</label></td>
+    <td><input type='checkbox' name='tone' id='tone81'><label for='tone81'>81</label></td>
+    <td><input type='checkbox' name='tone' id='tone82'><label for='tone82'>82</label></td>
+    <td><input type='checkbox' name='tone' id='tone83'><label for='tone83'>83</label></td>
+    <td><input type='checkbox' name='tone' id='tone84'><label for='tone84'>84</label></td>
+    <td><input type='checkbox' name='tone' id='tone85'><label for='tone85'>85</label></td>
+    <td><input type='checkbox' name='tone' id='tone86'><label for='tone86'>86</label></td>
+    <td><input type='checkbox' name='tone' id='tone87'><label for='tone87'>87</label></td>
+    <td><input type='checkbox' name='tone' id='tone88'><label for='tone88'>88</label></td>
+    <td><input type='checkbox' name='tone' id='tone89'><label for='tone89'>89</label></td>
+    <td><input type='checkbox' name='tone' id='tone90'><label for='tone90'>90</label></td>
+    <td><input type='checkbox' name='tone' id='tone91'><label for='tone91'>91</label></td>
+    <td><input type='checkbox' name='tone' id='tone92'><label for='tone92'>92</label></td>
+    <td><input type='checkbox' name='tone' id='tone93'><label for='tone93'>93</label></td>
+    <td><input type='checkbox' name='tone' id='tone94'><label for='tone94'>94</label></td>
+    <td><input type='checkbox' name='tone' id='tone95'><label for='tone95'>95</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone96'><label for='tone96'>96</label></td>
+    <td><input type='checkbox' name='tone' id='tone97'><label for='tone97'>97</label></td>
+    <td><input type='checkbox' name='tone' id='tone98'><label for='tone98'>98</label></td>
+    <td><input type='checkbox' name='tone' id='tone99'><label for='tone99'>99</label></td>
+    <td><input type='checkbox' name='tone' id='tone100'><label for='tone100'>100</label></td>
+    <td><input type='checkbox' name='tone' id='tone101'><label for='tone101'>101</label></td>
+    <td><input type='checkbox' name='tone' id='tone102'><label for='tone102'>102</label></td>
+    <td><input type='checkbox' name='tone' id='tone103'><label for='tone103'>103</label></td>
+    <td><input type='checkbox' name='tone' id='tone104'><label for='tone104'>104</label></td>
+    <td><input type='checkbox' name='tone' id='tone105'><label for='tone105'>105</label></td>
+    <td><input type='checkbox' name='tone' id='tone106'><label for='tone106'>106</label></td>
+    <td><input type='checkbox' name='tone' id='tone107'><label for='tone107'>107</label></td>
+    <td><input type='checkbox' name='tone' id='tone108'><label for='tone108'>108</label></td>
+    <td><input type='checkbox' name='tone' id='tone109'><label for='tone109'>109</label></td>
+    <td><input type='checkbox' name='tone' id='tone110'><label for='tone110'>110</label></td>
+    <td><input type='checkbox' name='tone' id='tone111'><label for='tone111'>111</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone112'><label for='tone112'>112</label></td>
+    <td><input type='checkbox' name='tone' id='tone113'><label for='tone113'>113</label></td>
+    <td><input type='checkbox' name='tone' id='tone114'><label for='tone114'>114</label></td>
+    <td><input type='checkbox' name='tone' id='tone115'><label for='tone115'>115</label></td>
+    <td><input type='checkbox' name='tone' id='tone116'><label for='tone116'>116</label></td>
+    <td><input type='checkbox' name='tone' id='tone117'><label for='tone117'>117</label></td>
+    <td><input type='checkbox' name='tone' id='tone118'><label for='tone118'>118</label></td>
+    <td><input type='checkbox' name='tone' id='tone119'><label for='tone119'>119</label></td>
+    <td><input type='checkbox' name='tone' id='tone120'><label for='tone120'>120</label></td>
+    <td><input type='checkbox' name='tone' id='tone121'><label for='tone121'>121</label></td>
+    <td><input type='checkbox' name='tone' id='tone122'><label for='tone122'>122</label></td>
+    <td><input type='checkbox' name='tone' id='tone123'><label for='tone123'>123</label></td>
+    <td><input type='checkbox' name='tone' id='tone124'><label for='tone124'>124</label></td>
+    <td><input type='checkbox' name='tone' id='tone125'><label for='tone125'>125</label></td>
+    <td><input type='checkbox' name='tone' id='tone126'><label for='tone126'>126</label></td>
+    <td><input type='checkbox' name='tone' id='tone127'><label for='tone127'>127</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone128'><label for='tone128'>128</label></td>
+    <td><input type='checkbox' name='tone' id='tone129'><label for='tone129'>129</label></td>
+    <td><input type='checkbox' name='tone' id='tone130'><label for='tone130'>130</label></td>
+    <td><input type='checkbox' name='tone' id='tone131'><label for='tone131'>131</label></td>
+    <td><input type='checkbox' name='tone' id='tone132'><label for='tone132'>132</label></td>
+    <td><input type='checkbox' name='tone' id='tone133'><label for='tone133'>133</label></td>
+    <td><input type='checkbox' name='tone' id='tone134'><label for='tone134'>134</label></td>
+    <td><input type='checkbox' name='tone' id='tone135'><label for='tone135'>135</label></td>
+    <td><input type='checkbox' name='tone' id='tone136'><label for='tone136'>136</label></td>
+    <td><input type='checkbox' name='tone' id='tone137'><label for='tone137'>137</label></td>
+    <td><input type='checkbox' name='tone' id='tone138'><label for='tone138'>138</label></td>
+    <td><input type='checkbox' name='tone' id='tone139'><label for='tone139'>139</label></td>
+    <td><input type='checkbox' name='tone' id='tone140'><label for='tone140'>140</label></td>
+    <td><input type='checkbox' name='tone' id='tone141'><label for='tone141'>141</label></td>
+    <td><input type='checkbox' name='tone' id='tone142'><label for='tone142'>142</label></td>
+    <td><input type='checkbox' name='tone' id='tone143'><label for='tone143'>143</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone144'><label for='tone144'>144</label></td>
+    <td><input type='checkbox' name='tone' id='tone145'><label for='tone145'>145</label></td>
+    <td><input type='checkbox' name='tone' id='tone146'><label for='tone146'>146</label></td>
+    <td><input type='checkbox' name='tone' id='tone147'><label for='tone147'>147</label></td>
+    <td><input type='checkbox' name='tone' id='tone148'><label for='tone148'>148</label></td>
+    <td><input type='checkbox' name='tone' id='tone149'><label for='tone149'>149</label></td>
+    <td><input type='checkbox' name='tone' id='tone150'><label for='tone150'>150</label></td>
+    <td><input type='checkbox' name='tone' id='tone151'><label for='tone151'>151</label></td>
+    <td><input type='checkbox' name='tone' id='tone152'><label for='tone152'>152</label></td>
+    <td><input type='checkbox' name='tone' id='tone153'><label for='tone153'>153</label></td>
+    <td><input type='checkbox' name='tone' id='tone154'><label for='tone154'>154</label></td>
+    <td><input type='checkbox' name='tone' id='tone155'><label for='tone155'>155</label></td>
+    <td><input type='checkbox' name='tone' id='tone156'><label for='tone156'>156</label></td>
+    <td><input type='checkbox' name='tone' id='tone157'><label for='tone157'>157</label></td>
+    <td><input type='checkbox' name='tone' id='tone158'><label for='tone158'>158</label></td>
+    <td><input type='checkbox' name='tone' id='tone159'><label for='tone159'>159</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone160'><label for='tone160'>160</label></td>
+    <td><input type='checkbox' name='tone' id='tone161'><label for='tone161'>161</label></td>
+    <td><input type='checkbox' name='tone' id='tone162'><label for='tone162'>162</label></td>
+    <td><input type='checkbox' name='tone' id='tone163'><label for='tone163'>163</label></td>
+    <td><input type='checkbox' name='tone' id='tone164'><label for='tone164'>164</label></td>
+    <td><input type='checkbox' name='tone' id='tone165'><label for='tone165'>165</label></td>
+    <td><input type='checkbox' name='tone' id='tone166'><label for='tone166'>166</label></td>
+    <td><input type='checkbox' name='tone' id='tone167'><label for='tone167'>167</label></td>
+    <td><input type='checkbox' name='tone' id='tone168'><label for='tone168'>168</label></td>
+    <td><input type='checkbox' name='tone' id='tone169'><label for='tone169'>169</label></td>
+    <td><input type='checkbox' name='tone' id='tone170'><label for='tone170'>170</label></td>
+    <td><input type='checkbox' name='tone' id='tone171'><label for='tone171'>171</label></td>
+    <td><input type='checkbox' name='tone' id='tone172'><label for='tone172'>172</label></td>
+    <td><input type='checkbox' name='tone' id='tone173'><label for='tone173'>173</label></td>
+    <td><input type='checkbox' name='tone' id='tone174'><label for='tone174'>174</label></td>
+    <td><input type='checkbox' name='tone' id='tone175'><label for='tone175'>175</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone176'><label for='tone176'>176</label></td>
+    <td><input type='checkbox' name='tone' id='tone177'><label for='tone177'>177</label></td>
+    <td><input type='checkbox' name='tone' id='tone178'><label for='tone178'>178</label></td>
+    <td><input type='checkbox' name='tone' id='tone179'><label for='tone179'>179</label></td>
+    <td><input type='checkbox' name='tone' id='tone180'><label for='tone180'>180</label></td>
+    <td><input type='checkbox' name='tone' id='tone181'><label for='tone181'>181</label></td>
+    <td><input type='checkbox' name='tone' id='tone182'><label for='tone182'>182</label></td>
+    <td><input type='checkbox' name='tone' id='tone183'><label for='tone183'>183</label></td>
+    <td><input type='checkbox' name='tone' id='tone184'><label for='tone184'>184</label></td>
+    <td><input type='checkbox' name='tone' id='tone185'><label for='tone185'>185</label></td>
+    <td><input type='checkbox' name='tone' id='tone186'><label for='tone186'>186</label></td>
+    <td><input type='checkbox' name='tone' id='tone187'><label for='tone187'>187</label></td>
+    <td><input type='checkbox' name='tone' id='tone188'><label for='tone188'>188</label></td>
+    <td><input type='checkbox' name='tone' id='tone189'><label for='tone189'>189</label></td>
+    <td><input type='checkbox' name='tone' id='tone190'><label for='tone190'>190</label></td>
+    <td><input type='checkbox' name='tone' id='tone191'><label for='tone191'>191</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone192'><label for='tone192'>192</label></td>
+    <td><input type='checkbox' name='tone' id='tone193'><label for='tone193'>193</label></td>
+    <td><input type='checkbox' name='tone' id='tone194'><label for='tone194'>194</label></td>
+    <td><input type='checkbox' name='tone' id='tone195'><label for='tone195'>195</label></td>
+    <td><input type='checkbox' name='tone' id='tone196'><label for='tone196'>196</label></td>
+    <td><input type='checkbox' name='tone' id='tone197'><label for='tone197'>197</label></td>
+    <td><input type='checkbox' name='tone' id='tone198'><label for='tone198'>198</label></td>
+    <td><input type='checkbox' name='tone' id='tone199'><label for='tone199'>199</label></td>
+    <td><input type='checkbox' name='tone' id='tone200'><label for='tone200'>200</label></td>
+    <td><input type='checkbox' name='tone' id='tone201'><label for='tone201'>201</label></td>
+    <td><input type='checkbox' name='tone' id='tone202'><label for='tone202'>202</label></td>
+    <td><input type='checkbox' name='tone' id='tone203'><label for='tone203'>203</label></td>
+    <td><input type='checkbox' name='tone' id='tone204'><label for='tone204'>204</label></td>
+    <td><input type='checkbox' name='tone' id='tone205'><label for='tone205'>205</label></td>
+    <td><input type='checkbox' name='tone' id='tone206'><label for='tone206'>206</label></td>
+    <td><input type='checkbox' name='tone' id='tone207'><label for='tone207'>207</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone208'><label for='tone208'>208</label></td>
+    <td><input type='checkbox' name='tone' id='tone209'><label for='tone209'>209</label></td>
+    <td><input type='checkbox' name='tone' id='tone210'><label for='tone210'>210</label></td>
+    <td><input type='checkbox' name='tone' id='tone211'><label for='tone211'>211</label></td>
+    <td><input type='checkbox' name='tone' id='tone212'><label for='tone212'>212</label></td>
+    <td><input type='checkbox' name='tone' id='tone213'><label for='tone213'>213</label></td>
+    <td><input type='checkbox' name='tone' id='tone214'><label for='tone214'>214</label></td>
+    <td><input type='checkbox' name='tone' id='tone215'><label for='tone215'>215</label></td>
+    <td><input type='checkbox' name='tone' id='tone216'><label for='tone216'>216</label></td>
+    <td><input type='checkbox' name='tone' id='tone217'><label for='tone217'>217</label></td>
+    <td><input type='checkbox' name='tone' id='tone218'><label for='tone218'>218</label></td>
+    <td><input type='checkbox' name='tone' id='tone219'><label for='tone219'>219</label></td>
+    <td><input type='checkbox' name='tone' id='tone220'><label for='tone220'>220</label></td>
+    <td><input type='checkbox' name='tone' id='tone221'><label for='tone221'>221</label></td>
+    <td><input type='checkbox' name='tone' id='tone222'><label for='tone222'>222</label></td>
+    <td><input type='checkbox' name='tone' id='tone223'><label for='tone223'>223</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone224'><label for='tone224'>224</label></td>
+    <td><input type='checkbox' name='tone' id='tone225'><label for='tone225'>225</label></td>
+    <td><input type='checkbox' name='tone' id='tone226'><label for='tone226'>226</label></td>
+    <td><input type='checkbox' name='tone' id='tone227'><label for='tone227'>227</label></td>
+    <td><input type='checkbox' name='tone' id='tone228'><label for='tone228'>228</label></td>
+    <td><input type='checkbox' name='tone' id='tone229'><label for='tone229'>229</label></td>
+    <td><input type='checkbox' name='tone' id='tone230'><label for='tone230'>230</label></td>
+    <td><input type='checkbox' name='tone' id='tone231'><label for='tone231'>231</label></td>
+    <td><input type='checkbox' name='tone' id='tone232'><label for='tone232'>232</label></td>
+    <td><input type='checkbox' name='tone' id='tone233'><label for='tone233'>233</label></td>
+    <td><input type='checkbox' name='tone' id='tone234'><label for='tone234'>234</label></td>
+    <td><input type='checkbox' name='tone' id='tone235'><label for='tone235'>235</label></td>
+    <td><input type='checkbox' name='tone' id='tone236'><label for='tone236'>236</label></td>
+    <td><input type='checkbox' name='tone' id='tone237'><label for='tone237'>237</label></td>
+    <td><input type='checkbox' name='tone' id='tone238'><label for='tone238'>238</label></td>
+    <td><input type='checkbox' name='tone' id='tone239'><label for='tone239'>239</label></td>
+  </tr>
+  <tr>
+    <td><input type='checkbox' name='tone' id='tone240'><label for='tone240'>240</label></td>
+    <td><input type='checkbox' name='tone' id='tone241'><label for='tone241'>241</label></td>
+    <td><input type='checkbox' name='tone' id='tone242'><label for='tone242'>242</label></td>
+    <td><input type='checkbox' name='tone' id='tone243'><label for='tone243'>243</label></td>
+    <td><input type='checkbox' name='tone' id='tone244'><label for='tone244'>244</label></td>
+    <td><input type='checkbox' name='tone' id='tone245'><label for='tone245'>245</label></td>
+    <td><input type='checkbox' name='tone' id='tone246'><label for='tone246'>246</label></td>
+    <td><input type='checkbox' name='tone' id='tone247'><label for='tone247'>247</label></td>
+    <td><input type='checkbox' name='tone' id='tone248'><label for='tone248'>248</label></td>
+    <td><input type='checkbox' name='tone' id='tone249'><label for='tone249'>249</label></td>
+    <td><input type='checkbox' name='tone' id='tone250'><label for='tone250'>250</label></td>
+    <td><input type='checkbox' name='tone' id='tone251'><label for='tone251'>251</label></td>
+    <td><input type='checkbox' name='tone' id='tone252'><label for='tone252'>252</label></td>
+    <td><input type='checkbox' name='tone' id='tone253'><label for='tone253'>253</label></td>
+    <td><input type='checkbox' name='tone' id='tone254'><label for='tone254'>254</label></td>
+    <td><input type='checkbox' name='tone' id='tone255'><label for='tone255'>255</label></td>
+  </tr>
+</table>
+<p>
+<input type='button' onClick='checkAllClick()' value='Check All'>
+<input type='button' onClick='clearAllClick()' value='Clear All'>
+<input type='button' onClick='applyClick()' value='Apply'>
+</p>
+<!--<input type='button' onClick='closeClick()' value='Close'>-->
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

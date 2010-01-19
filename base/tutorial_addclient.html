@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   (c) 2004-2005 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>How to Add a New Client Tutorial</title>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+<script type="text/javascript">
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function initializePage()
+{
+	initializeSecurity("<%ejGetWlJS(wlAuthMode)%>", "<%ejGetWlJS(wlWep)%>");
+
+	switch ("<%ejGetWlJS(wlFltMacMode)%>")
+	{
+		case "disabled":
+			break;
+
+		case "allow":
+			setVisibility("idMACfiltering", true);
+			setVisibility("idMACallow1", true);
+			setVisibility("idMACallow2", true);
+			break;
+
+		case "deny":
+			setVisibility("idMACfiltering", true);
+			setVisibility("idMACdeny1", true);
+			setVisibility("idMACdeny2", true);
+			break;
+
+		default:
+			break;
+	}
+
+	if ("<%ejGetWlJS(wlHide)%>" == "0")
+		setVisibility("idSSIDbon", true);
+	else
+		setVisibility("idSSIDboff", true);
+
+
+	switch ("<%ejGetWlJS(wlAuthMode)%>")
+	{
+		case "open":
+		case "shared":
+			if ("<%ejGetWlJS(wlWep)%>" == "enabled")
+				setVisibility("idAuthWEP", true);
+			else
+				setVisibility("idAuthNone", true);
+			break;
+
+		case "psk":
+		case "psk2":
+		case "psk2mix":
+			setVisibility("idAuthWPA", true);
+			break;
+
+		case "wpa":
+		case "wpa2":
+		case "wpa2mix":
+		case "radius":
+			setVisibility("idAuthRADIUS", true);
+			break;
+
+		default:
+			setVisibility("idAuthNone", true);
+			break;
+	}
+}
+</script>
+<style type="text/css">
+.clsHighlight
+{
+	font-weight:		bold;
+	background-color:	#FEFAF2;
+	border:				1px solid silver;
+	padding:				0 0.2em;
+	text-align:			center;
+	line-height:		150%;
+}
+
+DIV#idPanelHelp
+{
+	float:			right;
+	width:			30%;
+	margin-left:	0.3em;
+	margin-bottom:	0.3em;
+	padding:			0.5em 0.3em 1em 1em;
+
+	background-color:	#FEFAF2;
+	border:				1px dashed gray;
+}
+
+DIV#idPanelHelp H1
+{
+	font-family:	Verdana, Arial, sans-serif;
+	font-size:		small;
+}
+
+DIV#idPanelHelp P
+{
+	font-family:	Georgia, Times New Roman, serif;
+}
+</style>
+</head>
+
+<body onload="initializePage();">
+
+<script type="text/javascript">
+	writeHeaderInfo("Tutorial");
+</script>
+
+<h3>How do I add a new wireless client to my network?</h3>
+
+<p class="clsNote"><a href="javascript:print();">Print this page</a></p>
+
+<p>When you add a new wireless client to an existing network, there are certain
+pieces of information you need to have. The router may provide some of this
+information to the client automatically, but if it doesn&rsquo;t, you
+will have to enter it yourself.</p>
+
+<p>When you install a wireless adapter in a computer running Windows,
+it usually comes with a utility that is installed on the computer and
+displays an icon in the taskbar&rsquo;s notification area.
+Windows&nbsp;XP also provides its own mechanism for managing wireless adapters.
+One thing all wireless devices have in common is that they have some way to
+configure the wireless connection.</p>
+
+<p>Although there are many different wireless devices, they use almost identical
+terms for the information they require to establish a wireless connection.</p>
+
+
+<div id="idPanelHelp">
+
+	<h1>Client Reference Sheet</h1>
+
+	<table border="0">
+		<tr>
+			<td><label>Network&nbsp;name:</label></td>
+			<td class="clsStatic"><%ejGetWlHTML(wlSsid)%></td>
+		</tr>
+
+		<tr>
+			<td><label>Method:</label></td>
+			<td class="clsStatic"><script type="text/javascript">document.write(getSecurityMethod("<%ejGetWlJS(wlAuthMode)%>", "<%ejGetWlJS(wlWep)%>"));</script></td>
+		</tr>
+
+		<tr id="idEncrypt" style="display: none;">
+			<td><label>Encryption:</label></td>
+	   	<td class="clsStatic"><script type="text/javascript">document.write(getEncryption("<%ejGetWlJS(wlWpa)%>"));</script></td>
+		</tr>
+		<tr id="idKeyWPA" style="display: none;">
+			<td><label>Pass phrase:</label></td>
+			<td class="clsStatic"><%ejGetWlHTML(wlWpaPsk)%></td>
+		</tr>
+
+		<tr id="idKey8021x1" style="display: none;">
+			<td><label>RADIUS server:</label></td>
+			<td class="clsStatic"><%ejGetWlHTML(wlRadiusServerIP)%></td>
+		</tr>
+		<tr id="idKey8021x2" style="display: none;">
+			<td><label>RADIUS port:</label></td>
+			<td class="clsStatic"><%ejGetWlHTML(wlRadiusPort)%></td>
+		</tr>
+		<tr id="idKey8021x3" style="display: none;">
+			<td><label>RADIUS key:</label></td>
+			<td class="clsStatic"><%ejGetWlHTML(wlRadiusKey)%></td>
+		</tr>
+
+		<tr valign="top" id="idKeyWEP" style="display: none;">
+			<td rowspan="4">Keys:</label></td>
+			<td class="clsStatic"><script type="text/javascript">document.write(getWEPkey("<%ejGetWlJS(wlKeyIndex)%>", "<%ejGetWlJS(wlKey1)%>", "<%ejGetWlJS(wlKey2)%>", "<%ejGetWlJS(wlKey3)%>", "<%ejGetWlJS(wlKey4)%>"));</script></td>
+		</tr>
+	</table>
+
+	<!-- MAC filtering on? -->
+	<p id="idMACallow1" style="display: none;">MAC filtering is allowing only specified devices.</p>
+	<p id="idMACdeny1" style="display: none;">MAC filtering is denying only specified devices.</p>
+</div>
+
+
+<h3>1. Network name (SSID)</h3>
+
+<p>The first thing a wireless client needs to know is the network name or SSID,
+which is set on the router.</p>
+
+<p>The network name of this router is <span class="clsHighlight"><%ejGetWlHTML(wlSsid)%></span>.</p>
+
+<!-- SSID BROADCAST? -->
+<p id="idSSIDbon" style="display: none;">Since the router is broadcasting its network name,
+you don&rsquo;t have to enter it into the wireless device&rsquo;s utility.
+You should be able to perform a &ldquo;site survey&rdquo; or &ldquo;scan&rdquo; and the
+utility will indicate that it&rsquo;s found the router&rsquo;s network name.</p>
+<p id="idSSIDboff" style="display: none;">The router is not broadcasting its network name,
+so you will need to enter it into the wireless device&rsquo;s utility. Most utilities
+are different, but there is usually a mechanism for creating a &ldquo;profile&rdquo;
+and entering the necessary information.</p>
+
+
+<h3>2. Security</h3>
+
+<p>In order for a wireless client to communicate with a router using security,
+it must use the same method.
+Security for wireless communication consists of an authentication method (which controls
+which devices can connect to the router) and an encryption method (which prevents someone from
+&ldquo;reading&rdquo; the data being sent between a wireless client and the router.</p>
+
+<!-- Display appropriate security paragraph -->
+<!--	No security -->
+	<p id="idAuthNone" style="display: none;">The router is insecure, so the client device may already be able to connect to it.</p>
+<!--	WEP -->
+	<p id="idAuthWEP" style="display: none;">
+	The router&rsquo;s authentication method is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getSecurityMethod("<%ejGetWlJS(wlAuthMode)%>", "<%ejGetWlJS(wlWep)%>"));
+	</script>
+	</span>.
+	The encryption method is <span class="clsHighlight">WEP</span> and
+	the encryption key is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getWEPkey("<%ejGetWlJS(wlKeyIndex)%>", "<%ejGetWlJS(wlKey1)%>", "<%ejGetWlJS(wlKey2)%>", "<%ejGetWlJS(wlKey3)%>", "<%ejGetWlJS(wlKey4)%>") + "<\/span>.");
+	</script>
+	You may also need to select the type of encryption key, which is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getWEPkeyType(getWEPkey("<%ejGetWlJS(wlKeyIndex)%>", "<%ejGetWlJS(wlKey1)%>", "<%ejGetWlJS(wlKey2)%>", "<%ejGetWlJS(wlKey3)%>", "<%ejGetWlJS(wlKey4)%>")) + "<\/span>.<\/p>");
+	</script>
+<!--	WPA PSK -->
+	<p id="idAuthWPA" style="display: none;">
+	The router&rsquo;s authentication method is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getSecurityMethod("<%ejGetWlJS(wlAuthMode)%>", "<%ejGetWlJS(wlWep)%>") + "<\/span>,");
+	</script>
+	the encryption method is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getEncryption("<%ejGetWlJS(wlWpa)%>") + "<\/span>,");
+	</script>
+	and the encryption key is <span class="clsHighlight"><%ejGetWlHTML(wlWpaPsk)%></span>.</p>
+<!--	802.1X/RADIUS -->
+	<p id="idAuthRADIUS" style="display: none;">
+	The router&rsquo;s authentication method is <span class="clsHighlight">
+	<script type="text/javascript">
+		document.write(getSecurityMethod("<%ejGetWlJS(wlAuthMode)%>", "<%ejGetWlJS(wlWep)%>") + "<\/span>;");
+	</script>
+	the RADIUS server is <span class="clsHighlight"><%ejGetWlHTML(wlRadiusServerIP)%></span>;
+	the RADIUS port is <span class="clsHighlight"><%ejGetWlHTML(wlRadiusPort)%></span>;
+	the RADIUS key is <span class="clsHighlight"><%ejGetWlHTML(wlRadiusKey)%></span>.</p>
+
+
+<!-- Only display this section if MAC filtering is enabled -->
+<div id="idMACfiltering" style="display: none;">
+<h3>3. MAC Filtering</h3>
+
+	<!-- MAC filtering on? -->
+	<div id="idMACallow2" style="display: none;">
+		<p>Since this router has MAC filtering enabled and is allowing only certain
+		wireless devices to connect, you need to ensure that the client device&rsquo;s
+		MAC address is permitted to connect to the router.</p>
+		<p>One way to do this is to turn off MAC filtering and configure the client
+		device to connect to the router. After that&rsquo;s completed, you can use
+		the router&rsquo;s <strong>Allow Current Clients</strong> feature to
+		automatically add the new client to the list of allowed devices and re-enable MAC filtering.</p>
+	</div>
+	<p id="idMACdeny2" style="display: none;">
+	Since this router has MAC filtering enabled and is denying certain wireless
+	devices the ability to connect, you need to ensure that the client device&rsquo;s
+	MAC address is not in the list of devices to be denied.</p>
+
+<p>A MAC address is a set of six bytes typically separated by colons or dashes or spaces.
+(A byte consists of two hexadecimal digits&mdash;0-9 and A-F.)
+For example: &ldquo;<label>00:C0:49:AA:22:43</label>.&rdquo;</p>
+
+<p>These are some ways you may be able to determine the client device&rsquo;s MAC address:
+<ul>
+	<li>The MAC address is typically displayed on the device itself or on the device&rsquo;s packaging.</li>
+	<li>If the device is running Windows XP, 2000, or NT and you&rsquo;re familiar with the command prompt,
+	you can use the &ldquo;ipconfig /all&rdquo; command to display the MAC address.</li>
+	<li>If the device is running Windows Me, 98, or 95 and you&rsquo;re familiar with the command prompt,
+	you can use the &ldquo;winipcfg&rdquo; command to display the MAC address.</li>
+	<li>The device&rsquo;s wireless configuration utility typically displays the MAC address somewhere.</li>
+</ul>
+</p>
+
+<p>You can configure MAC filtering on the <a href="wlmacflt.cmd">Security</a> page.</p>
+</div>
+
+<h3>Troubleshooting</h3>
+
+<p>If a wireless device cannot connect, the wrong encryption method may be
+selected or the key may be entered incorrectly.
+Double-check the device&rsquo;s wireless configuration utility to ensure
+you&rsquo;ve entered everything correctly.
+Make sure the wireless device has &ldquo;Infrastructure&rdquo; selected as the network type.
+</p>
+
+<p>You should also make certain that the router and client device are positioned so that their
+transmissions can reach each other.
+If possible, try to configure them when they are positioned next to each other.</p>
+
+<!-- MAC filtering on? -->
+	<p id="idMACallow3" style="display: none;">Since this router has
+	<span class="clsHighlight">MAC filtering configured to allow only certain devices</span>
+	to connect, the client device&rsquo;s MAC address might not be in the list of
+	devices permitted to connect to the router.
+	You can configure MAC filtering on the <a href="wlmacflt.cmd">Security</a> page.</p>
+	<p id="idMACdeny3" style="display: none;">Since this router has
+	<span class="clsHighlight">MAC filtering configured to deny certain devices</span>,
+	the client device&rsquo;s MAC address might be in the list of devices to be denied.
+	You can configure MAC filtering on the <a href="wlmacflt.cmd">Security</a> page.</p>
+
+
+<p class="clsNote"><a href="info.html">Back to the Status page</a></p>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

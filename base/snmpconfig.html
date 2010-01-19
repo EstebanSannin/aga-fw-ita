@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Device &raquo; SNMP</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+   <meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var state = '<%ejGetJS(snmpRefresh)%>';
+if ( state == '1' ) {
+   var code = 'location = "snmpconfig.cgi?snmpRefresh=0"';
+   eval(code);
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      status[<%ejGetJS(snmpStatus)%>].checked = true;
+      rocommunity.value = '<%ejGetJS(snmpRoCommunity)%>';
+      rwcommunity.value = '<%ejGetJS(snmpRwCommunity)%>';
+      sysName.value = '<%ejGetJS(snmpSysName)%>';
+      sysContact.value = '<%ejGetJS(snmpSysContact)%>';
+      sysLocation.value = '<%ejGetJS(snmpSysLocation)%>';
+      trapIp.value = '<%ejGetJS(snmpTrapIp)%>';
+   }
+}
+
+function btnApply() {
+   var loc = 'snmpconfig.cgi?';
+   with ( document.forms[0] ) {
+      if (rocommunity.value == '') {
+         alert('Read community is required.');
+         return;
+      }
+      if (rwcommunity.value == '') {
+         alert('Set community is required.');
+         return;
+      }
+      if ( status[1].checked == true )
+         loc += 'snmpStatus=1';
+      else
+         loc += 'snmpStatus=0';
+      if (rocommunity.value.length > 15) {
+         alert('The length of read community (' + rocommunity.value.length + ') is too long [0-15].');
+         return;
+      }
+      loc += '&snmpRoCommunity=' + encodeUrl(rocommunity.value);
+      if (rwcommunity.value.length > 15) {
+         alert('The length of set community (' + rwcommunity.value.length + ') is too long [0-15].');
+         return;
+      }
+      loc += '&snmpRwCommunity=' + encodeUrl(rwcommunity.value);
+      if (sysName.value.length > 15) {
+         alert('The length of sysName (' + sysName.value.length + ') is too long [0-15].');
+         return;
+      }
+      loc += '&snmpSysName=' + encodeUrl(sysName.value);
+      if (sysContact.value.length > 15) {
+         alert('The length of sysContact (' + sysContact.value.length + ') is too long [0-15].');
+         return;
+      }
+      loc += '&snmpSysContact=' + encodeUrl(sysContact.value);
+      if (sysLocation.value.length > 15) {
+         alert('The length of sysLocation (' + sysLocation.value.length + ') is too long [0-15].');
+         return;
+      }
+      loc += '&snmpSysLocation=' + encodeUrl(sysLocation.value);
+      if ( isValidIpAddress(trapIp.value) == false &&  trapIp.value != '0.0.0.0') {
+         alert('Trap Management IP address "' + trapIp.value + '" is invalid IP address.');
+         return;
+      }
+      loc += '&snmpTrapIp=' + trapIp.value;
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Device", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>SNMP</h3>
+
+<p>Simple Network Management Protocol (SNMP) allows a management application to
+retrieve statistics and status from the SNMP agent in this device.</p>
+
+<p>Select the desired values and press <b>Apply</b> to configure the SNMP options.</p>
+
+<form>
+	<p>
+	    <input name='status' id="optSNMPDisable" type='radio'> <label for="optSNMPDisable">Disable SNMP agent</label><br>
+	    <input name='status' id="optSNMPEnable" type='radio'> <label for="optSNMPEnsable">Enable SNMP agent</label>
+	</p>
+
+   <table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+         <td><label for="rocommunity">Read community:</label></td>
+         <td><input type='text' name='rocommunity' id='rocommunity' size="20"></td>
+      </tr>
+      <tr>
+         <td><label for="rwcommunity">Set community:</label></td>
+         <td><input type='text' name='rwcommunity' id='rwcommunity' size="20"></td>
+      </tr>
+      <tr>
+         <td><label for="sysName">System name:</label></td>
+         <td><input type='text' name='sysName' id='sysName' size="20"></td>
+      </tr>
+      <tr>
+         <td><label for="sysLocation">System location:</label></td>
+         <td><input type='text' name='sysLocation' id='sysLocation' size="20"></td>
+      </tr>
+      <tr>
+         <td><label for="sysContact">System contact:</label></td>
+         <td><input type='text' name='sysContact' id='sysContact' size="20"></td>
+      </tr>
+      <tr>
+         <td><label for="trapIp">Trap manager IP:</label></td>
+         <td><input type='text' name='trapIp' id='trapIp' size="20"></td>
+      </tr>
+   </table>
+
+   <p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

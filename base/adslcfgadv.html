@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Internet &raquo; ADSL Settings</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function frmLoad() {
+   document.forms[0].mode[eval('<%ejGetTest(adslTestMode)%>')].checked = true;
+}
+
+function applyClick() {
+   var loc = 'adslcfgadv.cmd?adslTestMode=';
+   
+   for (i = 0; i < 5; i++)
+      if (document.forms[0].mode[i].checked == true)
+         break;
+   loc += i;
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function toneClick() {
+   window.open('adslcfgtone.html', 'BCM96345DSLCfgTone', 'menubar=no,resizable=yes,scrollbars=yes,titlebar=yes,toolbar=no,width=640,height=480');
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("ADSL Settings", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Advanced</h3>
+
+<form>
+<p>Select the test mode:</p>
+<p>
+	<input type="radio" name="mode" id="modeNormal" checked> <label for="modeNormal">Normal</label><br>
+	<input type="radio" name="mode" id="modeReverb"> <label for="modeReverb">Reverb</label><br>
+	<input type="radio" name="mode" id="modeMedley"> <label for="modeMedley">Medley</label><br>
+	<input type="radio" name="mode" id="modeNo"> <label for="modeNo">No retrain</label><br>
+	<input type="radio" name="mode" id="modeL3"> <label for="modeL3">L3</label>
+</p>
+
+	<p>
+		<input type='button' onClick='applyClick()' value='Apply'>
+		<input type='button' onClick='toneClick()' value='Tone Selection'>
+	</p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

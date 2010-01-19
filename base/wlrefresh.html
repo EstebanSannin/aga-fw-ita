@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+<script type="text/javascript">
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var wltempPage = '<%ejGetWirelessRefresh()%>';
+var wltargetPage = '<%ejGetWirelessPage()%>';
+var wlRefresh = '<%ejGetWlJS(wlRefresh)%>';
+
+// shared function to refresh a page
+function refreshPage(page) {
+      var code = 'location = "' + page + '"'; 
+      eval(code); 
+}
+// shared wrapper function to refresh a page
+function autoRefresh(val, refresh, page) {
+   
+   if ( val == '1' ) {       
+        setTimeout('refreshPage("'+ refresh + '")' ,6000);                                 
+   } else {
+        refreshPage(page);
+   }
+}
+autoRefresh(wlRefresh, wltempPage, wltargetPage);
+</script>
+</head>
+<body>
+<script type="text/javascript">
+	writeHeaderInfo("Wireless Configuration");
+</script>
+<p>The router is configuring the wireless network. Please wait&hellip;</p>
+</body>
+</html>

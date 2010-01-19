@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Internet &raquo; Default Gateway</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var gtwyMem = '<%ejGetJS(defaultGateway)%>';
+var gtwyIfc = '<%ejGetOther(sysInfo, dfltGwIfc)%>';
+if ( gtwyIfc == '&nbsp;' ) gtwyIfc = '';
+var gtwy = '<%ejGetOther(sysInfo, dfltGw)%>';
+if ( gtwy == '&nbsp;' ) gtwy = '';
+var enblAuto = '<%ejGetJS(enblAuto)%>';
+var ipExt = '<%ejGetOther(sysInfo, pppIpExtension)%>';
+
+function hideGWInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 )
+      status = 'hidden';
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('gwInfo').style.visibility = status;
+   else {
+      if (document.layers == false) // IE4
+         document.all.gwInfo.style.visibility = status;
+   }
+
+   if (hide == 0) {
+      with ( document.forms[0] ) {
+         if ( isValidIpAddress(gtwy) == true ) {
+            gwStr.checked = true; 
+            dstGtwy.value = gtwy;
+         } else {
+            gwStr.checked = false; 
+            dstGtwy.value = '';
+         }
+         if ( gtwyIfc !=  '' ) 
+            ifStr.checked = true;
+         else
+            ifStr.checked = false;
+      }        
+   }
+}
+
+
+function gwClick(cb) {
+   if (cb.checked == true)
+      hideGWInfo(1);
+   else
+      hideGWInfo(0);
+}
+
+function btnApply() {
+   var loc = 'rtdefaultcfg.cgi?';
+
+   with ( document.forms[0] ) {
+      if (enableAuto.checked == false && gwStr.checked == false && ifStr.checked == false) {
+         alert('A default gateway has to be selected.');
+         return;
+      }
+      if (enableAuto.checked == true) {
+         loc += 'enblAuto=1';
+      }
+      else {
+         loc += 'enblAuto=0';
+         if (gwStr.checked == true ) { 
+            if ( isValidIpAddress(dstGtwy.value) == false ) {
+               alert('Configure default gateway failed. Invalid argument or Interface is down.');
+               return;
+            }
+            loc += '&defaultGateway=' + dstGtwy.value;
+         }
+         else
+            loc += '&defaultGateway=' + '0.0.0.0';
+         if (ifStr.checked == true) {
+            var idx = wanIf.selectedIndex;
+            var ifc = wanIf.options[idx].value;
+            // if chosen interface is MER but does not specify static IP address then display error
+            if ( ifc.indexOf('nas_') != -1 && gwStr.checked == false ) {
+               alert('Default gateway IP address should be specified since MER interface is selected.');
+               return;
+            }
+            loc += '&wanIfName=' + ifc;
+         }
+         else
+            loc += '&wanIfName=' + '';
+      }
+   }
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      if (enblAuto == 1) {
+         enableAuto.checked = true;
+         hideGWInfo(1);
+      } else {
+         enableAuto.checked = false;
+         hideGWInfo(0);
+      }
+   }
+}
+
+function btnReset() {
+   var loc = 'rebootinfo.cgi';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+   
+// done hiding -->
+</script>
+   </head>
+   <body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Internet", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+
+<h3>Default Gateway</h3>
+
+<p>If the <b>Automatically-assigned default gateway</b> check box is selected, this 
+gateway will accept the first received default gateway assignment from one of 
+the PPPoA, PPPoE, or MER/DHCP enabled PVC(s). If the check box is cleared, 
+enter the static default gateway and/or select a WAN interface.
+Press <b>Apply</b> to save it.</P>
+
+<p><b>Note:</b> If you select the <b>Automatically-assigned default gateway</b>
+check box, you must restart the router to obtain an automatically-assigned default gateway.
+</p>
+
+<form>
+	<p><input type='checkbox' name='enableAuto' id='enableAuto' onclick='gwClick(this)'>
+		<label for="enableAuto">Automatically-assigned default gateway</label></p>
+
+	<div id='gwInfo'>
+	   <table>
+	      <tr>
+	         <td><input type="checkbox" name='gwStr' id='gwStr'> <label for="gwStr">Use default gateway IP address:</label></td>
+	         <td><input type='text' name='dstGtwy' id='dstGtwy'></td>
+	      </tr>
+	      <tr>
+	         <td><input type="checkbox" name='ifStr' id='ifStr'> <label for="ifStr">Use WAN interface:</label></td>
+	         <td><select name='wanIf' id='wanIf'>
+	               <script type="text/javascript">
+<!-- hide 
+{
+   var i = 0;
+   var interfaceInfo = '<%ejGetOther(wanInterfaceInfo, route)%>';
+   var interfaces = interfaceInfo.split('|');
+   
+   for ( i = 0; i < interfaces.length; i++ ) {
+      var names = interfaces[i].split('/');
+      if ( names[1] == gtwyIfc )
+         document.write("  <option value='" + names[1] + "' selected>");
+      else
+         document.write("  <option value='" + names[1] + "'>");
+      document.writeln(interfaces[i]);
+   }
+   if (gtwyIfc == 'br0')
+      document.writeln("  <option value='br0' selected> LAN/br0");
+   else
+      document.writeln("  <option value='br0'> LAN/br0");
+}
+// done hiding -->
+</script>
+				</select></td>
+	      </tr>
+	   </table>
+	</div>
+
+	<p><input type='button' onClick='btnApply()' value='Apply'>
+   	<input type='button' onClick='btnReset()' value='Restart'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

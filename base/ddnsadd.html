@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>DNS Add</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+function ddnsChange() {
+  with ( document.forms[0] ) {
+    var ddns = ddnsMode[ddnsMode.selectedIndex].value;
+
+    switch( ddns ) {
+    case "dyndns":
+    case "dtdns":
+    case "noip":
+      hideDDNSInfo( 0 );
+      hideTZOInfo( 1 );
+      hideDynDNSInfo( 0 );
+      break;
+    case "tzo":
+      hideDDNSInfo( 0 );
+      hideTZOInfo( 0 );
+      hideDynDNSInfo( 1 );
+      break;
+    }
+  }
+}
+
+function hideDDNSInfo(hide) {
+  var status = 'visible';
+  if ( hide == 1 )
+    status = 'hidden';
+  if (document.getElementById) // DOM3 = IE5, NS6
+    document.getElementById('ddnsInfo').style.visibility = status;
+  else {
+    if (document.layers) { // NS4
+      with ( document.forms[0] ) {
+        if ( hide == 1 ) {
+          ddnsHostname.value = '';
+        } else {
+          ddnsHostname.value = 'Host name';
+        }
+      }
+    } else {
+      document.all.ddnsInfo.style.visibility = status;
+    }
+  }
+}
+
+function hideDynDNSInfo(hide) {
+  var status = 'visible';
+  if ( hide == 1 )
+    status = 'hidden';
+  if (document.getElementById) // DOM3 = IE5, NS6
+    document.getElementById('dyndnsInfo').style.visibility = status;
+  else {
+    if (document.layers) { // NS4
+      with ( document.forms[0] ) {
+        if ( hide == 1 ) {
+          dyndnsHostname.value = '';
+        } else {
+          dyndnsHostname.value = 'Host name';
+        }
+      }
+    } else {
+      document.all.ddnsInfo.style.visibility = status;
+    }
+  }
+}
+
+function hideTZOInfo(hide) {
+  var status = 'visible';
+  if ( hide == 1 )
+    status = 'hidden';
+  if (document.getElementById) // DOM3 = IE5, NS6
+    document.getElementById('tzoInfo').style.visibility = status;
+  else {
+    if (document.layers) { // NS4
+      with ( document.forms[0] ) {
+        if ( hide == 1 ) {
+          tzoEmail.value = '';
+          tzoKey.value = '';
+        } else {
+          tzoEmail.value = 'Name';
+          tzoKey.value = 'Password';
+        }
+      }
+    } else {
+      document.all.ddnsInfo.style.visibility = status;
+    }
+  }
+}
+
+function frmLoad() {
+  with (document.forms[0]) {
+    ddnsMode.selectedIndex = 0;
+  }
+
+  ddnsChange();
+}
+
+function btnApply(place) {
+  var loc = place + '?action=add&service=';
+
+  if ( place == "ddnsmngr.cmd" ) {
+    with ( document.forms[0] ) {
+      switch( ddnsMode[ddnsMode.selectedIndex].value ) {
+      case 'noip':
+        loc += '3';
+        break;
+      case 'dtdns':
+        loc += '2';
+        break;
+      case 'dyndns':
+        loc += '1';
+        break;
+      case 'tzo':
+        loc += '0';
+        break;
+      }
+
+      switch( ddnsMode[ddnsMode.selectedIndex].value ) {
+      case "dyndns":
+      case "dtdns":
+      case "noip":
+        update_username = dyndnsUsername.value;
+        update_password = dyndnsPassword.value;
+        break;
+      case "tzo":
+        update_username = tzoEmail.value;
+        update_password = tzoKey.value;
+        break;
+      }
+
+      if ( update_username.length == 0 ) {
+        if ( ddnsMode[ddnsMode.selectedIndex].value == 'dyndns' ||
+             ddnsMode[ddnsMode.selectedIndex].value == 'dtdns' ||
+             ddnsMode[ddnsMode.selectedIndex].value == 'noip' )
+          alert('Empty username.' );
+        else
+          alert('Invalid Email address.' );
+        return;
+      }
+      loc += '&username=' + update_username;
+
+      if ( update_password.length == 0 ) {
+        if ( ddnsMode[ddnsMode.selectedIndex].value == 'dyndns' ||
+             ddnsMode[ddnsMode.selectedIndex].value == 'dtdns' ||
+             ddnsMode[ddnsMode.selectedIndex].value == 'noip' )
+          alert('Empty password.' );
+        else
+          alert('Invalid key.' );
+        return;
+      }
+      loc += '&password=' + update_password;
+
+      if ( ddnsHostname.value.length == 0 ) {
+        alert('Please enter a host name.');
+        return;
+      }
+      loc += '&hostname=' + ddnsHostname.value;
+
+      loc += '&iface=' + ddnsInterface[ddnsInterface.selectedIndex].value;
+    }
+    var code = 'location = "' + loc + '"';
+    eval(code);
+  }
+}
+// done hiding -->
+	</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("Dynamic DNS", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+
+<form>
+	<h3>Add Dynamic DDNS</h3>
+
+	<p>This page allows you to add a Dynamic DNS address from
+	selected dynamic DNS servers.</p>
+
+<p><label for="">Dynamic DNS provider:</label>
+	<select name="ddnsMode" id="ddnsMode" onChange='ddnsChange()'>
+		<option value="dyndns">DynDNS.org</option>
+		<option value="dtdns">DtDNS.net</option>
+		<option value="noip">No-IP.com</option>
+		<option value="tzo">TZO</option>
+	</select>
+</p>
+
+	<div id="ddnsInfo">
+	 <table border="0">
+	   <tr>
+	     <td><label for="ddnsHostname">Host name:</label></td>
+	     <td><input type="text" name="ddnsHostname" id="ddnsHostname"></td>
+	   </tr>
+	   <tr>
+	     <td><label for="">Interface:</label></td>
+	     <td><select name="ddnsInterface" id="ddnsInterface">
+	        <script type="text/javascript">
+<!-- hide
+{
+   var interfaceInfo = '<%ejGetOther(wanInterfaceInfo, route)%>';
+   var interfaces = interfaceInfo.split("|");
+ 
+   for (var i = 0; i < interfaces.length; i++)
+   {
+      var names = interfaces[i].split("/");
+      document.write("<option value=\"" + names[1] + "\">");
+      document.writeln(interfaces[i]);
+      document.writeln("</option>");
+   }
+   document.writeln("  <option value=\"br0\">LAN/br0</option>");
+}
+// done hiding -->
+</script>
+        </select></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="dyndnsInfo">
+    <h3>Dynamic DNS Settings</h3>
+    <table border="0">
+      <tr>
+        <td><label for="dyndnsUsername">User name:</label></td>
+        <td><input type="text" length="50" name="dyndnsUsername" size="20" maxlen="64"></td>
+      </tr>
+      <tr>
+        <td><label for="dyndnsPassword">Password:</label></td>
+        <td><input type="text" length="50" name="dyndnsPassword" id="dyndnsPassword"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="tzoInfo">
+    <h3>TZO Settings</h3>
+    <table border="0">
+      <tr>
+        <td><label for="tzoEmail">E-mail:</label></td>
+        <td><input type="text" size="50" maxlength="200" name="tzoEmail" id="tzoEmail"></td>
+      </tr>
+      <tr>
+        <td><label for="tzoKey">Key:</label></td>
+        <td><input type="text" size="50" maxlength="100" name="tzoKey" id="tzoKey"></td>
+      </tr>
+    </table>
+  </div>
+
+	<p><input type="button" value=" Add " onClick="btnApply('ddnsmngr.cmd');"></p>
+
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

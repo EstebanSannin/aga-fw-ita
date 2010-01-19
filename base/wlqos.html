@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation.
+-->
+<html>
+<head>
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="usr_menus_build.js" type="text/javascript"></script>
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+
+var enbl = '<%ejGetWlJS(wlEnbl)%>';
+var wme='<%ejGetWlJS(wlWme)%>';
+var wmenoack='<%ejGetWlJS(wlWmeNoAck)%>';
+var afterburneren = '<%ejGetWlJS(wlAfterBurnerEn)%>';
+
+function addClick() {
+   var loc = 'wlqos.cmd?action=preadd';
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function removeClick(name) {
+   var loc = 'wlqos.cmd?action=remove&clsName=' + name;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function wmeChange()
+{
+   with ( document.forms[0] )
+   {
+		showhide("WME_NOACK", getSelect(wlWme));
+      showhide("divqos", getSelect(wlWme));
+   }
+}
+
+function frmLoad()
+{
+   with ( document.forms[0] )
+   {
+		idWMM.checked = (wme == "1");
+      setSelect(wlWme, wme);
+		idWMMNoACK.checked = (wmenoack == "1");
+      setSelect(wlWmeNoAck, wmenoack);
+   }
+   wmeChange();
+
+
+	/*
+		WMM requires wireless on and MAXg off.
+	*/
+	setVisibility("idWirelessNo", (enbl != "1"));
+	setVisibility("idMAXgOn", (afterburneren != "off"));
+	setVisibility("idWMMok", (enbl == "1") && (afterburneren == "off"));
+}
+
+function btnApply()
+{
+   var loc = 'wlqos.cmd?action=wmeapply';
+
+   with ( document.forms[0] ) {
+      loc += '&wlWme=' + parseInt(wlWme.value);
+      loc += '&wlWmeNoAck=' + parseInt(wlWmeNoAck.value);
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+	</script>
+</head>
+<body onLoad="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+    writeHeader("Wireless Quality of Service", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<div id="idWirelessNo">
+	<p>Please note that wireless connections must be enabled
+	in order to use Wi-Fi Multimedia and Wireless Quality of Service.
+	Use the <b><a href="wlcfg.html">Wireless Setup</a></b> page
+	to change this setting.
+</div>
+<div id="idMAXgOn">
+	<p>Please note that <b>Acceleration</b> must
+	not be set to <b>MAXg</b> in order to use Wi-Fi Multimedia
+	and Wireless Quality of Service.
+	Use the <b><a href="wlcfgadv.html">Wireless Advanced Settings</a></b>
+	page to change this setting.
+	(Select <b>54g+</b> or <b>None</b> instead.)
+</div>
+<div id="idWMMok">
+
+<script type="text/javascript">
+function onWMM()
+{
+	document.forms[0].wlWme.selectedIndex = (document.forms[0].idWMM.checked ? 1 : 0);
+}
+function onWMMNoACK()
+{
+	document.forms[0].wlWmeNoAck.selectedIndex = (document.forms[0].idWMMNoACK.checked ? 1 : 0);
+}
+</script>
+
+<form>
+	<!-- internal use only -->
+	<select style="display:none;" name="wlWme" id="wlWme">
+		<option value="0">Disabled</option>
+		<option value="1">Enabled</option>
+	</select>
+	<select style="display:none;" name="wlWmeNoAck" id="wlWmeNoAck">
+		<option value="0">Disabled</option>
+		<option value="1">Enabled</option>
+	</select>
+
+	<h3>Wi-Fi Multimedia (WMM)</h3>
+
+	<p>
+		<input type="checkbox" id="idWMM" name="idWMM" onclick="onWMM(); wmeChange();"> <label for="idWMM">Wi-Fi multimedia</label>
+	</p>
+	<p id="WME_NOACK">
+		<input type="checkbox" id="idWMMNoACK" name="idWMMNoACK" onclick="onWMMNoACK();"> <label for="idWMMNoACK">No-acknowledgement</label>
+	</p>
+
+	<div id="divqos">
+		<h3>Wireless QoS Classes</h3>
+
+		<p>Press <b>Add</b> to create a new network traffic class. When you are finished, press <b>Save</b> to save and apply new settings.</p>
+
+		<p><input name="qosbutton" type='button' onClick='addClick()' value=" Add "></p>
+
+		<table border="1">
+		    <tr>
+		      <th rowspan="2">Class Name</th>
+		      <th rowspan="2">Priority</th>
+		      <th colspan="5">Traffic Classification Rules</th>
+		      <th rowspan="2">&nbsp;</th>
+		    </tr>
+		    <tr>
+		      <th>Protocol</th>
+		      <th>Source Addr./Mask</th>
+		      <th>Source Port</th>
+		      <th>Dest. Addr./Mask</th>
+		      <th>Dest. Port</th>
+		   </tr>
+
+			<%ejGetWlStr(wlQosTbl)%>
+		</table>
+	</div>
+
+	<p><input type='button' onClick='btnApply()' value="Save"></p>
+</form>
+
+</div>
+
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>

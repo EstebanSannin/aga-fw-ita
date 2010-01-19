@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+	<title>Extra Settings &raquo; Partitions and Mounts</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css">
+	<script src="usr_menus.js" type="text/javascript"></script>
+	<script src="ro_util.js" type="text/javascript"></script>
+	
+	<meta http-equiv="Pragma" content="no-cache">
+<script type='text/javascript'>
+<!-- hide
+
+function addClick() {
+   var loc = 'do.cgi?page=dhcpstaticleasesadd';
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function mountClick(device) {
+   var loc = 'do.cgi?page=partitions&action=mount&device=' + device;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function umountClick(device) {
+   var loc = 'do.cgi?page=partitions&action=umount&device=' + device;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function killumountClick(device) {
+   var loc = 'do.cgi?page=partitions&action=killumount&device=' + device;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function fsckClick(device) {
+   var loc = 'do.cgi?page=partitioncheck&action=view&device=' + device;
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu();">
+
+<img id="idImgHeader" src="p_red.gif">
+<div id="idHeader">Extra Settings</div>
+
+<script>createroMenu();</script>
+
+<div id="idContent">
+
+<h3>Partitions and Mounts</h3>
+
+<p>Mount, umount and check partitions <b>/dev/sdxy</b>
+<br>
+A mounted partition is automatically shared with samba</p>
+<p>Partitions supported:
+
+<ul>
+<li>ext2, ext3
+<li>fat16, fat32 (no fsck available)
+<li> ntfs-3g (no fsck available)
+</ul>
+</p>
+
+<p>To run fsck you need to umount the partition!</p> 
+
+<form>
+<table border="1" cellpadding="4" cellspacing="0">
+	<thead><tr>
+		<th>Device</th>
+		<th>Mounted</th>
+		<th>Mount point</th>
+		<th>FS type</th>
+		<th>Mount</th>
+		<th>Umount</th>
+		<th>Kill &amp; Umount (*)</th>
+		<th>Fsck</th>
+	</tr></thead>
+
+	<%roGetPartitionsAndMounts()%>
+</table>
+</form>
+
+<p>
+(*) Kill all processes locking files before unmount the partition
+</p>
+
+</div>
+<p class="clsCopyright"></p>
+</body>
+</html>

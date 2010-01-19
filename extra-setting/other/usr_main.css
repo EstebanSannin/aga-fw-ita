@@ -1,0 +1,299 @@
+/* --------------------------------------------------------------------------
+
+	(c) 2005-2006 U.S. Robotics Corporation.
+
+	-------------------------------------------------------------------------- */
+
+A:hover
+{
+	cursor: hand;
+	color: red;
+}
+
+
+BODY, TABLE
+{
+	font-family:	Verdana, Arial, sans-serif;
+	font-size:		small;
+}
+
+BODY
+{
+	margin:	0 0 0.5em;
+	background-color:	white;
+}
+DIV#idContent
+{
+	margin:	0 0.7em;
+/*
+	The tight connection between menu and content can't be replicated in
+	the test template--just in production. This corrects it.
+*/
+padding-top:	0.3em;
+}
+
+H3
+{
+	padding:				0.1em 0.4em 0.2em;
+/*	width:				60%;
+*/
+	font-size: 			large;
+	font-weight:		bold;
+	letter-spacing:	1pt;
+	border:				1px solid #202080;
+	background-color:	#F8F8FF;
+}
+
+
+/* ----------------------------------------------
+
+	CUSTOM CLASSES
+
+*/
+
+.clsNote
+{
+	font-family:	Verdana, Arial, sans-serif;
+	font-size:		x-small;
+}
+
+P.clsCopyright
+{
+	padding-top:	0.5em;
+	padding-left:	0.5em;
+
+	border-top:		2px solid #202080;
+	font-family:	Verdana, Arial, sans-serif;
+	font-size:		xx-small;
+	white-space:	nowrap;
+	color:			#202080;
+}
+P.clsCopyright A
+{
+	color:				#202080;
+	text-decoration:	none;
+}
+
+/* Notice of no Internet cxn, firmware update. */
+.clsNotice
+{
+	border:				3px double red;
+	padding:				1em;
+	margin:				0.5em 0 0.5em 0;
+	width:				60%;
+	background-color:	#F8F8FF;
+}
+
+
+
+/* ----------------------------------------------
+
+	SPECIFIC CUSTOM CLASSES
+
+*/
+
+.clsLogDate
+{
+	white-space:	nowrap;
+}
+
+.clsLogEmergency
+{
+	background-color: #FBB;
+	font-weight:		bold;
+}
+
+.clsLogAlert
+{
+	background-color: #FDA;
+	font-weight:		bold;
+}
+
+.clsLogCritical
+{
+	background-color: #FEC;
+	font-weight:		bold;
+}
+
+.clsLogError
+{
+	background-color: #FFC;
+}
+
+.clsLogWarning
+{
+	background-color: #EFE;
+}
+
+.clsLogNotice
+{
+	background-color: #EEF;
+}
+
+.clsLogInfo, .clsLogDefault
+{
+}
+
+.clsLogDebug
+{
+	background-color: #EEE;
+	color:				darkgray;
+}
+
+
+
+/* ----------------------------------------------
+
+	Welcome page elements
+
+*/
+
+BODY#idWelcomePage
+{
+	margin:	0.7em;
+}
+
+DIV#idWelcomeBlock
+{
+	border:	3px solid red;
+}
+
+DIV#idWelcomeBlock DIV#idContent
+{
+	margin:				1em;
+	padding-bottom:	4em;
+}
+
+DIV#idWelcomeBlock DIV#idContent IMG#idMAX
+{
+	float:	right;
+	margin:	0em;
+	border:	0;
+}
+
+BODY#idWelcomePage DIV#idBar1
+{
+	margin:				0;
+	background-color:	red;
+	padding-left:		1em;
+}
+BODY#idWelcomePage DIV#idBar1 IMG
+{
+	padding:	0.5em 0;
+}
+
+BODY#idWelcomePage DIV#idBar2 P
+{
+	margin:		0.5em;
+	text-align:	right;
+}
+
+BODY#idWelcomePage P.clsCopyright
+{
+	margin-top:	0.5em;
+	color:		black;
+	border:		0;
+}
+
+
+/* ----------------------------------------------
+
+	Headers
+
+*/
+
+IMG#idImgHeader
+{
+	float:			right;
+	margin-top:		0.5em;
+	margin-right:	0.2em;
+	border:			0;
+}
+
+/* ----------------------------------------------
+	Same for other pages and Setup Wizard 1-2-3 steps
+*/
+
+DIV#idHeader, DIV#idSteps
+{
+	margin-bottom:		0.5em;
+	padding:				0.7em 0.5em;
+
+	font-family:		Verdana, Arial, sans-serif;
+	font-weight:		bold;
+	font-size:			x-large;
+	color:				white;
+	background-color:	red;
+	letter-spacing:	1pt;
+}
+
+/* ----------------------------------------------
+	For Setup Wizard 1-2-3 steps
+*/
+
+DIV#idSteps .clsStepCurrent
+{
+	background-color:	red;
+	border:				2px solid white;
+	padding:				0.3em 0.5em 0.3em 0.5em;
+}
+
+DIV#idSteps .clsStepDone
+{
+}
+
+DIV#idSteps .clsStepNotDone
+{
+	color: silver;
+}
+
+
+
+/* ----------------------------------------------
+
+	Form elements
+
+*/
+
+/*
+	Treat neighboring borders as one.
+	border-collapse: collapse;
+*/
+
+TABLE.clsGroupBox
+{
+	border:	2px dashed silver;
+	padding:	1em;
+}
+
+/*
+	Cells inside tables with groupboxes have some padding.
+*/
+TABLE.clsGroupBox TD
+{
+	padding: 0.4em;
+}
+
+
+.clsStatic
+{
+	font-weight:	bold;
+}
+
+INPUT.clsSmall
+{
+	font-size:	x-small;
+}
+
+INPUT.clsBtnSave, INPUT.clsBtnFeature
+{
+	font-weight:		bold;
+	color:				white;
+	background-color:	#202080;
+}
+
+P.clsSave
+{
+	border-top:		1px solid #202080;
+	padding-top:	0.5em;
+}

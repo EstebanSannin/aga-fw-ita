@@ -1,0 +1,817 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+    (c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title>Wireless &raquo; Advanced Settings</title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+	<script type="text/javascript" src="util.js"></script>
+	<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var enbl = '<%ejGetWlJS(wlEnbl)%>';
+var country = '<%ejGetWlJS(wlCountry)%>';
+var channel = '<%ejGetWlJS(wlChannel)%>';
+var rate = '<%ejGetWlJS(wlRate)%>';
+var frg = '<%ejGetWlJS(wlFrgThrshld)%>';
+var rts = '<%ejGetWlJS(wlRtsThrshld)%>';
+var dtm = '<%ejGetWlJS(wlDtmIntvl)%>';
+var bcn = '<%ejGetWlJS(wlBcnIntvl)%>';
+var phy = '<%ejGetWlJS(wlPhyType)%>';
+var brate = '<%ejGetWlJS(wlBasicRate)%>';
+var fburst = '<%ejGetWlJS(wlFrameBurst)%>';
+var gmode = '<%ejGetWlJS(wlgMode)%>';
+var pro = '<%ejGetWlJS(wlProtection)%>';
+var pre = '<%ejGetWlJS(wlPreambleType)%>';
+var apisolation= '<%ejGetWlJS(wlAPIsolation)%>';
+var band= '<%ejGetWlJS(wlBand)%>';
+var mcastrate = '<%ejGetWlJS(wlMCastRate)%>';
+var hasafterburner = '<%ejGetWlJS(wlHasAfterburner)%>';
+var afterburneren = '<%ejGetWlJS(wlAfterBurnerEn)%>';
+var bands = '<%ejGetWlJS(wlBands)%>';
+var mode = '<%ejGetWlJS(wlMode)%>';
+var wlRefresh = '<%ejGetWlJS(wlRefresh)%>';
+var TxPwrPcnt = '<%ejGetWlJS(wlTxPwrPcnt)%>';
+var reg_mode = '<%ejGetWlJS(wlRegMode)%>';
+var dfs_preism = '<%ejGetWlJS(wlDfsPreIsm)%>';
+var dfs_postism = '<%ejGetWlJS(wlDfsPostIsm)%>';
+var tpcDb = '<%ejGetWlJS(wlTpcDb)%>';
+var haswme = '<%ejGetWlJS(wlHasWme)%>';
+var wme = '<%ejGetWlJS(wlWme)%>';
+var wmeNoAck = '<%ejGetWlJS(wlWmeNoAck)%>';
+var wlCurrentChannel = '<%ejGetWlJS(wlCurrentChannel)%>';
+
+if ( wlRefresh == '1' ) {
+   var code = 'location = "wlcfgadvrefresh.wl?wlRefresh=0"';
+   eval(code);
+}
+
+function getGmodeIndex(mode) {
+   var ret = 0;
+   switch(mode) {
+   case '0':
+      ret = 3;
+      break;
+   case '4':
+      ret = 1;
+      break;
+   case '5':
+      ret = 2;
+      break;
+   default:
+      ret = 0;
+      break;
+   }
+   return ret;
+}
+
+function gModeChange()
+{
+   with ( document.forms[0] ) {
+      setVisibility("preambleType", (band == "2") && (wlgMode.selectedIndex == 3));
+   }
+}
+
+function loadChannelList()
+{
+   if (band == "2") {
+      <%ejGetWlStr(wlChannelList_b)%>
+   }
+   else  if (band == "1") {
+      <%ejGetWlStr(wlChannelList_a)%>
+   }
+   else {
+      document.forms[0].wlChannel[0] = new Option("Automatic", "0")
+   }
+
+   var found = false;
+   for (var i=0; i<document.forms[0].wlChannel.options.length; i++) {
+      if (document.forms[0].wlChannel.options[i].value == channel) {
+         document.forms[0].wlChannel.options[i].selected = true;
+         found = true;
+         break;
+      }
+   }
+
+   if (!found) {
+      document.forms[0].wlChannel.options[0].selected = true;
+   }
+}
+
+function loadRateList() {
+   if (band == "2") { // 2.4G
+      if (phy == "b") {
+document.forms[0].wlRate[0] = new Option("Automatic", "0");
+document.forms[0].wlRate[1] = new Option("1 Mbps", "1000000");
+document.forms[0].wlRate[2] = new Option("2 Mbps", "2000000");
+document.forms[0].wlRate[3] = new Option("5.5 Mbps", "5500000");
+document.forms[0].wlRate[4] = new Option("11 Mbps", "11000000");
+      }
+      else {
+document.forms[0].wlRate[0] = new Option("Automatic", "0");
+document.forms[0].wlRate[1] = new Option("1 Mbps", "1000000");
+document.forms[0].wlRate[2] = new Option("2 Mbps", "2000000");
+document.forms[0].wlRate[3] = new Option("5.5 Mbps", "5500000");
+document.forms[0].wlRate[4] = new Option("6 Mbps", "6000000");
+document.forms[0].wlRate[5] = new Option("9 Mbps", "9000000");
+document.forms[0].wlRate[6] = new Option("11 Mbps", "11000000");
+document.forms[0].wlRate[7] = new Option("12 Mbps", "12000000");
+document.forms[0].wlRate[8] = new Option("18 Mbps", "18000000");
+document.forms[0].wlRate[9] = new Option("24 Mbps", "24000000");
+document.forms[0].wlRate[10] = new Option("36 Mbps", "36000000");
+document.forms[0].wlRate[11] = new Option("48 Mbps", "48000000");
+document.forms[0].wlRate[12] = new Option("54 Mbps", "54000000");
+     }
+   }
+   else if (band == "1") { // 5G
+document.forms[0].wlRate[0] = new Option("Automatic", "0");
+document.forms[0].wlRate[1] = new Option("6 Mbps", "6000000");
+document.forms[0].wlRate[2] = new Option("9 Mbps", "9000000");
+document.forms[0].wlRate[3] = new Option("12 Mbps", "12000000");
+document.forms[0].wlRate[4] = new Option("18 Mbps", "18000000");
+document.forms[0].wlRate[5] = new Option("24 Mbps", "24000000");
+document.forms[0].wlRate[6] = new Option("36 Mbps", "36000000");
+document.forms[0].wlRate[7] = new Option("48 Mbps", "48000000");
+document.forms[0].wlRate[8] = new Option("54 Mbps", "54000000");
+   }
+   else {
+document.forms[0].wlRate[0] = new Option("Automatic", "0");
+   }
+}
+
+
+function loadMCastRateList() {
+   if (band == "2") { // 2.4G
+      if (phy == "b") {
+document.forms[0].wlMCastRate[0] = new Option("Automatic", "0");
+document.forms[0].wlMCastRate[1] = new Option("1 Mbps", "1000000");
+document.forms[0].wlMCastRate[2] = new Option("2 Mbps", "2000000");
+document.forms[0].wlMCastRate[3] = new Option("5.5 Mbps", "5500000");
+document.forms[0].wlMCastRate[4] = new Option("11 Mbps", "11000000");
+      }
+      else {
+document.forms[0].wlMCastRate[0] = new Option("Automatic", "0");
+document.forms[0].wlMCastRate[1] = new Option("1 Mbps", "1000000");
+document.forms[0].wlMCastRate[2] = new Option("2 Mbps", "2000000");
+document.forms[0].wlMCastRate[3] = new Option("5.5 Mbps", "5500000");
+document.forms[0].wlMCastRate[4] = new Option("6 Mbps", "6000000");
+document.forms[0].wlMCastRate[5] = new Option("9 Mbps", "9000000");
+document.forms[0].wlMCastRate[6] = new Option("11 Mbps", "11000000");
+document.forms[0].wlMCastRate[7] = new Option("12 Mbps", "12000000");
+document.forms[0].wlMCastRate[8] = new Option("18 Mbps", "18000000");
+document.forms[0].wlMCastRate[9] = new Option("24 Mbps", "24000000");
+document.forms[0].wlMCastRate[10] = new Option("36 Mbps", "36000000");
+document.forms[0].wlMCastRate[11] = new Option("48 Mbps", "48000000");
+document.forms[0].wlMCastRate[12] = new Option("54 Mbps", "54000000");
+     }
+   }
+   else if (band == "1") { // 5G
+document.forms[0].wlMCastRate[0] = new Option("Automatic", "0");
+document.forms[0].wlMCastRate[1] = new Option("6 Mbps", "6000000");
+document.forms[0].wlMCastRate[2] = new Option("9 Mbps", "9000000");
+document.forms[0].wlMCastRate[3] = new Option("12 Mbps", "12000000");
+document.forms[0].wlMCastRate[4] = new Option("18 Mbps", "18000000");
+document.forms[0].wlMCastRate[5] = new Option("24 Mbps", "24000000");
+document.forms[0].wlMCastRate[6] = new Option("36 Mbps", "36000000");
+document.forms[0].wlMCastRate[7] = new Option("48 Mbps", "48000000");
+document.forms[0].wlMCastRate[8] = new Option("54 Mbps", "54000000");
+   }
+   else {
+document.forms[0].wlMCastRate[0] = new Option("Automatic", "0");
+   }
+}
+
+function loadBasicRateList() {
+   if (band == "2") { // 2.4G
+document.forms[0].wlBasicRate[0] = new Option("Default", "default");
+document.forms[0].wlBasicRate[1] = new Option("All", "all");
+document.forms[0].wlBasicRate[2] = new Option("1 & 2 Mbps", "12");
+      if (phy == "g") {
+         document.forms[0].wlBasicRate[3] = new Option("1 & 2 & 5.5 & 6 & 11 & 12 & 24 Mbps", "wifi2");
+      }
+
+   }
+   else if (band == "1") { // 5G
+document.forms[0].wlBasicRate[0] = new Option("Default", "default");
+document.forms[0].wlBasicRate[1] = new Option("All", "all");
+document.forms[0].wlBasicRate[2] = new Option("6 & 12 Mbps", "12");
+document.forms[0].wlBasicRate[3] = new Option("6 & 12 & 24 Mbps", "wifi2");
+   }
+   else {
+document.forms[0].wlMCastRate[0] = new Option("Default", "0");
+   }
+}
+
+function onBandChange() {
+  band = document.forms[0].wlBand.value;
+  document.forms[0].wlChannel.length = 0;
+  loadChannelList();
+  document.forms[0].wlRate.length = 0;
+  loadRateList();
+  document.forms[0].wlMCastRate.length = 0;
+  loadMCastRateList();
+  document.forms[0].wlBasicRate.length = 0;
+  loadBasicRateList();
+
+  if (band == "2") {
+    if (phy == "b") { //11b
+      setVisibility("div_gMode", false);
+    }
+    else {
+      setVisibility("div_gMode", true);
+    }
+  }
+  else {
+    setVisibility("div_gMode", false);
+  }
+  gModeChange();
+}
+
+function getBasicRateIndex(br) {
+   var ret = 0;
+   if ( br == "12" ) {
+      ret = 2;
+   }
+   else if ( br == "all" ) {
+      ret = 1;
+   } else if ( br == "wifi2" ) {
+      ret = 3;
+   } else
+      ret = 0;
+   return ret;
+}
+
+function getRateIndex(r) {
+   var rateNum = parseInt(r);
+   var ret = 0;
+
+   if ( band == '2') {
+      if ( phy == "b" ) { //11b
+         switch ( rateNum ) {
+         case 1000000:
+            ret = 1;
+            break;
+         case 2000000:
+            ret = 2;
+            break;
+         case 5500000:
+            ret = 3;
+            break;
+         case 11000000:
+            ret = 4;
+            break;
+         default:
+            ret = 0;
+            break;
+         }
+      }
+      // physical type is 802.11g
+      else {
+         switch ( rateNum ) {
+         case 1000000:
+            ret = 1;
+            break;
+         case 2000000:
+            ret = 2;
+            break;
+         case 5500000:
+            ret = 3;
+            break;
+         case 6000000:
+            ret = 4;
+            break;
+         case 9000000:
+            ret = 5;
+            break;
+         case 11000000:
+            ret = 6;
+            break;
+         case 12000000:
+            ret = 7;
+            break;
+         case 18000000:
+            ret = 8;
+            break;
+         case 24000000:
+            ret = 9;
+            break;
+         case 36000000:
+            ret = 10;
+            break;
+         case 48000000:
+            ret = 11;
+            break;
+         case 54000000:
+            ret = 12;
+            break;
+         default:
+            ret = 0;
+            break;
+         }
+      }
+   }
+   // physical type is 802.11a
+   else if ( band == '1' ) { // 11a
+      switch ( rateNum ) {
+      case 6000000:
+         ret = 1;
+         break;
+      case 9000000:
+         ret = 2;
+         break;
+      case 12000000:
+         ret = 3;
+         break;
+      case 18000000:
+         ret = 4;
+         break;
+      case 24000000:
+         ret = 5;
+         break;
+      case 36000000:
+         ret = 6;
+         break;
+      case 48000000:
+         ret = 7;
+         break;
+      case 54000000:
+         ret = 8;
+         break;
+      default:
+         ret = 0;
+         break;
+      }
+   }
+   return ret;
+}
+
+function getFrameBurstIndex(frameburst) {
+   var ret;
+
+   if ( frameburst == "off" )
+      ret = 0;
+   else
+      ret = 1;
+   return ret;
+}
+
+function getAfterBurnerIndex(afterburner) {
+   var ret;
+
+   if ( afterburner == "auto" )
+      ret = 1;
+   else
+      ret = 0;
+   return ret;
+}
+
+function getGModeProtection(pro) {
+   var ret;
+
+   if ( pro == "auto" )
+      ret = 1;
+   else
+      ret = 0;
+   return ret;
+}
+
+function getTpcDbIndex(val) {
+   var ret;
+
+   if ( val == "0" )
+      ret = 0;
+   else if ( val == "2" )
+      ret = 1;
+   else if ( val == "3" )
+      ret = 2;
+   else if ( val == "4" )
+      ret = 3;
+   else ret = 0;
+   return ret;
+}
+
+function RegModeChange() {
+   with ( document.forms[0] )
+      if( wlRegMode.selectedIndex != 1 )
+         wlDfsPreIsm.disabled=wlDfsPostIsm.disabled=wlTpcDb.disabled=true;
+      else
+         wlDfsPreIsm.disabled=wlDfsPostIsm.disabled=wlTpcDb.disabled=false;
+}
+
+
+function getBandIndex(b) {
+   var ret;
+
+   if ( b == '1' )
+      ret = 1;
+   else
+      ret = 0;
+   return ret;
+}
+
+function wl_afterburner_options(OnPageLoad)
+{
+	with (document.forms[0])
+	{
+		// MAXg and WMM cannot both be enabled at the same time. MAXg requires Fragmentation to be set to 2346.
+		// But no need to check these because the MAXg option is deleted if they're true.
+		setVisibility("idFragNoMAXg", (parseInt(wlFrgThrshld.value) != 2346));
+		if (parseInt(wlFrgThrshld.value) != 2346)
+		{
+			cbAcceleration.value = "xpress";
+		}
+	}
+	return true;
+}
+
+function wl_recalc(OnPageLoad)
+{
+	var retval=true;
+	with ( document.forms[0] )
+	{
+		retval = wl_afterburner_options(OnPageLoad);
+	}
+	return retval;
+}
+
+function frmLoad() {
+  with ( document.forms[0] ) {
+      wlBand.selectedIndex = getBandIndex(band);
+      onBandChange();
+      wlRate.selectedIndex = getRateIndex(rate);
+      wlMCastRate.selectedIndex = getRateIndex(mcastrate);
+      wlBasicRate.selectedIndex = getBasicRateIndex(brate);
+
+		if (afterburneren == "auto")
+			cbAcceleration.value = "maxg";
+		else if (fburst != "off")
+			cbAcceleration.value = "xpress";
+		else
+			cbAcceleration.value = "none";
+
+      wlAPIsolation.selectedIndex = parseInt(apisolation);
+      wlFrgThrshld.value = frg;
+      wlRtsThrshld.value = rts;
+      wlDtmIntvl.value = dtm;
+      wlBcnIntvl.value = bcn;
+		/*
+			If WMM is enabled or the AP mode isn't set, cannot set acceleration to MAXg.
+		*/
+		if (wme == "1")
+		{
+			// find the index of the MAXg option and delete it
+			for (var ix = 0; ix < cbAcceleration.options.length; ++ix)
+			{
+				if (cbAcceleration.options[ix].value == "maxg")
+				{
+					cbAcceleration.options[ix] = null;
+					break;
+				}
+			}
+		}
+		setVisibility("idWMMnoMAXg", (wme == "1"));
+
+      if ( pre == 'short' )
+         wlPreambleType.selectedIndex = 1;
+      else
+         wlPreambleType.selectedIndex = 0;
+      // physical type is 802.11g
+      if ( phy == "g" ) {
+         switch(gmode) {
+         case '0':
+            wlgMode.selectedIndex = 3;
+            break;
+         case '4':
+            wlgMode.selectedIndex = 1;
+            break;
+         case '5':
+            wlgMode.selectedIndex = 2;
+            break;
+         default:
+            wlgMode.selectedIndex = 0;
+            break;
+         }
+         wlProtection.selectedIndex = getGModeProtection(pro);
+         gModeChange();
+      }
+
+      wlTxPower.selectedIndex = ((TxPwrPcnt/20) -1);
+      wlRegMode.selectedIndex = reg_mode;
+      wlDfsPreIsm.value = dfs_preism;
+      wlDfsPostIsm.value = dfs_postism;
+      wlTpcDb.selectedIndex = getTpcDbIndex(tpcDb);
+      RegModeChange();
+
+   }
+   wl_recalc(1);
+}
+
+function btnApply() {
+   var loc = 'wlcfgadv.wl?';
+   var idx, frgNum, rtsNum, dtmNum, bcnNum, frmburstNum;
+
+   if ( enbl == '0' ) {
+      alert('Cannot apply the change since wireless is currently disabled.');
+      return;
+   }
+
+   if (!wl_recalc(0))
+      return;
+
+   with ( document.forms[0] ) {
+      frgNum = parseInt(wlFrgThrshld.value);
+      if ( isNaN(frgNum) == true || frgNum < 256 || frgNum > 2346 ) {
+         alert('Fragmentation threshold "' + wlFrgThrshld.value + '" should be between 256 and 2346.');
+         return;
+      }
+
+      rtsNum = parseInt(wlRtsThrshld.value);
+      if ( isNaN(rtsNum) == true || rtsNum < 0 || rtsNum > 2347 ) {
+         alert('RTS threshold "' + wlRtsThrshld.value + '" should be between 0 and 2347.');
+         return;
+      }
+
+      dtmNum = parseInt(wlDtmIntvl.value);
+      if ( isNaN(dtmNum) == true || dtmNum < 1 || dtmNum > 255 ) {
+         alert('DTIM interval "' + wlDtmIntvl.value + '" should be between 1 and 255.');
+         return;
+      }
+
+      bcnNum = parseInt(wlBcnIntvl.value);
+      if ( isNaN(bcnNum) == true || bcnNum < 1 || bcnNum > 65535 ) {
+         alert('Beacon interval "' + wlBcnIntvl.value + '" should be between 1 and 65535.');
+         return;
+      }
+
+      idx = wlChannel.selectedIndex;
+      loc += 'wlChannel=' + wlChannel.options[idx].value;
+      idx = wlRate.selectedIndex;
+      loc += '&wlRate=' + wlRate.options[idx].value;
+      idx = wlBasicRate.selectedIndex;
+      loc += '&wlBasicRate=' + wlBasicRate.options[idx].value;
+      loc += '&wlFrgThrshld=' + wlFrgThrshld.value;
+      loc += '&wlRtsThrshld=' + wlRtsThrshld.value;
+      loc += '&wlDtmIntvl=' + wlDtmIntvl.value;
+      loc += '&wlBcnIntvl=' + wlBcnIntvl.value;
+
+		if (cbAcceleration.value == "maxg")
+		{
+			loc += "&wlAfterBurnerEn=auto";
+			loc += "&wlFrameBurst=on";
+		}
+		else if (cbAcceleration.value == "xpress")
+		{
+			loc += "&wlAfterBurnerEn=off";
+			loc += "&wlFrameBurst=on";
+		}
+		else // if (cbAcceleration.value == "none")
+		{
+			loc += "&wlAfterBurnerEn=off";
+			loc += "&wlFrameBurst=off";
+		}
+
+      loc += '&wlAPIsolation=' + wlAPIsolation.value;
+      loc += '&wlBand=' + wlBand.value;
+      idx = wlMCastRate.selectedIndex;
+      loc += '&wlMCastRate=' + wlMCastRate.options[idx].value;
+
+      if ( band == '2') { // 2.4G
+         if ( phy == "g") { // 802.11g
+            idx = wlgMode.selectedIndex;
+            loc += '&wlgMode=' + wlgMode.options[idx].value;
+            idx = wlProtection.selectedIndex;
+            loc += '&wlProtection=' + wlProtection.options[idx].value;
+            if (wlgMode.selectedIndex == 3) {
+               idx = wlPreambleType.selectedIndex;
+               loc += '&wlPreambleType=' + wlPreambleType.options[idx].value;
+            }
+         } else { // 802.11b
+            idx = wlPreambleType.selectedIndex;
+            loc += '&wlPreambleType=' + wlPreambleType.options[idx].value;
+         }
+      }
+
+     idx = wlTxPower.selectedIndex;
+     loc += '&wlTxPwrPcnt=' + wlTxPower.options[idx].value;
+
+     idx = wlRegMode.selectedIndex;
+     loc += '&wlRegMode=' + wlRegMode.options[idx].value;
+     if(wlRegMode.selectedIndex == 1) {
+        DfsPreIsmNum = parseInt(wlDfsPreIsm.value);
+        if ( isNaN(DfsPreIsmNum) == true || DfsPreIsmNum < 0 || DfsPreIsmNum > 99 ) {
+           alert('Pre-Network Radar Check "' + wlDfsPreIsm.value + '" should be between 0 and 99.');
+           return;
+        }
+
+        DfsPostNum = parseInt(wlDfsPostIsm.value);
+        if ( isNaN(DfsPostNum) == true || DfsPostNum < 10 || DfsPostNum > 99 ) {
+           alert('In-Network Radar Check: "' + wlDfsPostIsm.value + '" should be between 10 and 99.');
+           return;
+        }
+
+        loc += '&wlDfsPreIsm=' + wlDfsPreIsm.value;
+        loc += '&wlDfsPostIsm=' + wlDfsPostIsm.value;
+        idx = wlTpcDb.selectedIndex;
+        loc += '&wlTpcDb=' + wlTpcDb.options[idx].value;
+     }
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+// done hiding -->
+	</script>
+</head>
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+    writeHeader("Wireless", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+<h3>Advanced Settings</h3>
+
+<p>This page allows you to configure advanced features of the wireless LAN
+interface. You can select a particular channel on which to operate, force the
+transmission rate to a particular speed, set the fragmentation threshold, set
+the RTS threshold, set the wakeup interval for clients in power-save mode, set
+the beacon interval for the access point, set the acceleration mode and set whether
+short or long preambles are used.</p>
+
+<p>Press <b>Apply</b> when you&rsquo;re finished making changes.</p>
+
+<form>
+   <table border="0" cellpadding="2" cellspacing="0">
+      <tr>
+          <td><label for="">AP isolation:</label></td>
+          <td><select name='wlAPIsolation' id='wlAPIsolation'>
+                 <option value='0'>Disabled</option>
+                 <option value='1'>Enabled</option>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="">Band:</td>
+          <td><select name='wlBand' id='wlBand' onChange='onBandChange();'>
+<script type="text/javascript">
+<!-- hide
+if ( bands == '3' ) { // dual band
+         document.writeln('      <option value=2>2.4GHz - 802.11g</option>');
+         document.writeln('      <option value=1>5GHz - 802.11a</option>');
+}
+else if (bands == '1') {
+         document.writeln('      <option value=1>5GHz - 802.11a</option>');
+}
+else {
+    if (phy == "g") {
+         document.writeln('      <option value=2>2.4GHz - 802.11g</option>');
+    }
+    else {
+         document.writeln('      <option value=2>2.4GHz - 802.11b</option>');
+    }
+}
+// done hiding -->
+</script>
+          </select></td>
+      </tr>
+      <tr>
+          <td><label for="">Channel:</label></td>
+          <td><select name='wlChannel' id='wlChannel'>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="">Rate:</label></td>
+          <td><select name='wlRate' id='wlRate'>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="">Multicast rate:</label></td>
+          <td><select name='wlMCastRate' id='wlMCastRate'>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="">Basic rate:</label></td>
+          <td><select name='wlBasicRate' id='wlBasicRate'>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="wlFrgThrshld">Fragmentation threshold:</label></td>
+          <td><input type='text' name='wlFrgThrshld' id='wlFrgThrshld' size='10' onchange="wl_recalc(0);">
+          <span class="clsNote">(Note: <b>MAXg</b> acceleration requires a value of 2346.)</span></td>
+      </tr>
+      <tr>
+          <td><label for="wlRtsThrshld">RTS threshold:</label></td>
+          <td><input type='text' name='wlRtsThrshld' id='wlRtsThrshld' size='10'></td>
+      </tr>
+      <tr>
+          <td><label for="wlDtmIntvl">DTIM interval:</label></td>
+          <td><input type='text' name='wlDtmIntvl' id='wlDtmIntvl' size='10'></td>
+      </tr>
+      <tr>
+          <td><label for="wlBcnIntvl">Beacon interval:</label></td>
+          <td><input type='text' name='wlBcnIntvl' id='wlBcnIntvl' size='10'></td>
+      </tr>
+
+		<tr>
+			<td><label>Acceleration:</label></td>
+			<td>
+				<select id="cbAcceleration" onchange="wl_recalc(0);">
+					<option value="maxg" selected>MAXg (125 Mbps)</option>
+					<option value="xpress">54g+ (XPress&trade;)</option>
+					<option value="none">None</option>
+				</select>
+			</td>
+		</tr>
+		<tr id="idWMMnoMAXg">
+			<td></td>
+			<td>
+				WMM is enabled so <b>Acceleration</b> cannot be set to <b>MAXg</b>.
+				In order to set <b>Acceleration</b> to <b>MAXg</b>, please disable
+				<b>WMM</b> on the <a href="wlqos.html">Wireless Quality of Service</a> page.
+			</td>
+		</tr>
+		<tr id="idFragNoMAXg">
+			<td></td>
+			<td>
+				In order to set <b>Acceleration</b> to <b>MAXg</b>,
+				the <b>Fragmentation threshold</b> must be set to <b>2346</b>.
+			</td>
+		</tr>
+
+      <tr id="div_gMode">
+          <td><label for="">54g&trade; mode:</label></td>
+          <td><select name="wlgMode" id="wlgMode" onChange="gModeChange()">
+                  <option value="1">Automatic</option>
+                  <option value="4">54g Performance</option>
+                  <option value="5">54g LRS</option>
+                  <option value="0">802.11b Only</option>
+              </select></td>
+      </tr>
+      <tr>
+          <td><label for="">54g protection:</label></td>
+          <td><select name="wlProtection" id="wlProtection">
+                  <option value="off">Disabled</option>
+                  <option value="auto">Automatic</option>
+              </select></td>
+      </tr>
+      <tr id="div_regMode">
+         <td><label for="">Regulatory mode:</label></td>
+         <td><select name="wlRegMode" id="wlRegMode" onChange='RegModeChange()'>
+               <option value="0">Disabled</option>
+               <option value="1">802.11h</option>
+               <option value="2">802.11d</option>
+             </select></td>
+      </tr>
+      <tr id="div_regMode1">
+         <td><label for="">Pre-network radar check:</label></td>
+         <td><input type='text' name='wlDfsPreIsm' id='wlDfsPreIsm'></td>
+      </tr>
+      <tr id="div_regMode2">
+         <td><label for="">In-network radar check:</label></td>
+         <td><input type='text' name='wlDfsPostIsm' id='wlDfsPostIsm'></td>
+      </tr>
+      <tr>
+         <td label for=""="180">TPC mitigation:</td>
+         <td><select name="wlTpcDb" id="wlTpcDb">
+               <option value="0">0 dB (off)</option>
+               <option value="2">2 dB</option>
+               <option value="3">3 dB</option>
+               <option value="4">4 dB</option>
+            </select></td>
+      </tr>
+      <tr id="WLTXPOWER">
+         <td><label for="">Transmit power:</label></td>
+         <td><select name="wlTxPower" id="wlTxPower">
+               <option value="20">20%</option>
+               <option value="40">40%</option>
+               <option value="60">60%</option>
+               <option value="80">80%</option>
+               <option value="100">100%</option>
+             </select></td>
+      </tr>
+       <tr id="preambleType">
+           <td><label for="">Preamble type:</label></td>
+           <td><select name="wlPreambleType" id="wlPreambleType" size='1'>
+                  <option value="long">long</option>
+                  <option value="short">short</option>
+               </select></td>
+       </tr>
+   </table>
+
+   <p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+
+<script type="text/javascript">
+    writeFooter();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+	(c) 2005 U.S. Robotics Corporation
+-->
+<html>
+<head>
+	<title></title>
+
+	<link href="usr_main.css" rel="stylesheet" type="text/css">
+	<link href="usr_menus.css" rel="stylesheet" type="text/css"><script src="usr_menus.js" type="text/javascript"></script><script src="usr_menus_build.js" type="text/javascript"></script>
+	<script src="usr_common.js" type="text/javascript"></script>
+
+	<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript">
+<!-- hide
+setPageTitle("<%ejGetWlJS(wlInterface)%>");
+
+var addr = '<%ejGetJS(logIpAddress)%>';
+var port = '<%ejGetJS(logPort)%>';
+
+function getLogPort() {
+   var portNum = parseInt(port);
+   if ( isNaN(portNum) || portNum == 0 )
+      portNum = 514; // default system log server port is 514
+
+   return portNum;
+}
+
+function frmLoad() {
+   with ( document.forms[0] ) {
+      status[<%ejGetJS(logStatus)%>].checked = true;
+
+      levelLog.selectedIndex = <%ejGetJS(logLevel)%>;
+      levelDisplay.selectedIndex = <%ejGetJS(logDisplay)%>;
+
+      logMode.selectedIndex = <%ejGetJS(logMode)%> - 1;
+      if ( logMode.selectedIndex == 0 ) {
+         logAddr.value = '';
+         logPort.value = '';
+         hideInfo(1);
+      } else {
+         logAddr.value = addr;
+         logPort.value = getLogPort();
+         hideInfo(0);
+      }
+   }
+}
+
+function btnApply() {
+   var loc = 'logintro.cgi?';
+   var idx, log, display, mode;
+
+   with ( document.forms[0] ) {
+      if ( status[0].checked == true ) {
+         var msg = 'If disabled, the information captured by the ';
+         msg += 'router will be lost. If you wish to save ';
+         msg += 'the current log information, click the ';
+         msg += '"Cancel" button, view the current system ';
+         msg += 'log, and use the Save option from the File ';
+         msg += 'menu to save the log data.';
+         if ( confirm(msg) == false )
+            return;
+      }
+
+      if ( status[1].checked == true )
+         loc += 'logStatus=1';
+      else
+         loc += 'logStatus=0';
+      idx = levelLog.selectedIndex;
+      log = levelLog.options[idx].value;
+      idx = levelDisplay.selectedIndex;
+      display = levelDisplay.options[idx].value;
+      idx = logMode.selectedIndex;
+      mode = logMode.options[idx].value;
+      if ( mode == 1 ) {
+         valAddr = addr;
+         valPort = getLogPort();
+      } else {
+         if ( isValidIpAddress(logAddr.value) == false ) {
+            alert('Server IP address "' + logAddr.value + '" is invalid IP address.');
+            return;
+         }
+         if ( isNaN(logPort.value) == true ) {
+            alert('Server UDP port "' + logPort.value + '" is invalid.');
+            return;
+         }
+         valAddr = logAddr.value;
+         valPort = logPort.value;
+      }
+      loc += '&logLevel=' + log;
+      loc += '&logDisplay=' + display;
+      loc += '&logMode=' + mode;
+      loc += '&logIpAddress=' + valAddr;
+      loc += '&logPort=' + valPort;
+   }
+
+   var code = 'location = "' + loc + '"';
+   eval(code);
+}
+
+function hideInfo(hide) {
+   var status = 'visible';
+
+   if ( hide == 1 ) {
+      status = 'hidden';
+      document.forms[0].logAddr.value = '';
+      document.forms[0].logPort.value = '';
+   } else {
+      document.forms[0].logAddr.value = addr;
+      document.forms[0].logPort.value = getLogPort();
+   }
+
+   if (document.getElementById)  // DOM3 = IE5, NS6
+      document.getElementById('srvInfo').style.visibility = status;
+   else {
+      if (document.layers) { // Netscape 4
+         if ( hide == 1 ) {
+            document.forms[0].logAddr.value = '';
+            document.forms[0].logPort.value = '';
+         }
+      } else  // IE 4
+         document.all.srvInfo.style.visibility = status;
+   }
+}
+
+function cbClick(obj) {
+   var idx = obj.selectedIndex;
+   var val = obj.options[idx].value;
+   if ( val == 1 )
+      hideInfo(1);
+   else
+      hideInfo(0);
+}
+
+// done hiding -->
+</script>
+</head>
+
+<body onload="initMenu(); frmLoad();">
+
+<script type="text/javascript">
+	writeHeader("System Log", "<%ejGetJS(curUserName)%>", "<%ejGetOther(sysInfo, adslStd)%>", "<%ejGetOther(sysInfo, noBrPrtcl)%>", <%ejGetOther(sysInfo, pppIpExtension)%>, <%ejGetOther(sysInfo, enblFirewall)%>, <%ejGetOther(sysInfo, enblNat)%>, "<%ejGetWlJS(wlInterface)%>", <%ejGetJS(enblQos)%>);
+</script>
+
+
+<form>
+<h3>Configuration</h3>
+
+	<p>This dialog allows you to configure System Log settings. All events greater than
+	or equal to the selected level will be logged or displayed. If the selected mode
+	is <b>Remote</b> or <b>Both</b> events will be sent to the specified
+	UDP port of the specified log server.</p>
+
+	<p>Select the desired values and press  <b>Apply</b> to configure the system log options.</p>
+
+	<p>
+	    <input name='status' id="optStatusDisable" type='radio'> <label for="optStatusDisable">Disable log</label><br/>
+	    <input name='status' id="optStatusEnable" type='radio'> <label for="optStatusEnable">Enable log</label>
+	</p>
+
+	<table border="0" cellpadding="2" cellspacing="0">
+	  <tr>
+	    <td><label for="">Log level:</label></td>
+	    <td colspan=2><select name='levelLog' id='levelLog' size=1>
+	      <option value=0>Emergency</option>
+	      <option value=1>Alert</option>
+	      <option value=2>Critical</option>
+	      <option value=3>Error</option>
+	      <option value=4>Warning</option>
+	      <option value=5>Notice</option>
+	      <option value=6>Informational</option>
+	      <option value=7>Debugging</option>
+	    </select></td>
+	  </tr>
+	  <tr>
+	    <td><label for="">Display level:</label></td>
+	    <td colspan=2><select name='levelDisplay' id='levelDisplay' size=1>
+	      <option value=0>Emergency</option>
+	      <option value=1>Alert</option>
+	      <option value=2>Critical</option>
+	      <option value=3>Error</option>
+	      <option value=4>Warning</option>
+	      <option value=5>Notice</option>
+	      <option value=6>Informational</option>
+	      <option value=7>Debugging</option>
+	    </select></td>
+	  </tr>
+	  <tr>
+	    <td><label for="">Mode:</label></td>
+	    <td colspan=2><select name='logMode' id='logMode' size=1 onClick='cbClick(this)'>
+	      <option value=1>Local</option>
+	      <option value=2>Remote</option>
+	      <option value=3>Both</option>
+	    </select></td>
+	  </tr>
+
+		<div id='srvInfo'>
+		  <tr>
+		    <td><label for="logAddr">Server IP address:</label></td>
+		    <td><input type='text' name='logAddr' id='logAddr'></td>
+		  </tr>
+		  <tr>
+		    <td><label for="logPort">Server UDP port:</label></td>
+		    <td><input type='text' name='logPort' id='logPort'></td>
+		  </tr>
+		</div>
+	</table>
+
+	<p><input type='button' onClick='btnApply()' value='Apply'></p>
+</form>
+
+<script type="text/javascript">
+	writeFooter();
+</script>
+
+</body>
+</html>
