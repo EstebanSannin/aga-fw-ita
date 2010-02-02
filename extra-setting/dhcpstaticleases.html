@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; DHCP Static Leases</title>
@@ -43,31 +53,54 @@ function removeClick(rml) {
 </head>
 
 <body onload="initMenu();">
-
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>DHCP Static Leases</h3>
-
-<form>
-<table border="1" cellpadding="4" cellspacing="0">
-	<thead><tr>
-		<th>MAC Address</th>
-		<th>IP Address</th>
-		<th>Remove</th>
-	</tr></thead>
-
-	<%roGetDhcpStaticLeases()%>
-</table>
-<p><input type='button' onClick='addClick()' value='Add'>
-<input type='button' onClick='removeClick(this.form.rml)' value='Remove'></p>
-</form>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">DHCP Static Leases</a></h1>
+		<div class="entry">
+		  <p>
+		    <form>
+		      <table border="1" cellpadding="4" cellspacing="0">
+			<thead><tr>
+			    <th>MAC Address</th>
+			    <th>IP Address</th>
+			    <th>Remove</th>
+			</tr></thead>
+			
+			<%roGetDhcpStaticLeases()%>
+		      </table>
+		      <p><input type='button' onClick='addClick()' value='Add'>
+			<input type='button' onClick='removeClick(this.form.rml)' value='Remove'></p>
+		    </form>
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+ 
+    <p class="clsCopyright"></p>
 </body>
 </html>

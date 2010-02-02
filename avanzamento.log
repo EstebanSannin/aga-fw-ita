@@ -1,0 +1,44 @@
+# In questo file terro' aggiornate le modifiche effettuate ai sorgenti
+# originali del firmware.
+#
+*** extra-setting ***
+---> Fatto:
+* Modificato usr_main.css in /extra-setting legato alla cartella images
+* Modificati i seguenti file:
+  - adslctl.html
+  - antdiv.html
+  - backupsettings.html
+  - status.html
+  - dhcpstaticleases.html
+  - dmesg.html
+  - ftpd.html
+  - ftpdadd.html	
+  - ftpdmodify.html
+  - p910nd.html
+  - partitions.html
+  - profile.html
+  - regbutton.html
+  - resetsettings.html
+  - restoresettings.html
+  - samba.html
+  - std.html
+  - wlctlscan.html
+  - wol.html
+  - woladd.html
+
+---> Da Fare:
+* Resta da modificare qualche directory per la corretta installazione
+* Editare il Makefile aggiungendo i nuovi file da installare
+ 
+*** base ***
+---> Fatto
+* Al momento niente.
+---> Da Fare
+* Modificare usr_main.css con quello della directory "extra-setting"
+* Modificare tutti i file *.html adattandoli al nuovo *.css
+
+
+NOTE
+
+Purtoppo la traduzione in italiano delle pagine non e' possibile,
+questo perche' non si dispongono i sorgenti dei *.cgi della directory base.

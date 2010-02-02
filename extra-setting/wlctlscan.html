@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; Wireless Scanner</title>
@@ -27,26 +37,51 @@ function refreshClick() {
 </head>
 
 <body onload="initMenu();">
-
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>Wireless Scanner</h3>
-
-<p>Press <b>Refresh</b> to scan again</p>
-<p><form><input type='button' onClick="refreshClick();" value='Refresh'></form></p><br>
-
-<p>Detected wireless networks:</p>
-
-<textarea rows="20" cols="100" readonly>
-<%roGetwlctlScan()%>
-</textarea>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">Wireless Scanner</a></h1>
+		<div class="entry">
+		  <p>
+		    
+		  <p>Press <b>Refresh</b> to scan again</p>
+		  <p><form><input type='button' onClick="refreshClick();" value='Refresh'></form></p><br>
+		  
+		  <p>Detected wireless networks:</p>
+		  
+		  <textarea style='background-color: #000000; color:
+				   green' rows="20" cols="96" readonly>
+<%roGetwlctlScan()%>
+		  </textarea>
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+
+    <p class="clsCopyright"></p>
 </body>
 </html>

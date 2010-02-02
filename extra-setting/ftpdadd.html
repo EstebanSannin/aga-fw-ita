@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; FTPD</title>
@@ -53,32 +63,56 @@ function btnApply() {
 
 <body onload="initMenu();">
 
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>FTPD</h3>
-
-<form onSubmit='return false'>
-	<table>
-	<tr><td><label>Enable:</label></td>
-	<td><input type='checkbox' name='userState'></td></tr>
-	<tr><td><label>User:</label></td>
-	<td><input type='text' name='userName' maxlength='16' id='userName'></td></tr>
-	<tr><td><label>Password:</label></td>
-	<td><input type='text' name='userPassword' maxlength='16'></td></tr>
-	<tr><td><label>Home directory:</label></td>
-	<td><input type='text' name='userHome' maxlength='255' id='userHome'></td></tr>
-	<tr><td><label>Write:</label></td>
-	<td><input type='checkbox' name='userWrite'></td></tr>
-	</table>
-	<p><input type='button' onClick='btnApply()' value='Apply'></p>
-</form>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">FTPD</a></h1>
+		<div class="entry">
+		  <p>
+		    <form onSubmit='return false'>
+		      <table>
+			<tr><td><label>Enable:</label></td>
+			  <td><input type='checkbox' name='userState'></td></tr>
+			<tr><td><label>User:</label></td>
+			  <td><input type='text' name='userName' maxlength='16' id='userName'></td></tr>
+			<tr><td><label>Password:</label></td>
+			  <td><input type='text' name='userPassword' maxlength='16'></td></tr>
+			<tr><td><label>Home directory:</label></td>
+			  <td><input type='text' name='userHome' maxlength='255' id='userHome'></td></tr>
+			<tr><td><label>Write:</label></td>
+			  <td><input type='checkbox' name='userWrite'></td></tr>
+		      </table>
+		      <p><input type='button' onClick='btnApply()' value='Apply'></p>
+		    </form>
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+
+    <p class="clsCopyright"></p>
 </body>
 </html>

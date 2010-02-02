@@ -1,0 +1,160 @@
+/* --------------------------------------------------------------------------
+
+	(c) 2005 U.S. Robotics Corporation.
+
+	-------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------
+
+	Vertical dropdown menus:
+	http://www.htmldog.com/articles/suckerfish/dropdowns/
+
+
+	More resources:
+	http://www.alistapart.com/articles/horizdropdowns/
+
+	http://www.alistapart.com/articles/dropdowns/
+	http://www.htmldog.com/articles/suckerfish/example/
+
+	Fix for bug where IE always displays <select>s as top layer:
+	http://tanny.ica.com/ica/tko/tkoblog.nsf/dx/Select-tag-overlap-in-IE?opendocument&comments
+	http://www.milonic.com/menusample24.php
+	http://69.236.149.4/test/fixed/default.asp
+	(slow) http://www.yxscripts.com/menuG5/
+	(x) http://www.aplus.co.yu/adxmenu/four-variants-of-drop-down-menu/
+
+------------------------------------------------------------------------ */
+
+/*
+
+	M E C H A N I C S
+
+	These classes provide the barebones mechanisms for hiding the first-level
+	submenus and displaying them when the cursor hovers over the menu bar.
+	This code requires any tags following the menu bar to be enclosed in
+	a DIV with the id of "idContent."
+*/
+
+DIV#idContent
+{
+	clear:	left;	/* required because we're floating menus */
+}
+
+/*
+	get rid of list decorations
+*/
+UL#idMenu, UL#idMenu UL
+{
+	padding:		0;
+	margin:		0;
+	list-style:	none;
+}
+
+/*
+	put top-level items next to each other in a bar
+*/
+UL#idMenu LI
+{
+	float:	left;
+}
+
+/*
+	"Lock" width of menu elements (menu bar: LABEL, menu item: A)
+
+	LI's width is required for Opera.
+	LI UL's width is required for Firefox.
+		(But it's set below so we delete "UL#idMenu LI UL" from here.)
+	This seems unnecessary for UL#idMenu LABEL and UL#idMenu A--at least on IE.
+		(But it's set below so we delete "UL#idMenu A" from here.)
+*/
+UL#idMenu LI, UL#idMenu LABEL
+{
+	width:	7em;	/* this is overridden in the MenuBar ctor */
+}
+
+
+UL#idMenu LABEL, UL#idMenu A
+{
+	display:	block;
+}
+
+/*
+	hide submenu items (second-level lists)
+*/
+UL#idMenu LI UL
+{
+	position:	absolute;
+	left:			-999em;	/* don't use display:none because it breaks screen readers */
+}
+/*
+	Display dropdown menu when menu bar item is hovered over.
+	(Include class used by IE workaround.)
+*/
+UL#idMenu LI:hover UL, UL#idMenu LI.clsIEhover UL
+{
+	left:	auto;
+}
+
+
+/*
+
+	P R E T T Y   F O R M A T T I N G
+
+	These classes provide the formatting for 3D menus.
+
+*/
+
+/*
+	Override width of the dropdown menu and its contents so
+	that the menu's wide enough for the widest (bold) item.
+
+	"UL#idMenu LI UL" and "UL#idMenu A" are required for the 
+*/
+UL#idMenu LI UL, UL#idMenu LI UL LI, UL#idMenu LI UL LI A
+{
+	width:	10em;		/* this is overridden in the MenuDropdown ctor */
+}
+
+/*
+	menu bar items and menu dropdown items
+
+	3D effect for menu bar and dropdown items
+*/
+UL#idMenu LI LABEL, UL#idMenu LI UL LI A
+{
+	padding:				3px 5px;
+	border-top:			1px solid #F0F0F0;
+	border-left:		1px solid #F0F0F0;
+	border-right:		1px solid #A0A0A0;
+	border-bottom:		1px solid #A0A0A0;
+
+	white-space:		nowrap;
+}
+
+
+/*
+	menu bar only
+*/
+UL#idMenu LI LABEL
+{
+	text-align:			center;
+	background-color:	#E0E0E0;
+}
+
+
+/*
+	dropdown menu items
+*/
+UL#idMenu LI UL LI A
+{
+	text-decoration:	none;
+	color:				black;
+	background-color:	#D0D0D0;
+}
+UL#idMenu LI UL LI A:hover
+{
+	border:				1px solid #646464;
+	color:				white;
+	background-color:	#646464;
+	font-weight:		bold;
+}

@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; FTPD</title>
@@ -74,16 +84,67 @@ function addClick() {
 </head>
 
 <body onload="initMenu();">
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
+</div>
+<b><script>createroMenu();</script></b>
+			  
 
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
+  <div id="idContent">
+    <br>
+    <br>
 
-<script>createroMenu();</script>
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">FTPD</a></h1>
+		<div class="entry">
+		  <p>
+		    <p>
+To allow/deny remote access to FTP Server go to <b>Internet</b>
+and select/deselect the <b>FTP Internet</b> check box.
+</p>
 
-<div id="idContent">
+<form>
+<table border="1" cellpadding="4" cellspacing="0">
+	<thead><tr>
+		<th>Select</th>
+		<th>Enable</th>
+		<th>User</th>
+		<th>Password</th>
+		<th>Home directory</th>
+		<th>Write</th>
+	</tr></thead>
 
-<h3>FTPD</h3>
+	<%roGetFtpd()%>
+</table>
+<p>
+<input type='button' onClick='addClick()' value='Add'>
+<input type='button' onClick='removeClick(this.form.rml)' value='Remove'>
+<input type='button' onClick='modifyClick(this.form.rml)' value='Modify'>
+</p>
+</form>
 
+Please restart the system to make changes effective.
+
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
 <p>
 To allow/deny remote access to FTP Server go to <b>Internet</b>
 and select/deselect the <b>FTP Internet</b> check box.

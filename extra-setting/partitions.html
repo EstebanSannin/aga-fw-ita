@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; Partitions and Mounts</title>
@@ -53,52 +63,76 @@ function fsckClick(device) {
 </head>
 
 <body onload="initMenu();">
-
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>Partitions and Mounts</h3>
-
-<p>Mount, umount and check partitions <b>/dev/sdxy</b>
-<br>
-A mounted partition is automatically shared with samba</p>
-<p>Partitions supported:
-
-<ul>
-<li>ext2, ext3
-<li>fat16, fat32 (no fsck available)
-<li> ntfs-3g (no fsck available)
-</ul>
-</p>
-
-<p>To run fsck you need to umount the partition!</p> 
-
-<form>
-<table border="1" cellpadding="4" cellspacing="0">
-	<thead><tr>
-		<th>Device</th>
-		<th>Mounted</th>
-		<th>Mount point</th>
-		<th>FS type</th>
-		<th>Mount</th>
-		<th>Umount</th>
-		<th>Kill &amp; Umount (*)</th>
-		<th>Fsck</th>
-	</tr></thead>
-
-	<%roGetPartitionsAndMounts()%>
-</table>
-</form>
-
-<p>
-(*) Kill all processes locking files before unmount the partition
-</p>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">Partitions and Mounts</a></h1>
+		<div class="entry">
+		  <p>
+		  <p>Mount, umount and check partitions <b>/dev/sdxy</b>
+		    <br>
+		    A mounted partition is automatically shared with samba</p>
+		  <p>
+		    Partitions supported:
+
+		    <ul>
+		      <li>ext2, ext3
+		      <li>fat16, fat32 (no fsck available)
+		      <li> ntfs-3g (no fsck available)
+		    </ul>
+		  </p>
+		  
+		  <p>To run fsck you need to umount the partition!</p> 
+		  
+		  <form>
+		    <table border="1" cellpadding="4" cellspacing="0">
+		      <thead><tr>
+			  <th>Device</th>
+			  <th>Mounted</th>
+			  <th>Mount point</th>
+			  <th>FS type</th>
+			  <th>Mount</th>
+			  <th>Umount</th>
+			  <th>Kill &amp; Umount (*)</th>
+			  <th>Fsck</th>
+		      </tr></thead>
+		      
+		      <%roGetPartitionsAndMounts()%>
+		    </table>
+		  </form>
+		  
+		  <p>
+		    (*) Kill all processes locking files before unmount the partition
+		  </p>
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+
+    <p class="clsCopyright"></p>
 </body>
 </html>

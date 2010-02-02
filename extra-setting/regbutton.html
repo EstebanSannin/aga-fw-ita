@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; REG Button</title>
@@ -48,44 +58,70 @@ function saveClick() {
 
 <body onload="initMenu(); frmLoad();">
 
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>REG Button</h3>
-
-<p>This page allows you to customize REG button action.</p>
-<p>Select below the action you want to execute when you press the button.
-<br>
-If the action completes successfully the green led will blink once,
-otherwise, if the action fails the voip red led will blink once. </p>
-
-<form>
-<p>
-<label>Action:</label>
-<select name='Action'>
-<option value='none'>None</option>
-<option value='wradio'>Switch wireless radio on/off</option>
-<option value='reboot'>Reboot the system</option>
-<option value='resync'>Resync ADSL</option>
-<option value='umount'>Unmount USB storage (safely)</option>
-<option value='stealth'>Stealth mode (switch off radio and leds)</option>
-<option value='script'>Custom script</option>
-</select>
-</p>
-<br>
-If you select "Custom script" action, enter the script below:
-<p><textarea name='Script' rows='20' cols='80'></textarea></p>
-<p><input type='button' onClick='saveClick()' value='Save'></p>
-</form>
-
-<p>Note: if you press and hold the button 5 seconds, the system will reboot and
-restore to factory default settings (you can't customize this action).</p>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">REG Button</a></h1>
+		<div class="entry">
+		  <p>
+		    <p>This page allows you to customize REG button action.</p>
+		  <p>Select below the action you want to execute when you press the button.
+		    <br>
+		    If the action completes successfully the green led will blink once,
+		    otherwise, if the action fails the voip red led will blink once. </p>
+		  
+		  <form>
+		    <p>
+		      <label>Action:</label>
+		      <select name='Action'>
+			<option value='none'>None</option>
+			<option value='wradio'>Switch wireless radio on/off</option>
+			<option value='reboot'>Reboot the system</option>
+			<option value='resync'>Resync ADSL</option>
+			<option value='umount'>Unmount USB storage (safely)</option>
+			<option value='stealth'>Stealth mode (switch off radio and leds)</option>
+			<option value='script'>Custom script</option>
+		      </select>
+		    </p>
+		    <br>
+		    If you select "Custom script" action, enter the script below:
+		    <p><textarea name='Script'
+		    style='background-color: #000000; color: green' rows='20' cols='80'></textarea></p>
+		    <p><input type='button' onClick='saveClick()' value='Save'></p>
+		  </form>
+		  
+		  <p>Note: if you press and hold the button 5 seconds, the system will reboot and
+		    restore to factory default settings (you can't customize this action).</p>
+		  
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+
+    <p class="clsCopyright"></p>
 </body>
 </html>

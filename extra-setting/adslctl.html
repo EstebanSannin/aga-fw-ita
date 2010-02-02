@@ -1,4 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
+
 
 <html>
 <head>
@@ -54,40 +66,63 @@ function btnApply() {
 </head>
 
 <body onload="initMenu(); frmLoad();">
-
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>adslctl Configuration</h3>
-
-<form onSubmit='return false'>
-	<table>
-	<tr><td><label>Enable adslctl configuration:</label></td>
-	<td><input type='checkbox' name='Enableadslctl' id='Enableadslctl' value='0'></td></tr>
-	<tr><td><label>SNR:</label></td>
-	<td><input type='text' name='Snr' maxlength='5' id='Snr'></td></tr>
-	<tr><td><label>Trellis:</label></td>
-	<td><input type='checkbox' name='Trellis' id='Trellis' value='0'></td></tr>
-	</table>
-	<p><input type='button' onClick='btnApply()' value='Save'></p>
-</form>
-
-<br>
-
-<b>SNR</b>
-<p>
-SNR value determines the percentage of some hard-coded value that
-the router aims for on ADSL synchronisation.
-So if you want a higher sync speed (and a lower stability) use a value less
-than 100, if you want a lower sync speed (and a higher stability) use a value
-higher than 100.
-</p>
-
-</div>
-<p class="clsCopyright"></p>
+  
+  <div id="logo">  
+    <table>
+      <tr>
+	<td><img width="200" src=images/aga.png></td>
+	<td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+      </tr>
+    </table>
+  </div>
+  <b><script>createroMenu();</script></b>
+  
+  <div id="idContent">
+    <br>
+    <br>
+    
+    <!-- start page -->
+    <div id="page">
+      <div id="page-bgtop">
+	<div id="page-bgbtm">
+	  <div id="content">
+	    
+	    <div class="post">
+	      <h1 class="title"><a href="#">adslctl Configuration</a></h1>
+	      <div class="entry">
+		<p>
+		  <form onSubmit='return false'>
+		    <table>
+		      <tr><td><label>Enable adslctl configuration:</label></td>
+			<td><input type='checkbox' name='Enableadslctl' id='Enableadslctl' value='0'></td></tr>
+		      <tr><td><label>SNR:</label></td>
+			<td><input type='text' name='Snr' maxlength='5' id='Snr'></td></tr>
+		      <tr><td><label>Trellis:</label></td>
+			<td><input type='checkbox' name='Trellis' id='Trellis' value='0'></td></tr>
+		    </table>
+		    <p><input type='button' onClick='btnApply()' value='Save'></p>
+		  </form>
+		  
+		  <br>
+		  
+		  <b>SNR</b>
+		<p>
+		  SNR value determines the percentage of some hard-coded value that
+		  the router aims for on ADSL synchronisation.
+		  So if you want a higher sync speed (and a lower stability) use a value less
+		  than 100, if you want a lower sync speed (and a higher stability) use a value
+		  higher than 100.
+		</p>
+		
+		</p>
+	      </div>
+	    </div>
+	  </div>
+	  <div style="clear: both;">&nbsp;</div>
+	</div>
+      </div>
+    </div>
+        
+    <p class="clsCopyright"></p>
 </body>
 </html>

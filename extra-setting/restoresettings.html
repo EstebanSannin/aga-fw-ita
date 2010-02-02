@@ -1,5 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!--
+#
+#
+# Name Graphics: Stonewall (Beta)
+# Version:       0.01
+# Author:        Stefano Viola
+# Contact:       stefanoviola [at] sanniolug [dot] org
+# Licenze:       GPLv3
+#
+#
+-->
 <html>
 <head>
 	<title>Extra Settings &raquo; Restore Extra Settings</title>
@@ -15,27 +25,51 @@
 
 <body onload="initMenu();">
 
-<img id="idImgHeader" src="p_red.gif">
-<div id="idHeader">Extra Settings</div>
-
-<script>createroMenu();</script>
-
-<div id="idContent">
-
-<h3>Restore Extra Settings</h3>
-
-<p>
-Select the file and click "Upload".
-</p>
-
-<form action="restoresettings.cgi" enctype="multipart/form-data" method=post>
-    <table>
-    <tr><td><input type="file" name="Whatever"></td>
-    <td><input type="submit" value="Upload"></td></tr>
-    </table>
-</form>
-
+<div id="logo">  
+  <table>
+    <tr>
+      <td><img width="200" src=images/aga.png></td>
+      <td><h1><font color="red"><b>Extra</font> Settings</b></h1></td>
+    </tr>
+  </table>
 </div>
-<p class="clsCopyright"></p>
+<b><script>createroMenu();</script></b>
+			  
+
+  <div id="idContent">
+    <br>
+    <br>
+
+ 
+      <!-- start page -->
+      <div id="page">
+	<div id="page-bgtop">
+	  <div id="page-bgbtm">
+	    <div id="content">
+	     
+	      <div class="post">
+		<h1 class="title"><a href="#">Restore Extra Settings</a></h1>
+		<div class="entry">
+		  <p>
+		    <p>
+		      Select the file and click "Upload".
+		    </p>
+
+		    <form action="restoresettings.cgi" enctype="multipart/form-data" method=post>
+		      <table>
+			<tr><td><input type="file" name="Whatever"></td>
+			  <td><input type="submit" value="Upload"></td></tr>
+		      </table>
+		    </form>
+		  </p>
+		</div>
+	      </div>
+	    </div>
+	    <div style="clear: both;">&nbsp;</div>
+	  </div>
+	</div>
+      </div>
+
+    <p class="clsCopyright"></p>
 </body>
 </html>
